@@ -10,7 +10,25 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: brew install docker colima
+    - name: Update Homebrew
+      run: |
+        brew update --preinstall
+        cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
+        cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
+      shell: bash
+    - name: Configure Homebrew cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/Library/Caches/Homebrew/colima--*
+          ~/Library/Caches/Homebrew/downloads/*--colima-*
+          ~/Library/Caches/Homebrew/docker--*
+          ~/Library/Caches/Homebrew/downloads/*--docker-*
+        key: brew-${{ hashFiles('.github/brew-*') }}
+        restore-keys: brew-
+      shell: bash
+    - name: Install Docker client and Colima
+      run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install docker colima
       shell: bash
     - id: docker-client-version
       run: echo "::set-output name=version::$(docker version)"

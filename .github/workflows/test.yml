@@ -9,7 +9,7 @@ jobs:
       # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Docker using Colima & Lima-VM
+      - name: Setup Docker on macOS using Colima, Lima-VM, and Homebrew.
         uses: ./ # Uses an action in the root directory
         id: docker
       - name: Get the Docker client version
