@@ -33,7 +33,7 @@ runs:
       with:
         path: |
           ${{ env.BREW_CACHE_LIST }}
-          ${{ env.BREW_CELLAR/docker }}
+          ${{ env.BREW_CELLAR }}/docker
         key: brew-${{ hashFiles('.github/brew-*') }}
         restore-keys: brew-
     - name: Relink and redownload deps for Docker client and Colima
