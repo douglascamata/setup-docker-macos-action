@@ -2,10 +2,10 @@ name: "Setup Docker on macOS"
 description: "Setup Docker on macOS using Colima, Lima-VM, and Homebrew."
 outputs:
   colima-version:
-    value: ${{ steps.docker-client-version.outputs.version }}
+    value: ${{ steps.colima-version.outputs.version }}
     description: Version of Colima
   docker-client-version:
-    value: ${{ steps.colima-version.outputs.version }}
+    value: ${{ steps.docker-client-version.outputs.version }}
     description: Version of the Docker client
 runs:
   using: "composite"
