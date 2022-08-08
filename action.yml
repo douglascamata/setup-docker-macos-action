@@ -24,10 +24,10 @@ runs:
       run: |
         cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
         cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
-        brew cleanup
         brew_cellar="$(brew --cellar)"
         echo "BREW_CELLAR=$(echo "$brew_cellar")" >> $GITHUB_ENV
-        echo "BREW_CACHE_LIST=$(echo "$(brew deps lima)" | while read line; do echo "$brew_cellar/$line"; done)"
+        echo "BREW_CACHE_LIST=$(echo "$(brew deps colima)" | while read line; do echo "$brew_cellar/$line"; done)"
+        echo $BREW_CACHE_LIST > .github/brew-colima-deps
       shell: bash
     - name: Configure Homebrew cache
       id: cache-homebrew
@@ -43,8 +43,7 @@ runs:
       run: |
         brew link docker
         deps=$(brew deps colima | tr '\n' ' ')
-        brew unlink $deps
-        brew link $deps
+        brew link --overwrite --force $deps
       shell: bash
     - name: Install Docker client and Colima
       if: steps.cache-homebrew.outputs.cache-hit != 'true'
