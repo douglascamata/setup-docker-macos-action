@@ -2,9 +2,19 @@ name: "Setup Docker on macOS"
 description: "Setup Docker on macOS using Colima, Lima-VM, and Homebrew."
 outputs:
   colima-version:
+    value: ${{ steps.docker-client-version.outputs.version }}
     description: Version of Colima
   docker-client-version:
+    value: ${{ steps.colima-client-version.outputs.version }}
     description: Version of the Docker client
 runs:
-  using: "node16"
-  main: "index.js"
+  using: "composite"
+  steps:
+    - run: brew install docker colima
+      shell: bash
+    - id: docker-client-version
+      run: echo "::set-output name=version::$(docker version)"
+      shell: bash
+    - id: colima-version
+      run: echo "::set-output name=version::$(colima version)"
+      shell: bash
