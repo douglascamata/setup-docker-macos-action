@@ -26,7 +26,7 @@ runs:
         cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
         brew_cellar="$(brew --cellar)"
         echo "BREW_CELLAR="$brew_cellar"" >> $GITHUB_ENV
-        brew_cache_list=$(brew deps colima | while read line; do echo "$brew_cellar/$line"; done)"
+        brew_cache_list=$(brew deps colima | while read line; do echo "$brew_cellar/$line"; done)
         echo "BREW_CACHE_LIST="$brew_cache_list"" >> $GITHUB_ENV
         echo $brew_cache_list > .github/brew-colima-deps
       shell: bash
