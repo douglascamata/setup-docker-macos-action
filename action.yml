@@ -5,7 +5,7 @@ outputs:
     value: ${{ steps.docker-client-version.outputs.version }}
     description: Version of Colima
   docker-client-version:
-    value: ${{ steps.colima-client-version.outputs.version }}
+    value: ${{ steps.colima-version.outputs.version }}
     description: Version of the Docker client
 runs:
   using: "composite"
@@ -41,8 +41,18 @@ runs:
       run: brew install docker colima
       shell: bash
     - id: docker-client-version
-      run: echo "::set-output name=version::$(docker version)"
+      run: |
+        content="$(docker version)"
+        content="${content//'%'/'%25'}"
+        content="${content//$'\n'/'%0A'}"
+        content="${content//$'\r'/'%0D'}"
+        echo "::set-output name=version::$content"
       shell: bash
     - id: colima-version
-      run: echo "::set-output name=version::$(colima version)"
+      run: |
+        content="$(colima version)"
+        content="${content//'%'/'%25'}"
+        content="${content//$'\n'/'%0A'}"
+        content="${content//$'\r'/'%0D'}"
+        echo "::set-output name=version::$content"
       shell: bash

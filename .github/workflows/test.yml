@@ -3,7 +3,7 @@ on: [push]
 jobs:
   setup-docker:
     runs-on: macos-latest
-    name: A job to setup Docker
+    name: A job to perform a self-test on this Github Action
     steps:
       # To use this repository's private action,
       # you must check out the repository
@@ -13,6 +13,8 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: docker
       - name: Get the Docker client version
-        run: echo "The time was ${{ steps.docker.outputs.docker-client-version }}"
+        run: |
+          echo "Docker client version: ${{ steps.docker.outputs.docker-client-version }}"
       - name: Get the Colima version
-        run: echo "The time was ${{ steps.docker.outputs.colima-version }}"
+        run: |
+          echo "Colima version: ${{ steps.docker.outputs.colima-version }}"
