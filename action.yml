@@ -42,9 +42,9 @@ runs:
     - name: Relink and redownload deps for Docker client and Colima
       if: steps.cache-homebrew.outputs.cache-hit == 'true'
       run: |
+        brew install $(brew missing)
         brew link docker
-        deps=$(brew deps colima | tr '\n' ' ')
-        brew link --overwrite --force $deps
+        brew link $BREW_CACHE_LIST
       shell: bash
     - name: Install Docker client and Colima
       if: steps.cache-homebrew.outputs.cache-hit != 'true'
