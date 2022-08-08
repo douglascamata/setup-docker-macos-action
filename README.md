@@ -1,6 +1,10 @@
 # Setup Docker on macOS action
 
-This action installs Docker on a macOS runner through Colima, Lima-VM, and Homebrew.
+This action installs Docker on a macOS runner through [Colima], [Lima-VM], and [Homebrew].
+
+[Colima]: https://github.com/abiosoft/colima
+[Lima-VM]: https://github.com/abiosoft/colima
+[Homebrew]: https://github.com/Homebrew/brew
 
 I intend this action to be kept as simple as possible:
 
