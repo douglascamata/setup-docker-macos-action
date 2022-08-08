@@ -50,7 +50,7 @@ runs:
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
       run: |
-        brew link docker colima
+        brew link docker colima || true
         brew install docker colima
       shell: bash
     - name: Start Colima
