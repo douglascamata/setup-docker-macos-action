@@ -24,8 +24,9 @@ runs:
       shell: bash
     - name: Pre-cache
       run: |
-        echo "BREW_CACHE_LIST=$(echo "$(brew deps lima)" | while read line; do echo "$(brew --cellar)/$line"; done)"
-        echo "BREW_CELLAR=$(brew --cellar)" >> $GITHUB_ENV
+        brew_cellar="$(brew --cellar)"
+        echo "BREW_CELLAR=$(echo "$brew_cellar")" >> $GITHUB_ENV
+        echo "BREW_CACHE_LIST=$(echo "$(brew deps lima)" | while read line; do echo "$brew_cellar/$line"; done)"
       shell: bash
     - name: Configure Homebrew cache
       id: cache-homebrew
