@@ -42,7 +42,9 @@ runs:
       if: steps.cache-homebrew.outputs.cache-hit == 'true'
       run: |
         brew link docker
-        brew deps lima | while read line; do brew link $line; done
+        deps=brew deps colima | tr '\n' ' '
+        brew unlink $deps
+        brew link $deps
       shell: bash
     - name: Install Docker client and Colima
       if: steps.cache-homebrew.outputs.cache-hit != 'true'
