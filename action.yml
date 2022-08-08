@@ -42,7 +42,7 @@ runs:
       if: steps.cache-homebrew.outputs.cache-hit == 'true'
       run: |
         brew link docker
-        deps=brew deps colima | tr '\n' ' '
+        deps=$(brew deps colima | tr '\n' ' ')
         brew unlink $deps
         brew link $deps
       shell: bash
