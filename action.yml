@@ -1,5 +1,5 @@
-name: "Setup Docker (Lima-VM)"
-description: "Set ups Docker using LimaVM"
+name: "Setup Docker on macOS"
+description: "Setup Docker on macOS using Colima, Lima-VM, and Homebrew."
 outputs:
   colima-version:
     description: Version of Colima
