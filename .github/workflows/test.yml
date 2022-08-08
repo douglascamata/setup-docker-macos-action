@@ -2,10 +2,7 @@ on: [push]
 
 jobs:
   setup-docker:
-    strategy:
-      matrix:
-        platform: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.platform }}
+    runs-on: macos-latest
     name: A job to setup Docker
     steps:
       # To use this repository's private action,
