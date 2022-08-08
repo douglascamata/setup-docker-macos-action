@@ -11,6 +11,11 @@ I intend this action to be kept as simple as possible:
 - No other OS will be supported.
 - No other installation method for Colima will be supported (means you will always get what Homebrew gives you).
 
+## Features
+
+- Safety check to ensure the action is running in macOS.
+- Caches big Homebrew packages to save some CI minutes.
+
 ## Outputs
 
 ## `colima-version`
