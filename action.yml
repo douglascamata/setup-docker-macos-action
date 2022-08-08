@@ -27,7 +27,9 @@ runs:
         key: brew-${{ hashFiles('.github/brew-*') }}
         restore-keys: brew-
     - name: Install Docker client and Colima
-      run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install docker colima
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: "1"
+      run: brew install docker colima
       shell: bash
     - id: docker-client-version
       run: echo "::set-output name=version::$(docker version)"
