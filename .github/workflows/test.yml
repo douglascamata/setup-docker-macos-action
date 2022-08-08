@@ -1,0 +1,21 @@
+on: [push]
+
+jobs:
+  setup-docker:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.platform }}
+    name: A job to setup Docker
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Docker using Colima & Lima-VM
+        uses: ./ # Uses an action in the root directory
+        id: docker
+      - name: Get the Docker client version
+        run: echo "The time was ${{ steps.docker.outputs.docker-client-version }}"
+      - name: Get the Colima version
+        run: echo "The time was ${{ steps.docker.outputs.colima-version }}"
