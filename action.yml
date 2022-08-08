@@ -21,15 +21,18 @@ runs:
         brew update --preinstall
         cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
         cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
+        cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/qemu.rb" > .github/brew-qemu
+      shell: bash
+    - name: Pre-cache
+      run: echo "BREW_CELLAR=$(brew --cellar)" >> $GITHUB_ENV
       shell: bash
     - name: Configure Homebrew cache
       uses: actions/cache@v3
       with:
         path: |
-          ~/Library/Caches/Homebrew/colima--*
-          ~/Library/Caches/Homebrew/downloads/*--colima-*
-          ~/Library/Caches/Homebrew/docker--*
-          ~/Library/Caches/Homebrew/downloads/*--docker-*
+          ${{ env.BREW_CELLAR }}/colima
+          ${{ env.BREW_CELLAR }}/docker
+          ${{ env.BREW_CELLAR }}/qemu
         key: brew-${{ hashFiles('.github/brew-*') }}
         restore-keys: brew-
     - name: Install Docker client and Colima
