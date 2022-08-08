@@ -40,6 +40,7 @@ runs:
       if: steps.cache-homebrew.outputs.cache-hit == 'true'
       run: |
         brew link docker colima
+        brew install --only-dependencies docker colima
       shell: bash
     - name: Install Docker client and Colima
       if: steps.cache-homebrew.outputs.cache-hit != 'true'
