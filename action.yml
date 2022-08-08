@@ -21,26 +21,26 @@ runs:
         brew update --preinstall
         cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
         cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
-        cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/qemu.rb" > .github/brew-qemu
       shell: bash
     - name: Pre-cache
-      run: echo "BREW_CELLAR=$(brew --cellar)" >> $GITHUB_ENV
+      run: |
+        echo "BREW_CACHE_LIST=$(echo "$(brew deps lima)" | while read line; do echo "$(brew --cellar)/$line"; done)"
+        echo "BREW_CELLAR=$(brew --cellar)" >> $GITHUB_ENV
       shell: bash
     - name: Configure Homebrew cache
       id: cache-homebrew
       uses: actions/cache@v3
       with:
         path: |
-          ${{ env.BREW_CELLAR }}/colima
-          ${{ env.BREW_CELLAR }}/docker
-          ${{ env.BREW_CELLAR }}/qemu
+          ${{ env.BREW_CACHE_LIST }}
+          ${{ env.BREW_CELLAR/docker }}
         key: brew-${{ hashFiles('.github/brew-*') }}
         restore-keys: brew-
     - name: Relink and redownload deps for Docker client and Colima
       if: steps.cache-homebrew.outputs.cache-hit == 'true'
       run: |
-        brew link docker colima qemu
-        brew install --only-dependencies docker colima qemu
+        brew link docker
+        brew deps lima | while read line; do brew link $line; done
       shell: bash
     - name: Install Docker client and Colima
       if: steps.cache-homebrew.outputs.cache-hit != 'true'
