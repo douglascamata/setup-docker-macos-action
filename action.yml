@@ -10,6 +10,12 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Safety check
+      if: runner.os != 'macOS'
+      run: |
+        echo "Not a macOS runner, exiting."
+        exit 1
+      shell: bash
     - name: Update Homebrew
       run: |
         brew update --preinstall
