@@ -19,40 +19,35 @@ runs:
     - name: Update Homebrew
       run: |
         brew update --preinstall
+        brew_repository="$(brew --repository)"
+        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
+        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
       shell: bash
     - name: Pre-cache
-      run: |
-        cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
-        cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
-        brew_cellar="$(brew --cellar)"
-        echo "BREW_CELLAR="$brew_cellar"" >> $GITHUB_ENV
-        brew_cache_list=$(brew deps colima | while read line; do echo "$brew_cellar/$line"; done)
-        echo "BREW_CACHE_LIST="$brew_cache_list"" >> $GITHUB_ENV
-        echo $brew_cache_list > .github/brew-colima-deps
+      run: echo "BREW_CELLAR=$(brew --cellar)" >> $GITHUB_ENV
       shell: bash
     - name: Configure Homebrew cache
       id: cache-homebrew
       uses: actions/cache@v3
       with:
         path: |
-          ${{ env.BREW_CACHE_LIST }}
+          ${{ env.BREW_CELLAR }}/colima
           ${{ env.BREW_CELLAR }}/docker
+          ${{ env.BREW_CELLAR }}/ncurses
+          ${{ env.BREW_CELLAR }}/qemu
         key: brew-${{ hashFiles('.github/brew-*') }}
         restore-keys: brew-
     - name: Relink and redownload deps for Docker client and Colima
       if: steps.cache-homebrew.outputs.cache-hit == 'true'
       run: |
-        brew install $(brew missing)
-        brew link docker
-        brew link $BREW_CACHE_LIST
+        brew link docker colima qemu
+        brew install --only-dependencies docker colima qemu
       shell: bash
     - name: Install Docker client and Colima
       if: steps.cache-homebrew.outputs.cache-hit != 'true'
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
-      run: |
-        brew link docker colima || true
-        brew install docker colima
+      run: brew install docker colima
       shell: bash
     - name: Start Colima
       run: colima start
