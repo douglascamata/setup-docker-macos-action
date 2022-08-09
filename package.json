@@ -1,0 +1,27 @@
+{
+  "name": "setup-docker-action",
+  "version": "1.0.0",
+  "description": "This action installs Docker on a macOS runner through [Colima], [Lima-VM], and [Homebrew].",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/douglascamata/setup-docker-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/douglascamata/setup-docker-action/issues"
+  },
+  "homepage": "https://github.com/douglascamata/setup-docker-action#readme",
+  "dependencies": {
+    "@actions/cache": "^3.0.2",
+    "@actions/core": "^1.9.1",
+    "@actions/exec": "^1.1.1",
+    "@actions/github": "^5.0.3",
+    "@actions/glob": "^0.3.0"
+  }
+}

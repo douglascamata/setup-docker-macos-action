@@ -1,69 +1,15 @@
 name: "Setup Docker on macOS"
 description: "Setup Docker on macOS using Colima, Lima-VM, and Homebrew."
+inputs:
+  cache-homebrew-deps:
+    default: false
+    description: Whether to cache Homebrew dependencies or not. Makes build faster, but might create a big cache.
+    required: false
 outputs:
   colima-version:
-    value: ${{ steps.colima-version.outputs.version }}
     description: Version of Colima
   docker-client-version:
-    value: ${{ steps.docker-client-version.outputs.version }}
     description: Version of the Docker client
 runs:
-  using: "composite"
-  steps:
-    - name: Safety check
-      if: runner.os != 'macOS'
-      run: |
-        echo "Not a macOS runner, exiting."
-        exit 1
-      shell: bash
-    - name: Update Homebrew
-      run: |
-        brew update --preinstall
-        brew_repository="$(brew --repository)"
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
-      shell: bash
-    - name: Pre-cache
-      run: echo "BREW_CELLAR=$(brew --cellar)" >> $GITHUB_ENV
-      shell: bash
-    - name: Configure Homebrew cache
-      id: homebrew-cache
-      uses: actions/cache@v3.0.6
-      with:
-        path: |
-          ${{ env.BREW_CELLAR }}/colima
-          ${{ env.BREW_CELLAR }}/docker
-          ${{ env.BREW_CELLAR }}/qemu
-        key: brew-${{ hashFiles('.github/brew-*') }}
-        restore-keys: brew-${{ hashFiles('.github/brew-*') }}
-    - name: Relink and redownload deps for Docker client and Colima
-      if: ${{ steps.homebrew-cache.outputs.cache-hit == 'true' }}
-      run: |
-        brew link docker colima qemu
-        brew install --only-dependencies docker colima qemu
-      shell: bash
-    - name: Install Docker client and Colima
-      if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
-      env:
-        HOMEBREW_NO_AUTO_UPDATE: "1"
-      run: brew install docker colima
-      shell: bash
-    - name: Start Colima
-      run: colima start
-      shell: bash
-    - id: docker-client-version
-      run: |
-        content="$(docker version)"
-        content="${content//'%'/'%25'}"
-        content="${content//$'\n'/'%0A'}"
-        content="${content//$'\r'/'%0D'}"
-        echo "::set-output name=version::$content"
-      shell: bash
-    - id: colima-version
-      run: |
-        content="$(colima version)"
-        content="${content//'%'/'%25'}"
-        content="${content//$'\n'/'%0A'}"
-        content="${content//$'\r'/'%0D'}"
-        echo "::set-output name=version::$content"
-      shell: bash
+  using: node16
+  main: index.js
