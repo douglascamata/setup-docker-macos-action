@@ -1,4 +1,4 @@
-# Setup Docker on macOS action
+# Setup Docker on macOS action [![.github/workflows/test.yml](https://github.com/douglascamata/setup-docker-macos-action/actions/workflows/test.yml/badge.svg)](https://github.com/douglascamata/setup-docker-macos-action/actions/workflows/test.yml)
 
 This action installs Docker on a macOS runner through [Colima], [Lima-VM], and [Homebrew].
 
