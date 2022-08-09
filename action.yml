@@ -35,9 +35,9 @@ runs:
           ${{ env.BREW_CELLAR }}/docker
           ${{ env.BREW_CELLAR }}/qemu
         key: brew-${{ hashFiles('.github/brew-*') }}
-        restore-keys: brew-
+        restore-keys: brew-${{ hashFiles('.github/brew-*') }}
     - name: Relink and redownload deps for Docker client and Colima
-      if: steps.cache-homebrew.outputs.cache-hit != 'false'
+      if: steps.cache-homebrew.outputs.cache-hit == 'true'
       run: |
         brew link docker colima qemu
         brew install --only-dependencies docker colima qemu
