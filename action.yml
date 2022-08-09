@@ -28,7 +28,7 @@ runs:
       shell: bash
     - name: Configure Homebrew cache
       id: cache-homebrew
-      uses: actions/cache@v3
+      uses: actions/cache@v3.0.6
       with:
         path: |
           ${{ env.BREW_CELLAR }}/colima
