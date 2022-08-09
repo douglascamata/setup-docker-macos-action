@@ -33,7 +33,6 @@ runs:
         path: |
           ${{ env.BREW_CELLAR }}/colima
           ${{ env.BREW_CELLAR }}/docker
-          ${{ env.BREW_CELLAR }}/ncurses
           ${{ env.BREW_CELLAR }}/qemu
         key: brew-${{ hashFiles('.github/brew-*') }}
         restore-keys: brew-
