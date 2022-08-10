@@ -4,7 +4,7 @@
   "description": "This action installs Docker on a macOS runner through [Colima], [Lima-VM], and [Homebrew].",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc && ncc build lib/main.js",
+    "build": "tsc && ncc build lib/index.js",
     "format": "prettier --write '**/*.ts'",
     "format-check": "prettier --check '**/*.ts'",
     "lint": "eslint src/**/*.ts",
