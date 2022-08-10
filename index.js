@@ -65,7 +65,7 @@ async function run() {
       const installResult = await exec.exec('brew', [
         'install',
         'colima',
-        'docker-client',
+        'docker',
       ])
       if (installResult === 1) {
         throw 'Cannot install Colima and Docker client.'
