@@ -126,3 +126,6 @@ out
 
 # IntelliJ
 .idea
+
+node_modules/@vercel/ncc/dist/ncc/loaders/*.cache
+node_modules/@vercel/ncc/dist/ncc/*.cache
