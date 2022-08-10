@@ -23,11 +23,10 @@ async function run() {
     let cacheKey = ''
     const binTools = ['colima', 'lima', 'qemu', 'docker']
     if (cacheDeps === true) {
-      const cacheKeyPromise = brewCache
-        .cacheKey(binTools, colimaDeps)
-        .then((key) => {
-          cacheKey = key
-        })
+      const cacheKeyPromise = brewCache.cacheKey(binTools, colimaDeps)
+      cacheKeyPromise.then((key) => {
+        cacheKey = key
+      })
       const cacheFolderPromise = brewCache.cacheFolder(binTools, colimaDeps)
 
       await Promise.all([cacheFolderPromise, cacheKeyPromise]).then(
