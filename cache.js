@@ -20,7 +20,7 @@ exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
       `${repository}/Library/Taps/homebrew/homebrew-core/Formula/${value}.rb`,
     )
   })
-  const cacheHash = await glob.hashFiles(cacheKeyFiles.join('\n'), nil, true)
+  const cacheHash = await glob.hashFiles(cacheKeyFiles.join('\n'), null, true)
   return `brew-formulae-test-${cacheHash}`
 }
 
