@@ -12,8 +12,7 @@ async function run() {
 
     const colimaDepsResult = await exec.getExecOutput('brew', ['deps', 'colima'])
     checkCommandFailure(colimaDepsResult.exitCode, 'Cannot get Colima deps.')
-
-    const colimaDeps = colimaDepsResult.stdout.trim().replaceAll('\n', ' ')
+    const colimaDeps = colimaDepsResult.stdout.trim().split('\n')
 
     let cacheHit = undefined
     let cacheKey = ''
