@@ -1,8 +1,8 @@
-name: "Setup Docker on macOS"
-description: "Setup Docker on macOS using Colima, Lima-VM, and Homebrew."
+name: 'Setup Docker on macOS'
+description: 'Setup Docker on macOS using Colima, Lima-VM, and Homebrew.'
 inputs:
   cache-homebrew-deps:
-    default: "false"
+    default: 'false'
     description: Whether to cache Homebrew dependencies or not. Makes build faster, but might create a big cache.
     required: false
 outputs:

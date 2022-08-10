@@ -2,9 +2,9 @@
 
 This action installs Docker on a macOS runner through [Colima], [Lima-VM], and [Homebrew].
 
-[Colima]: https://github.com/abiosoft/colima
-[Lima-VM]: https://github.com/lima-vm/lima
-[Homebrew]: https://github.com/Homebrew/brew
+[colima]: https://github.com/abiosoft/colima
+[lima-vm]: https://github.com/lima-vm/lima
+[homebrew]: https://github.com/Homebrew/brew
 
 I intend this action to be kept as simple as possible:
 
