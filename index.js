@@ -9,8 +9,7 @@ async function run() {
         const cacheDeps = core.getInput('cache-homebrew-deps');
         const updateResults = await exec.exec("brew", ["update", "--preinstall"])
         if (updateResults === 1) {
-            core.setFailed("Cannot update Homebrew.")
-            return
+            throw("Cannot update Homebrew.")
         }
 
         let restoredKey = undefined
@@ -46,7 +45,7 @@ async function run() {
                 }
                 const cacheKey = `brew-deps-${await glob.hashFiles(cacheKeyFiles)}`
                 restoredKey = await cache.restoreCache(toCache, cacheKey)
-            })
+            }).catch(reason => throw(reason))
         }
 
         if (restoredKey === undefined) {
