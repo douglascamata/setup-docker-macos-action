@@ -35,6 +35,10 @@ async function run() {
       await cache.restoreCache(folders, key).then((restoredKey) => {
         cacheHit = restoredKey
       })
+      if (debug === true) {
+        console.log(`Cache hit: ${cacheHit}`)
+        console.log(`Cache key: ${cacheKey}`)
+      }
     }
 
     if (cacheHit === undefined) {
@@ -54,6 +58,7 @@ async function run() {
         })
       }
     } else {
+      console.log('Homebrew formulae restored from cache. Relinking.')
       const linkResult = await exec.getExecOutput('brew', ['link', ...binTools])
       checkCommandFailure(linkResult.exitCode, 'Cannot link Homebrew formulae.')
     }
