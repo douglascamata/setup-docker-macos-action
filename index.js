@@ -28,14 +28,13 @@ async function run() {
         cacheKey = key
       })
       const cacheFolderPromise = brewCache.cacheFolder(binTools, colimaDeps)
-
-      await Promise.all([cacheFolderPromise, cacheKeyPromise]).then(
-        ([folders, key]) => {
-          cache.restoreCache(folders, key).then((restoredKey) => {
-            cacheHit = restoredKey
-          })
-        },
-      )
+      const [folders, key] = await Promise.all([
+        cacheFolderPromise,
+        cacheKeyPromise,
+      ])
+      await cache.restoreCache(folders, key).then((restoredKey) => {
+        cacheHit = restoredKey
+      })
     }
 
     if (cacheHit === undefined) {

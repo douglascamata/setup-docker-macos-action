@@ -2,6 +2,11 @@ const exec = require('@actions/exec')
 const glob = require('@actions/glob')
 const path = require('path')
 
+/**
+ * @param binTools {string[]}
+ * @param deps {string[]}
+ * @returns {string[]}
+ **/
 exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
   const brewRepositoryResult = await exec.getExecOutput('brew', [
     '--repository',
@@ -23,18 +28,19 @@ exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
     )
   })
 
-  for (let dep of deps) {
-    const formulaPath = path.join(
-      repository,
-      'Library',
-      'Taps',
-      'homebrew',
-      'homebrew-core',
-      'Formula',
-      `${dep}.rb`,
-    )
-    cacheKeyFiles.push(formulaPath)
-  }
+  cacheKeyFiles.push(
+    ...deps.map((dep) => {
+      path.join(
+        repository,
+        'Library',
+        'Taps',
+        'homebrew',
+        'homebrew-core',
+        'Formula',
+        `${dep}.rb`,
+      )
+    }),
+  )
   return `brew-formulae-test-${await glob.hashFiles(cacheKeyFiles.join('\n'))}`
 }
 
