@@ -1,7 +1,7 @@
 const exec = require('@actions/exec')
 const glob = require('@actions/glob')
 const core = require('@actions/core')
-const path = require('path')
+const io = require('@actions/io')
 
 /**
  * @param binTools {string[]}
@@ -15,11 +15,19 @@ exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
     throw "Cannot determine Homebrew's repository path."
   }
   const repository = brewRepositoryResult.stdout.trim()
-  const cacheKeyFiles = binTools.concat(deps).map((value) => {
-    return core.toPlatformPath(
-      `${repository}/Library/Taps/homebrew/homebrew-core/Formula/${value}.rb`,
-    )
-  })
+  const cacheKeyFiles = await Promise.all(
+    binTools.concat(deps).map((value) => {
+      const originalFile = core.toPlatformPath(
+        `${repository}/Library/Taps/homebrew/homebrew-core/Formula/${value}.rb`,
+      )
+      const githubWorkspace = process.env['GITHUB_WORKSPACE'] ?? process.cwd()
+      const destinationFile = core.toPlatformPath(
+        `${githubWorkspace}/brew-cache-${value}.rb`,
+      )
+      io.cp(originalFile, destinationFile)
+      return destinationFile
+    }),
+  )
   const cacheHash = await glob.hashFiles(cacheKeyFiles.join('\n'), null, true)
   return `brew-formulae-test-${cacheHash}`
 }
