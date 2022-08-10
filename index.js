@@ -6,7 +6,7 @@ const path = require('path')
 
 async function run() {
   try {
-    const cacheDeps = core.getInput('cache-homebrew-deps')
+    const cacheDeps = core.getBooleanInput('cache-homebrew-deps')
     const updateResults = await exec.exec('brew', ['update', '--preinstall'])
     if (updateResults === 1) {
       throw 'Cannot update Homebrew.'
@@ -16,7 +16,8 @@ async function run() {
     let toCache = []
     let cacheKeyFiles = []
     let cacheKey = ''
-    if (cacheDeps === 'true') {
+    const binTools = ['colima', 'lima', 'qemu', 'docker']
+    if (cacheDeps === true) {
       const colimaDeps = exec.getExecOutput('brew', ['deps', 'colima'])
       const brewCellar = exec.getExecOutput('brew', ['--cellar'])
       const brewRepository = exec.getExecOutput('brew', ['--repository'])
@@ -39,9 +40,8 @@ async function run() {
           const deps = colimaDepsResult.stdout.trim().replaceAll('\n', ' ')
           const repository = brewRepositoryResult.stdout.trim()
 
-          const binCache = ['colima', 'lima', 'qemu', 'docker']
           const binCacheGlobber = await glob.create(
-            binCache
+            binTools
               .map((value) => {
                 path.join(cellar, value)
               })
@@ -49,7 +49,7 @@ async function run() {
           )
           toCache.push(...(await binCacheGlobber.glob()))
           const binCacheKeyGlobber = await glob.create(
-            binCache
+            binTools
               .map((value) => {
                 path.join(
                   repository,
@@ -80,7 +80,7 @@ async function run() {
             )
             cacheKeyFiles.push(formulaPath)
           }
-          cacheKey = `homebrew-formulas-${await glob.hashFiles(
+          cacheKey = `homebrew-formulae-${await glob.hashFiles(
             cacheKeyFiles.join('\n'),
           )}`
           restoredKey = await cache.restoreCache(toCache, cacheKey)
@@ -91,17 +91,22 @@ async function run() {
     }
 
     if (restoredKey === undefined) {
-      const installResult = await exec.exec('brew', [
-        'install',
-        'colima',
-        'docker',
-      ])
+      const installResult = await exec.exec(
+        'brew',
+        ['install', 'colima', 'docker'],
+        { env: { HOMEBREW_NO_AUTO_UPDATE: '1' } },
+      )
       if (installResult === 1) {
         throw 'Cannot install Colima and Docker client.'
       }
 
-      if (cacheDeps === 'true') {
+      if (cacheDeps === true) {
         await cache.saveCache(toCache, cacheKey)
+      }
+    } else {
+      const linkResult = await exec.getExecOutput('brew', ['link', ...binTools])
+      if (linkResult === 1) {
+        throw 'Cannot link Homebrew formulae.'
       }
     }
 
@@ -125,7 +130,7 @@ async function run() {
     })
   } catch (error) {
     core.setFailed(error.message)
-    if (core.getInput('debug') == 'true') {
+    if (core.getBooleanInput('debug') == true) {
       throw error
     }
   }
