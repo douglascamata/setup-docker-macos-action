@@ -2,9 +2,14 @@
   "name": "setup-docker-action",
   "version": "1.0.0",
   "description": "This action installs Docker on a macOS runner through [Colima], [Lima-VM], and [Homebrew].",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc && ncc build lib/main.js",
+    "format": "prettier --write '**/*.ts'",
+    "format-check": "prettier --check '**/*.ts'",
+    "lint": "eslint src/**/*.ts",
+    "package": "ncc build --source-map --license licenses.txt",
+    "all": "npm run build && npm run format && npm run lint && npm run package"
   },
   "repository": {
     "type": "git",
@@ -26,6 +31,11 @@
     "@actions/io": "^1.1.2"
   },
   "devDependencies": {
-    "prettier": "2.7.1"
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
+    "@vercel/ncc": "^0.34.0",
+    "eslint": "^8.21.0",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
   }
 }
