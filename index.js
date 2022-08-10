@@ -39,9 +39,16 @@ async function run() {
           const deps = colimaDepsResult.stdout.trim().replaceAll('\n', ' ')
           const repository = brewRepositoryResult.stdout.trim()
 
+          binCacheGlobber = await glob.create([
+            path.join(cellar, 'colima'),
+            path.join(cellar, 'lima'),
+            path.join(cellar, 'qemu'),
+          ])
+          toCache.push(...(await binCacheGlobber.glob()))
+
           for (let dep of deps) {
             const depPath = path.join(cellar, dep)
-            const libPathGlobber = await glob.create(`${depPath}/*/lib`)
+            const libPathGlobber = await glob.create([`${depPath}/*/lib`])
             toCache.push(...(await libPathGlobber.glob()))
             const formulaPath = path.join(
               repository,
@@ -54,7 +61,7 @@ async function run() {
             )
             cacheKeyFiles.push(formulaPath)
           }
-          cacheKey = `brew-deps-${await glob.hashFiles(
+          cacheKey = `homebrew-deps-${await glob.hashFiles(
             cacheKeyFiles.join('\n'),
           )}`
           restoredKey = await cache.restoreCache(toCache, cacheKey)
@@ -73,10 +80,10 @@ async function run() {
       if (installResult === 1) {
         throw 'Cannot install Colima and Docker client.'
       }
-    }
 
-    if (cacheDeps === 'true') {
-      await cache.saveCache(toCache, cacheKey)
+      if (cacheDeps === 'true') {
+        await cache.saveCache(toCache, cacheKey)
+      }
     }
 
     const startResult = await exec.exec('colima', ['start'])
