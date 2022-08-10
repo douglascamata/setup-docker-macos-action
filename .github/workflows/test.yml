@@ -14,6 +14,7 @@ jobs:
         id: docker
         with:
           cache-homebrew-deps: true
+          debug: true
       - name: Get the Docker client version
         run: |
           echo "Docker client version: ${{ steps.docker.outputs.docker-client-version }}"

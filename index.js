@@ -97,6 +97,9 @@ async function run() {
     })
   } catch (error) {
     core.setFailed(error.message)
+    if (core.getInput('debug') == 'true') {
+      throw error
+    }
   }
 }
 
