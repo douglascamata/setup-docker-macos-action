@@ -3,9 +3,8 @@ import exec from '@actions/exec'
 import cache from '@actions/cache'
 import * as brewCache from './cache'
 
-const debug = core.getBooleanInput('debug')
-
 async function run(): Promise<void> {
+  const debug = core.getBooleanInput('debug')
   try {
     const cacheDeps = core.getBooleanInput('cache-homebrew-deps')
     const updateResults = await exec.exec('brew', ['update', '--preinstall'])

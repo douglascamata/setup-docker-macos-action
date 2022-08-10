@@ -6,9 +6,9 @@
   "scripts": {
     "build": "tsc && ncc build lib/index.js",
     "format": "prettier --write '**/*.ts'",
-    "format-check": "prettier --check '**/*.ts'",
+    "format:check": "prettier --check '**/*.ts'",
     "lint": "eslint src/**/*.ts",
-    "package": "ncc build --source-map --license licenses.txt",
+    "package": "ncc build --license licenses.txt",
     "all": "npm run build && npm run format && npm run lint && npm run package"
   },
   "repository": {
