@@ -20,7 +20,7 @@ async function run() {
     if (cacheDeps === true) {
       const cacheFolderPromise = brewCache.cacheFolder(binTools, colimaDeps);
       const cacheKeyPromise = brewCache.cacheKey(binTools, colimaDeps);
-      await Promise.all([cacheFolderPromise, cacheKeyPromise]).then(async (toCache, cacheKey) => {
+      await Promise.all([cacheFolderPromise, cacheKeyPromise]).then(async ([toCache, cacheKey]) => {
         cacheHit = await cache.restoreCache(toCache, cacheKey)
         if (cacheHit === undefined) {
           await Promise.all(toCache.map(io.rmRF))

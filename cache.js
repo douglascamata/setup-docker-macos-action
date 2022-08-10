@@ -53,13 +53,10 @@ exports.cacheFolder = async function homebrewCacheFolder(binTools, deps) {
   })
   toCache.push(...binCacheFolders)
 
-  await glob.create(
+  const globber = await glob.create(
     deps.map((dep) => path.join(cellar, dep, '*', 'lib')).join('\n')
-  ).then((globber) => {
-    globber.glob().then(results => {
-      toCache.push(...results)
-    })
-  })
+  )
+  toCache.push(...(await globber.glob()))
 
   return toCache
 }
