@@ -35,7 +35,7 @@ exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
     )
     cacheKeyFiles.push(formulaPath)
   }
-  return `homebrew-formulae-${await glob.hashFiles(cacheKeyFiles.join('\n'))}`
+  return `brew-formulae-test-${await glob.hashFiles(cacheKeyFiles.join('\n'))}`
 }
 
 /**
