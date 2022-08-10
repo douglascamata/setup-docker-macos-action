@@ -56,11 +56,12 @@ exports.cacheFolder = async function homebrewCacheFolder(binTools, deps) {
   for (let dep of deps) {
     const baseDepFolder = path.join(cellar, dep)
     const versionFolderResult = exec.getExecOutput('ls', [baseDepFolder])
-    versionFolderResult.then(({stdout: output}) => {
+    await versionFolderResult.then(({stdout: output}) => {
       const versionFolder = output
         .trim()
         .replaceAll('\t', ' ')
       toCache.push(path.join(baseDepFolder, versionFolder))
+    }).catch(() => {
     })
   }
   return toCache
