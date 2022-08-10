@@ -13,6 +13,9 @@ async function run() {
     }
 
     let restoredKey = undefined
+    let toCache = []
+    let cacheKeyFiles = []
+    let cacheKey = ''
     if (cacheDeps === 'true') {
       const colimaDeps = exec.getExecOutput('brew', ['deps', 'colima'])
       const brewCellar = exec.getExecOutput('brew', ['--cellar'])
@@ -36,8 +39,6 @@ async function run() {
           const deps = colimaDepsResult.stdout.trim().replaceAll('\n', ' ')
           const repository = brewRepositoryResult.stdout.trim()
 
-          const toCache = []
-          const cacheKeyFiles = []
           for (let dep of deps) {
             const depPath = path.join(cellar, dep)
             const libPathGlobber = await glob.create(`${depPath}/*/lib`)
@@ -53,7 +54,7 @@ async function run() {
             )
             cacheKeyFiles.push(formulaPath)
           }
-          const cacheKey = `brew-deps-${await glob.hashFiles(cacheKeyFiles)}`
+          cacheKey = `brew-deps-${await glob.hashFiles(cacheKeyFiles)}`
           restoredKey = await cache.restoreCache(toCache, cacheKey)
         })
         .catch((reason) => {
@@ -71,7 +72,10 @@ async function run() {
         throw 'Cannot install Colima and Docker client.'
       }
     }
-    await cache.saveCache(toCache, cacheKey)
+
+    if (cacheDeps === 'true') {
+      await cache.saveCache(toCache, cacheKey)
+    }
 
     exec.getExecOutput('docker', ['version']).then((values) => {
       if (values.exitCode === 1) {
