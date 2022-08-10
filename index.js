@@ -77,6 +77,11 @@ async function run() {
       await cache.saveCache(toCache, cacheKey)
     }
 
+    const startResult = await exec.exec('colima', ['start'])
+    if (startResult === 1) {
+      throw 'Cannot started Colima.'
+    }
+
     exec.getExecOutput('docker', ['version']).then((values) => {
       if (values.exitCode === 1) {
         throw 'Cannot get Docker client version.'
@@ -90,13 +95,6 @@ async function run() {
       }
       core.setOutput('colima-version', values.stdout.trim())
     })
-
-    const startResult = await exec.exec('colima', ['start'])
-    if (startResult === 1) {
-      throw 'Cannot started Colima.'
-    }
-
-    core.setOutput('docker-client', time)
   } catch (error) {
     core.setFailed(error.message)
   }
