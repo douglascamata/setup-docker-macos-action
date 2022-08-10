@@ -116,8 +116,8 @@ const core_1 = __importDefault(__nccwpck_require2_(2186));
 const exec_1 = __importDefault(__nccwpck_require2_(1514));
 const cache_1 = __importDefault(__nccwpck_require2_(7799));
 const brewCache = __importStar(__nccwpck_require2_(3782));
-const debug = core_1.default.getBooleanInput('debug');
 async function run() {
+    const debug = core_1.default.getBooleanInput('debug');
     try {
         const cacheDeps = core_1.default.getBooleanInput('cache-homebrew-deps');
         const updateResults = await exec_1.default.exec('brew', ['update', '--preinstall']);
