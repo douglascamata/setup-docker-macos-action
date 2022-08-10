@@ -40,34 +40,28 @@ async function run() {
           const deps = colimaDepsResult.stdout.trim().replaceAll('\n', ' ')
           const repository = brewRepositoryResult.stdout.trim()
 
-          const binCacheGlobber = await glob.create(
-            binTools
-              .map((value) => {
-                path.join(cellar, value)
-              })
-              .join('\n'),
-          )
-          toCache.push(...(await binCacheGlobber.glob()))
-          const binCacheKeyGlobber = await glob.create(
-            binTools
-              .map((value) => {
-                path.join(
-                  repository,
-                  'Library',
-                  'Taps',
-                  'homebrew',
-                  'homebrew-core',
-                  'Formula',
-                  `${value}.rb`,
-                )
-              })
-              .join('\n'),
-          )
-          cacheKeyFiles.push(...(await binCacheKeyGlobber.glob()))
+          const binCacheFolders = binTools.map((value) => {
+            path.join(cellar, value)
+          })
+          toCache.push(...binCacheFolders)
+
+          const binCacheKeys = binTools.map((value) => {
+            path.join(
+              repository,
+              'Library',
+              'Taps',
+              'homebrew',
+              'homebrew-core',
+              'Formula',
+              `${value}.rb`,
+            )
+          })
+          cacheKeyFiles.push(...binCacheKeys)
 
           for (let dep of deps) {
-            const depPath = path.join(cellar, dep)
-            const libPathGlobber = await glob.create(`${depPath}/*/lib`)
+            const libPathGlobber = await glob.create(
+              path.join(cellar, dep, '*', 'lib'),
+            )
             toCache.push(...(await libPathGlobber.glob()))
             const formulaPath = path.join(
               repository,
