@@ -39,11 +39,13 @@ async function run() {
           const deps = colimaDepsResult.stdout.trim().replaceAll('\n', ' ')
           const repository = brewRepositoryResult.stdout.trim()
 
-          binCacheGlobber = await glob.create([
-            path.join(cellar, 'colima'),
-            path.join(cellar, 'lima'),
-            path.join(cellar, 'qemu'),
-          ])
+          binCacheGlobber = await glob.create(
+            [
+              path.join(cellar, 'colima'),
+              path.join(cellar, 'lima'),
+              path.join(cellar, 'qemu'),
+            ].join('\n'),
+          )
           toCache.push(...(await binCacheGlobber.glob()))
 
           for (let dep of deps) {
