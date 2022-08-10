@@ -58,7 +58,7 @@ async function run() {
         await cacheFolderPromise.then((toCache) => {
           cache.saveCache(toCache, cacheKey)
           console.log('Cache save results:')
-          console.log(`\tCache hit: ${cacheHit}`)
+          console.log(`\tCache folders: ${toCache}`)
           console.log(`\tCache key: ${cacheKey}`)
         })
       }
