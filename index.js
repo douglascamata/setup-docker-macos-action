@@ -91,11 +91,11 @@ async function run() {
     }
 
     if (restoredKey === undefined) {
-      const installResult = await exec.exec(
-        'brew',
-        ['install', 'colima', 'docker'],
-        { env: { HOMEBREW_NO_AUTO_UPDATE: '1' } },
-      )
+      const installResult = await exec.exec('HOMEBREW_NO_AUTO_UPDATE=1 brew', [
+        'install',
+        'colima',
+        'docker',
+      ])
       if (installResult === 1) {
         throw 'Cannot install Colima and Docker client.'
       }
