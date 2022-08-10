@@ -10,7 +10,10 @@ async function run() {
     const updateResults = await exec.exec('brew', ['update', '--preinstall'])
     checkCommandFailure(updateResults, 'Cannot update Homebrew.')
 
-    const colimaDepsResult = await exec.getExecOutput('brew', ['deps', 'colima'])
+    const colimaDepsResult = await exec.getExecOutput('brew', [
+      'deps',
+      'colima',
+    ])
     checkCommandFailure(colimaDepsResult.exitCode, 'Cannot get Colima deps.')
     const colimaDeps = colimaDepsResult.stdout.trim().split('\n')
 
@@ -18,14 +21,16 @@ async function run() {
     let cacheKey = ''
     const binTools = ['colima', 'lima', 'qemu', 'docker']
     if (cacheDeps === true) {
-      const cacheFolderPromise = brewCache.cacheFolder(binTools, colimaDeps);
-      const cacheKeyPromise = brewCache.cacheKey(binTools, colimaDeps);
-      await Promise.all([cacheFolderPromise, cacheKeyPromise]).then(async ([toCache, cacheKey]) => {
-        cacheHit = await cache.restoreCache(toCache, cacheKey)
-        if (cacheHit === undefined) {
-          await Promise.all(toCache.map(folder => io.rmRF(folder)))
-        }
-      })
+      const cacheFolderPromise = brewCache.cacheFolder(binTools, colimaDeps)
+      const cacheKeyPromise = brewCache.cacheKey(binTools, colimaDeps)
+      await Promise.all([cacheFolderPromise, cacheKeyPromise]).then(
+        async ([toCache, cacheKey]) => {
+          cacheHit = await cache.restoreCache(toCache, cacheKey)
+          if (cacheHit === undefined) {
+            await Promise.all(toCache.map((folder) => io.rmRF(folder)))
+          }
+        },
+      )
     }
 
     if (cacheHit === undefined) {
@@ -40,10 +45,16 @@ async function run() {
           },
         },
       )
-      checkCommandFailure(installResult, 'Cannot install Colima and Docker client.')
+      checkCommandFailure(
+        installResult,
+        'Cannot install Colima and Docker client.',
+      )
 
       if (cacheDeps === true) {
-        await cache.saveCache(await brewCache.cacheFolder(binTools, colimaDeps), cacheKey)
+        await cache.saveCache(
+          await brewCache.cacheFolder(binTools, colimaDeps),
+          cacheKey,
+        )
       }
     } else {
       const linkResult = await exec.getExecOutput('brew', ['link', ...binTools])

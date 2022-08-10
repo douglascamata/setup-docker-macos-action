@@ -35,9 +35,7 @@ exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
     )
     cacheKeyFiles.push(formulaPath)
   }
-  return `homebrew-formulae-${await glob.hashFiles(
-    cacheKeyFiles.join('\n'),
-  )}`
+  return `homebrew-formulae-${await glob.hashFiles(cacheKeyFiles.join('\n'))}`
 }
 
 exports.cacheFolder = async function homebrewCacheFolder(binTools, deps) {
@@ -54,7 +52,7 @@ exports.cacheFolder = async function homebrewCacheFolder(binTools, deps) {
   toCache.push(...binCacheFolders)
 
   const globber = await glob.create(
-    deps.map((dep) => path.join(cellar, dep, '*', 'lib')).join('\n')
+    deps.map((dep) => path.join(cellar, dep, '*', 'lib')).join('\n'),
   )
   toCache.push(...(await globber.glob()))
 
