@@ -1,5 +1,6 @@
 const exec = require('@actions/exec')
 const glob = require('@actions/glob')
+const core = require('@actions/core')
 const path = require('path')
 
 /**
@@ -16,14 +17,8 @@ exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
   }
   const repository = brewRepositoryResult.stdout.trim()
   const cacheKeyFiles = binTools.concat(deps).map((value) => {
-    path.join(
-      repository,
-      'Library',
-      'Taps',
-      'homebrew',
-      'homebrew-core',
-      'Formula',
-      `${value}.rb`,
+    core.toPlatformPath(
+      `${repository}/Library/Taps/homebrew/homebrew-core/Formula/${value}.rb`,
     )
   })
 
@@ -42,12 +37,14 @@ exports.cacheFolder = async function homebrewCacheFolder(binTools, deps) {
 
   const cellar = brewCellarResult.stdout.trim()
   const binCacheFolders = binTools.map((value) => {
-    path.join(cellar, value)
+    core.toPlatformPath(`${cellar}/${value}`)
   })
   toCache.push(...binCacheFolders)
 
   const globber = await glob.create(
-    deps.map((dep) => path.join(cellar, dep, '*', 'lib')).join('\n'),
+    deps
+      .map((dep) => core.toPlatformPath(`${cellar}/${dep}/*/lib/`))
+      .join('\n'),
   )
   toCache.push(...(await globber.glob()))
 
