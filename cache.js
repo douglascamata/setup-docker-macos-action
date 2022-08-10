@@ -21,8 +21,8 @@ exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
       `${repository}/Library/Taps/homebrew/homebrew-core/Formula/${value}.rb`,
     )
   })
-
-  return `brew-formulae-test-${await glob.hashFiles(cacheKeyFiles.join('\n'))}`
+  const cacheHash = await glob.hashFiles(cacheKeyFiles.join('\n'))
+  return `brew-formulae-test-${cacheHash}`
 }
 
 /**
@@ -43,14 +43,12 @@ exports.cacheFolder = async function homebrewCacheFolder(binTools, deps) {
   })
   toCache.push(...binCacheFolders)
 
-  const libFolders = deps
-    .map((dep) => {
-      return findLibFolder(core.toPlatformPath(`${cellar}/${dep}`))
-    })
-    .filter((result) => result)
+  const libFolders = deps.map((dep) => {
+    return findLibFolder(core.toPlatformPath(`${cellar}/${dep}`))
+  })
   toCache.push(...(await Promise.all(libFolders)))
 
-  return toCache
+  return toCache.filter((result) => result)
 }
 
 /**
