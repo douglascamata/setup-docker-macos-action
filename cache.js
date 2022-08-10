@@ -17,7 +17,7 @@ exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
   }
   const repository = brewRepositoryResult.stdout.trim()
   const cacheKeyFiles = binTools.concat(deps).map((value) => {
-    core.toPlatformPath(
+    return core.toPlatformPath(
       `${repository}/Library/Taps/homebrew/homebrew-core/Formula/${value}.rb`,
     )
   })
@@ -26,6 +26,8 @@ exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
 }
 
 /**
+ * @param binTools {string[]}
+ * @param deps {string[]}
  * @returns {string[]}
  **/
 exports.cacheFolder = async function homebrewCacheFolder(binTools, deps) {
@@ -37,16 +39,33 @@ exports.cacheFolder = async function homebrewCacheFolder(binTools, deps) {
 
   const cellar = brewCellarResult.stdout.trim()
   const binCacheFolders = binTools.map((value) => {
-    core.toPlatformPath(`${cellar}/${value}`)
+    return core.toPlatformPath(`${cellar}/${value}`)
   })
   toCache.push(...binCacheFolders)
 
-  const globber = await glob.create(
-    deps
-      .map((dep) => core.toPlatformPath(`${cellar}/${dep}/*/lib/`))
-      .join('\n'),
-  )
-  toCache.push(...(await globber.glob()))
+  const libFolders = deps.map((dep) => {
+    return findLibFolder(core.toPlatformPath(`${cellar}/${dep}`))
+  })
+  toCache.push(...(await Promise.all(libFolders)))
 
   return toCache
+}
+
+/**
+ * @param root {string}
+ **/
+async function findLibFolder(root) {
+  return exec
+    .getExecOutput('find', [
+      root,
+      '-type',
+      'd',
+      '-maxdepth',
+      '2',
+      '-iname',
+      'lib',
+    ])
+    .then((value) => {
+      return value.stdout
+    })
 }

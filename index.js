@@ -23,18 +23,18 @@ async function run() {
     let cacheKey = ''
     const binTools = ['colima', 'lima', 'qemu', 'docker']
     if (cacheDeps === true) {
-      const cacheKeyPromise = brewCache.cacheKey(binTools, colimaDeps)
-      cacheKeyPromise.then((key) => {
-        cacheKey = key
-      })
+      const cacheKeyPromise = brewCache
+        .cacheKey(binTools, colimaDeps)
+        .then((key) => {
+          cacheKey = key
+          return key
+        })
       const cacheFolderPromise = brewCache.cacheFolder(binTools, colimaDeps)
       const [folders, key] = await Promise.all([
         cacheFolderPromise,
         cacheKeyPromise,
       ])
-      await cache.restoreCache(folders, key).then((restoredKey) => {
-        cacheHit = restoredKey
-      })
+      cacheHit = await cache.restoreCache(folders, key)
       if (debug === true) {
         console.log('Cache restoration results:')
         console.log(`\tCache hit: ${cacheHit}`)
@@ -54,8 +54,7 @@ async function run() {
       )
 
       if (cacheDeps === true) {
-        const cacheFolderPromise = brewCache.cacheFolder(binTools, colimaDeps)
-        await cacheFolderPromise.then((toCache) => {
+        await brewCache.cacheFolder(binTools, colimaDeps).then((toCache) => {
           cache.saveCache(toCache, cacheKey)
           console.log('Cache save results:')
           console.log(`\tCache folders: ${toCache}`)
