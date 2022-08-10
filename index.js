@@ -42,9 +42,7 @@ async function run() {
           for (let dep of deps) {
             const depPath = path.join(cellar, dep)
             const libPathGlobber = await glob.create(`${depPath}/*/lib`)
-            for await (const file of libPathGlobber.globGenerator()) {
-              toCache.push(file)
-            }
+            toCache.push(...(await libPathGlobber.glob()))
             const formulaPath = path.join(
               repository,
               'Library',
@@ -56,7 +54,9 @@ async function run() {
             )
             cacheKeyFiles.push(formulaPath)
           }
-          cacheKey = `brew-deps-${await glob.hashFiles(cacheKeyFiles)}`
+          cacheKey = `brew-deps-${await glob.hashFiles(
+            cacheKeyFiles.join('\n'),
+          )}`
           restoredKey = await cache.restoreCache(toCache, cacheKey)
         })
         .catch((reason) => {
