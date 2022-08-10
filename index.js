@@ -4,6 +4,8 @@ const io = require('@actions/io')
 const cache = require('@actions/cache')
 const brewCache = require('./cache.js')
 
+debug = core.getBooleanInput('debug')
+
 async function run() {
   try {
     const cacheDeps = core.getBooleanInput('cache-homebrew-deps')
@@ -31,17 +33,17 @@ async function run() {
     }
 
     if (cacheHit === undefined) {
-      const installResult = await exec.exec(
-        'brew',
-        ['install', 'colima', 'docker'],
-        {
-          env: {
-            HOMEBREW_NO_AUTO_UPDATE: '1',
-            HOMEBREW_NO_INSTALL_CLEANUP: '1',
-            HOMEBREW_NO_INSTALL_UPGRADE: '1',
-          },
+      const installArgs = ['install', 'colima', 'docker']
+      if (debug === true) {
+        installArgs.splice(1, 0, '-v')
+      }
+      const installResult = await exec.exec('brew', installArgs, {
+        env: {
+          HOMEBREW_NO_AUTO_UPDATE: '1',
+          HOMEBREW_NO_INSTALL_CLEANUP: '1',
+          HOMEBREW_NO_INSTALL_UPGRADE: '1',
         },
-      )
+      })
       checkCommandFailure(
         installResult,
         'Cannot install Colima and Docker client.',
@@ -72,7 +74,7 @@ async function run() {
     })
   } catch (error) {
     core.setFailed(error.message)
-    if (core.getBooleanInput('debug') === true) {
+    if (debug === true) {
       throw error
     }
   }
