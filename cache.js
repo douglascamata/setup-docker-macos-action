@@ -38,6 +38,9 @@ exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
   return `homebrew-formulae-${await glob.hashFiles(cacheKeyFiles.join('\n'))}`
 }
 
+/**
+ * @returns {string[]}
+ **/
 exports.cacheFolder = async function homebrewCacheFolder(binTools, deps) {
   const toCache = []
   const brewCellarResult = await exec.getExecOutput('brew', ['--cellar'])
