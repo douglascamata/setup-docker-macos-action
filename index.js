@@ -91,6 +91,7 @@ async function run() {
     }
 
     if (restoredKey === undefined) {
+      await exec.exec('rm', ['-rf', ...toCache], { ignoreReturnCode: true })
       const installResult = await exec.exec(
         'brew',
         ['install', 'colima', 'docker'],
