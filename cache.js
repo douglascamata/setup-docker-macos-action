@@ -43,9 +43,11 @@ exports.cacheFolder = async function homebrewCacheFolder(binTools, deps) {
   })
   toCache.push(...binCacheFolders)
 
-  const libFolders = deps.map((dep) => {
-    return findLibFolder(core.toPlatformPath(`${cellar}/${dep}`))
-  })
+  const libFolders = deps
+    .map((dep) => {
+      return findLibFolder(core.toPlatformPath(`${cellar}/${dep}`))
+    })
+    .filter((result) => result)
   toCache.push(...(await Promise.all(libFolders)))
 
   return toCache
@@ -67,5 +69,8 @@ async function findLibFolder(root) {
     ])
     .then((value) => {
       return value.stdout
+    })
+    .catch(() => {
+      return ''
     })
 }
