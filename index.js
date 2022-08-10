@@ -36,8 +36,9 @@ async function run() {
         cacheHit = restoredKey
       })
       if (debug === true) {
-        console.log(`Cache hit: ${cacheHit}`)
-        console.log(`Cache key: ${cacheKey}`)
+        console.log('Cache restoration results:')
+        console.log(`\tCache hit: ${cacheHit}`)
+        console.log(`\tCache key: ${cacheKey}`)
       }
     }
 
@@ -53,8 +54,12 @@ async function run() {
       )
 
       if (cacheDeps === true) {
-        await brewCache.cacheFolder(binTools, colimaDeps).then((toCache) => {
+        const cacheFolderPromise = brewCache.cacheFolder(binTools, colimaDeps)
+        await cacheFolderPromise.then((toCache) => {
           cache.saveCache(toCache, cacheKey)
+          console.log('Cache save results:')
+          console.log(`\tCache hit: ${cacheHit}`)
+          console.log(`\tCache key: ${cacheKey}`)
         })
       }
     } else {
