@@ -77,4 +77,4 @@ function checkCommandFailure(result, errMsg) {
   }
 }
 
-await run()
+run()
