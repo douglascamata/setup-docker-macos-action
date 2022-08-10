@@ -39,14 +39,31 @@ async function run() {
           const deps = colimaDepsResult.stdout.trim().replaceAll('\n', ' ')
           const repository = brewRepositoryResult.stdout.trim()
 
-          binCacheGlobber = await glob.create(
-            [
-              path.join(cellar, 'colima'),
-              path.join(cellar, 'lima'),
-              path.join(cellar, 'qemu'),
-            ].join('\n'),
+          const binCache = ['colima', 'lima', 'qemu', 'docker']
+          const binCacheGlobber = await glob.create(
+            binCache
+              .map((value) => {
+                path.join(cellar, value)
+              })
+              .join('\n'),
           )
           toCache.push(...(await binCacheGlobber.glob()))
+          const binCacheKeyGlobber = await glob.create(
+            binCache
+              .map((value) => {
+                path.join(
+                  repository,
+                  'Library',
+                  'Taps',
+                  'homebrew',
+                  'homebrew-core',
+                  'Formula',
+                  `${value}.rb`,
+                )
+              })
+              .join('\n'),
+          )
+          cacheKeyFiles.push(...(await binCacheKeyGlobber.glob()))
 
           for (let dep of deps) {
             const depPath = path.join(cellar, dep)
@@ -63,7 +80,7 @@ async function run() {
             )
             cacheKeyFiles.push(formulaPath)
           }
-          cacheKey = `homebrew-deps-${await glob.hashFiles(
+          cacheKey = `homebrew-formulas-${await glob.hashFiles(
             cacheKeyFiles.join('\n'),
           )}`
           restoredKey = await cache.restoreCache(toCache, cacheKey)
