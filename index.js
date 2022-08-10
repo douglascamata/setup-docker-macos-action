@@ -37,13 +37,7 @@ async function run() {
       if (debug === true) {
         installArgs.splice(1, 0, '-v')
       }
-      const installResult = await exec.exec('brew', installArgs, {
-        env: {
-          HOMEBREW_NO_AUTO_UPDATE: '1',
-          HOMEBREW_NO_INSTALL_CLEANUP: '1',
-          HOMEBREW_NO_INSTALL_UPGRADE: '1',
-        },
-      })
+      const installResult = await exec.exec('brew', installArgs)
       checkCommandFailure(
         installResult,
         'Cannot install Colima and Docker client.',
