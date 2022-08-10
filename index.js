@@ -23,7 +23,7 @@ async function run() {
       await Promise.all([cacheFolderPromise, cacheKeyPromise]).then(async ([toCache, cacheKey]) => {
         cacheHit = await cache.restoreCache(toCache, cacheKey)
         if (cacheHit === undefined) {
-          await Promise.all(toCache.map(io.rmRF))
+          await Promise.all(toCache.map(folder => io.rmRF(folder)))
         }
       })
     }
