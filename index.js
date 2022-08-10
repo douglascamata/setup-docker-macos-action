@@ -33,7 +33,7 @@ async function run() {
     }
 
     if (cacheHit === undefined) {
-      const installArgs = ['install', 'colima', 'docker']
+      const installArgs = ['install', '-f', 'colima', 'docker']
       if (debug === true) {
         installArgs.splice(1, 0, '-v')
       }
