@@ -14,9 +14,8 @@ exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
   if (brewRepositoryResult.exitCode === 1) {
     throw "Cannot determine Homebrew's repository path."
   }
-
   const repository = brewRepositoryResult.stdout.trim()
-  const cacheKeyFiles = binTools.map((value) => {
+  const cacheKeyFiles = binTools.concat(deps).map((value) => {
     path.join(
       repository,
       'Library',
@@ -28,19 +27,6 @@ exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
     )
   })
 
-  cacheKeyFiles.push(
-    ...deps.map((dep) => {
-      path.join(
-        repository,
-        'Library',
-        'Taps',
-        'homebrew',
-        'homebrew-core',
-        'Formula',
-        `${dep}.rb`,
-      )
-    }),
-  )
   return `brew-formulae-test-${await glob.hashFiles(cacheKeyFiles.join('\n'))}`
 }
 
