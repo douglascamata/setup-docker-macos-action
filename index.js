@@ -42,7 +42,9 @@ async function run() {
           for (let dep of deps) {
             const depPath = path.join(cellar, dep)
             const libPathGlobber = await glob.create(`${depPath}/*/lib`)
-            toCache.push(...(await libPathGlobber.glob()))
+            for await (const file of libPathGlobber.globGenerator()) {
+              toCache.push(file)
+            }
             const formulaPath = path.join(
               repository,
               'Library',
