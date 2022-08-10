@@ -56,13 +56,12 @@ exports.cacheFolder = async function homebrewCacheFolder(binTools, deps) {
   for (let dep of deps) {
     const baseDepFolder = path.join(cellar, dep)
     const versionFolderResult = await exec.getExecOutput('ls', [baseDepFolder])
-    if (versionFolderResult.exitCode === 1) {
-      throw "Cannot list Homebrew's formula versions."
+    if (versionFolderResult.exitCode !== 1) {
+      const versionFolder = versionFolderResult.stdout
+        .trim()
+        .replaceAll('\t', ' ')
+      toCache.push(path.join(baseDepFolder, versionFolder))
     }
-    const versionFolder = versionFolderResult.stdout
-      .trim()
-      .replaceAll('\t', ' ')
-    toCache.push(path.join(baseDepFolder, versionFolder))
   }
   return toCache
 }
