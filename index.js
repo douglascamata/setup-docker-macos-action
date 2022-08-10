@@ -19,14 +19,16 @@ async function run() {
     checkCommandFailure(colimaDepsResult.exitCode, 'Cannot get Colima deps.')
     const colimaDeps = colimaDepsResult.stdout.trim().split('\n')
 
-    let cacheHit = undefined
+    let cacheHit = false
     let cacheKey = ''
     const binTools = ['colima', 'lima', 'qemu', 'docker']
     if (cacheDeps === true) {
       const cacheKeyPromise = brewCache
         .cacheKey(binTools, colimaDeps)
         .then((key) => {
+          console.log(`Returned key: ${key}`)
           cacheKey = key
+          console.log(`Updated cacheKey: ${cacheKey}`)
           return key
         })
       const cacheFolderPromise = brewCache.cacheFolder(binTools, colimaDeps)
@@ -34,7 +36,7 @@ async function run() {
         cacheFolderPromise,
         cacheKeyPromise,
       ])
-      cacheHit = await cache.restoreCache(folders, key)
+      cacheHit = Boolean(await cache.restoreCache(folders, key))
       if (debug === true) {
         console.log('Cache restoration results:')
         console.log(`\tCache hit: ${cacheHit}`)
@@ -42,7 +44,7 @@ async function run() {
       }
     }
 
-    if (cacheHit === undefined) {
+    if (cacheHit === false) {
       const installArgs = ['install', '-f', 'colima', 'docker']
       if (debug === true) {
         installArgs.splice(1, 0, '-v')

@@ -6,7 +6,6 @@ const path = require('path')
 /**
  * @param binTools {string[]}
  * @param deps {string[]}
- * @returns {string[]}
  **/
 exports.cacheKey = async function homebrewCacheKey(binTools, deps) {
   const brewRepositoryResult = await exec.getExecOutput('brew', [
