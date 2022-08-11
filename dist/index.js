@@ -1,4 +1,4 @@
-/******/ (() => { // webpackBootstrap
+require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 3782:
@@ -11,9 +11,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.cacheFolder = exports.cacheKey = void 0;
+const core_1 = __importDefault(__nccwpck_require__(2186));
 const exec_1 = __importDefault(__nccwpck_require__(1514));
 const glob_1 = __importDefault(__nccwpck_require__(8090));
-const core_1 = __importDefault(__nccwpck_require__(2186));
 const io_1 = __importDefault(__nccwpck_require__(7436));
 async function cacheKey(binTools, deps) {
     const brewRepositoryResult = await exec_1.default.getExecOutput('brew', [
@@ -106,9 +106,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+const cache_1 = __importDefault(__nccwpck_require__(7799));
 const core_1 = __importDefault(__nccwpck_require__(2186));
 const exec_1 = __importDefault(__nccwpck_require__(1514));
-const cache_1 = __importDefault(__nccwpck_require__(7799));
 const brewCache = __importStar(__nccwpck_require__(3782));
 async function run() {
     const debug = core_1.default.getBooleanInput('debug');
@@ -61813,3 +61813,4 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	
 /******/ })()
 ;
+//# sourceMappingURL=index.js.map

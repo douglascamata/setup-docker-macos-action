@@ -1,6 +1,7 @@
+import cache from '@actions/cache'
 import core from '@actions/core'
 import exec from '@actions/exec'
-import cache from '@actions/cache'
+
 import * as brewCache from './cache'
 
 async function run(): Promise<void> {

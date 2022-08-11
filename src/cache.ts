@@ -1,6 +1,6 @@
+import core from '@actions/core'
 import exec from '@actions/exec'
 import glob from '@actions/glob'
-import core from '@actions/core'
 import io from '@actions/io'
 
 export async function cacheKey(
