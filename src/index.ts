@@ -1,5 +1,5 @@
 import core from '@actions/core'
-import exec, { ExecOutput } from '@actions/exec'
+import exec from '@actions/exec'
 import cache from '@actions/cache'
 import * as brewCache from './cache'
 
@@ -84,7 +84,7 @@ async function run(): Promise<void> {
   }
 }
 
-function checkCommandFailure(result: ExecOutput, errMsg: string): void {
+function checkCommandFailure(result: exec.ExecOutput, errMsg: string): void {
   if (result.exitCode === 1) {
     throw errMsg
   }
