@@ -6,17 +6,37 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 
 "use strict";
 
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.cacheFolder = exports.cacheKey = void 0;
-const core_1 = __importDefault(__nccwpck_require__(2186));
-const exec_1 = __importDefault(__nccwpck_require__(1514));
-const glob_1 = __importDefault(__nccwpck_require__(8090));
-const io_1 = __importDefault(__nccwpck_require__(7436));
+const core = __importStar(__nccwpck_require__(2186));
+const exec = __importStar(__nccwpck_require__(1514));
+const glob = __importStar(__nccwpck_require__(8090));
+const io = __importStar(__nccwpck_require__(7436));
 async function cacheKey(binTools, deps) {
-    const brewRepositoryResult = await exec_1.default.getExecOutput('brew', [
+    const brewRepositoryResult = await exec.getExecOutput('brew', [
         '--repository',
     ]);
     if (brewRepositoryResult.exitCode === 1) {
@@ -24,29 +44,29 @@ async function cacheKey(binTools, deps) {
     }
     const repository = brewRepositoryResult.stdout.trim();
     const cacheKeyFiles = await Promise.all(binTools.concat(deps).map((value) => {
-        const originalFile = core_1.default.toPlatformPath(`${repository}/Library/Taps/homebrew/homebrew-core/Formula/${value}.rb`);
+        const originalFile = core.toPlatformPath(`${repository}/Library/Taps/homebrew/homebrew-core/Formula/${value}.rb`);
         const githubWorkspace = process.env['GITHUB_WORKSPACE'] ?? process.cwd();
-        const destinationFile = core_1.default.toPlatformPath(`${githubWorkspace}/brew-cache-${value}.rb`);
-        io_1.default.cp(originalFile, destinationFile);
+        const destinationFile = core.toPlatformPath(`${githubWorkspace}/brew-cache-${value}.rb`);
+        io.cp(originalFile, destinationFile);
         return destinationFile;
     }));
-    const cacheHash = await glob_1.default.hashFiles(cacheKeyFiles.join('\n'));
+    const cacheHash = await glob.hashFiles(cacheKeyFiles.join('\n'));
     return `brew-formulae-test-${cacheHash}`;
 }
 exports.cacheKey = cacheKey;
 async function cacheFolder(binTools, deps) {
     const toCache = [];
-    const brewCellarResult = await exec_1.default.getExecOutput('brew', ['--cellar']);
+    const brewCellarResult = await exec.getExecOutput('brew', ['--cellar']);
     if (brewCellarResult.exitCode === 1) {
         throw new Error("Cannot determine Homebrew's cellar path.");
     }
     const cellar = brewCellarResult.stdout.trim();
     const binCacheFolders = binTools.map((value) => {
-        return core_1.default.toPlatformPath(`${cellar}/${value}`);
+        return core.toPlatformPath(`${cellar}/${value}`);
     });
     toCache.push(...binCacheFolders);
     const libFolders = deps.map(async (dep) => {
-        return findLibFolder(core_1.default.toPlatformPath(`${cellar}/${dep}`));
+        return findLibFolder(core.toPlatformPath(`${cellar}/${dep}`));
     });
     toCache.push(...(await Promise.all(libFolders)));
     return toCache.filter((result) => result);
@@ -55,7 +75,7 @@ exports.cacheFolder = cacheFolder;
 async function findLibFolder(root) {
     let result;
     try {
-        result = await exec_1.default.getExecOutput('find', [
+        result = await exec.getExecOutput('find', [
             root,
             '-type',
             'd',
@@ -102,24 +122,21 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const cache_1 = __importDefault(__nccwpck_require__(7799));
-const core_1 = __importDefault(__nccwpck_require__(2186));
-const exec_1 = __importDefault(__nccwpck_require__(1514));
+const cache = __importStar(__nccwpck_require__(7799));
+const core = __importStar(__nccwpck_require__(2186));
+const exec = __importStar(__nccwpck_require__(1514));
 const brewCache = __importStar(__nccwpck_require__(3782));
 async function run() {
-    const debug = core_1.default.getBooleanInput('debug');
+    const debug = core.getBooleanInput('debug');
     try {
-        const cacheDeps = core_1.default.getBooleanInput('cache-homebrew-deps');
-        const updateResults = await exec_1.default.getExecOutput('brew', [
+        const cacheDeps = core.getBooleanInput('cache-homebrew-deps');
+        const updateResults = await exec.getExecOutput('brew', [
             'update',
             '--preinstall',
         ]);
         checkCommandFailure(updateResults, 'Cannot update Homebrew.');
-        const colimaDepsResult = await exec_1.default.getExecOutput('brew', [
+        const colimaDepsResult = await exec.getExecOutput('brew', [
             'deps',
             'colima',
         ]);
@@ -136,11 +153,11 @@ async function run() {
                 cacheKeyPromise,
             ]);
             cacheKey = key;
-            cacheHit = Boolean(await cache_1.default.restoreCache(folders, key));
+            cacheHit = Boolean(await cache.restoreCache(folders, key));
             if (debug === true) {
-                core_1.default.info('Cache restoration results:');
-                core_1.default.info(`\tCache hit: ${cacheHit}`);
-                core_1.default.info(`\tCache key: ${cacheKey}`);
+                core.info('Cache restoration results:');
+                core.info(`\tCache hit: ${cacheHit}`);
+                core.info(`\tCache key: ${cacheKey}`);
             }
         }
         if (cacheHit === false) {
@@ -148,32 +165,32 @@ async function run() {
             if (debug === true) {
                 installArgs.splice(1, 0, '-v');
             }
-            const installResult = await exec_1.default.getExecOutput('brew', installArgs);
+            const installResult = await exec.getExecOutput('brew', installArgs);
             checkCommandFailure(installResult, 'Cannot install Colima and Docker client.');
             if (cacheDeps === true) {
                 const toCache = await brewCache.cacheFolder(binTools, colimaDeps);
-                await cache_1.default.saveCache(toCache, cacheKey);
-                core_1.default.info('Cache save results:');
-                core_1.default.info(`\tCache folders: ${toCache}`);
-                core_1.default.info(`\tCache key: ${cacheKey}`);
+                await cache.saveCache(toCache, cacheKey);
+                core.info('Cache save results:');
+                core.info(`\tCache folders: ${toCache}`);
+                core.info(`\tCache key: ${cacheKey}`);
             }
         }
         else {
-            core_1.default.info('Homebrew formulae restored from cache. Relinking.');
-            const linkResult = await exec_1.default.getExecOutput('brew', ['link', ...binTools]);
+            core.info('Homebrew formulae restored from cache. Relinking.');
+            const linkResult = await exec.getExecOutput('brew', ['link', ...binTools]);
             checkCommandFailure(linkResult, 'Cannot link Homebrew formulae.');
         }
-        const startResult = await exec_1.default.getExecOutput('colima', ['start']);
+        const startResult = await exec.getExecOutput('colima', ['start']);
         checkCommandFailure(startResult, 'Cannot started Colima.');
-        const dockerVersionResult = await exec_1.default.getExecOutput('docker', ['version']);
+        const dockerVersionResult = await exec.getExecOutput('docker', ['version']);
         checkCommandFailure(dockerVersionResult, 'Cannot get Docker client version.');
-        core_1.default.setOutput('docker-client-version', dockerVersionResult.stdout.trim());
-        const colimaVersionResult = await exec_1.default.getExecOutput('colima', ['version']);
+        core.setOutput('docker-client-version', dockerVersionResult.stdout.trim());
+        const colimaVersionResult = await exec.getExecOutput('colima', ['version']);
         checkCommandFailure(colimaVersionResult, 'Cannot get Colima version.');
-        core_1.default.setOutput('colima-version', colimaVersionResult.stdout.trim());
+        core.setOutput('colima-version', colimaVersionResult.stdout.trim());
     }
     catch (error) {
-        core_1.default.setFailed(error.message);
+        core.setFailed(error.message);
         if (debug === true) {
             throw error;
         }

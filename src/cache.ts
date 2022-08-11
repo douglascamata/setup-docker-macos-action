@@ -1,7 +1,7 @@
-import core from '@actions/core'
-import exec from '@actions/exec'
-import glob from '@actions/glob'
-import io from '@actions/io'
+import * as core from '@actions/core'
+import * as exec from '@actions/exec'
+import * as glob from '@actions/glob'
+import * as io from '@actions/io'
 
 export async function cacheKey(
   binTools: string[],

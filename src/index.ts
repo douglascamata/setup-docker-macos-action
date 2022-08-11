@@ -1,6 +1,6 @@
-import cache from '@actions/cache'
-import core from '@actions/core'
-import exec from '@actions/exec'
+import * as cache from '@actions/cache'
+import * as core from '@actions/core'
+import * as exec from '@actions/exec'
 
 import * as brewCache from './cache'
 
