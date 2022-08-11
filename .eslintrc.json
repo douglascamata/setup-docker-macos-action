@@ -1,10 +1,11 @@
 {
   "env": {
-    "browser": true,
-    "es2021": true
+    "node": true,
+    "es6": true
   },
   "extends": [
     "eslint:recommended",
+    "plugin:github/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/eslint-recommended"
   ],
@@ -17,6 +18,7 @@
   "plugins": ["@typescript-eslint"],
   "rules": {
     // "eslint-comments/no-use": "off",
+    "i18n-text/no-en": "off",
     "import/no-namespace": "off",
     "no-unused-vars": "error",
     "@typescript-eslint/no-unused-vars": "error",

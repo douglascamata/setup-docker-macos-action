@@ -11,7 +11,7 @@ export async function cacheKey(
     '--repository',
   ])
   if (brewRepositoryResult.exitCode === 1) {
-    throw "Cannot determine Homebrew's repository path."
+    throw new Error("Cannot determine Homebrew's repository path.")
   }
   const repository = brewRepositoryResult.stdout.trim()
   const cacheKeyFiles = await Promise.all(
@@ -38,7 +38,7 @@ export async function cacheFolder(
   const toCache: string[] = []
   const brewCellarResult = await exec.getExecOutput('brew', ['--cellar'])
   if (brewCellarResult.exitCode === 1) {
-    throw "Cannot determine Homebrew's cellar path."
+    throw new Error("Cannot determine Homebrew's cellar path.")
   }
 
   const cellar = brewCellarResult.stdout.trim()
@@ -56,8 +56,9 @@ export async function cacheFolder(
 }
 
 async function findLibFolder(root: string): Promise<string> {
-  return exec
-    .getExecOutput('find', [
+  let result: exec.ExecOutput
+  try {
+    result = await exec.getExecOutput('find', [
       root,
       '-type',
       'd',
@@ -66,10 +67,8 @@ async function findLibFolder(root: string): Promise<string> {
       '-iname',
       'lib',
     ])
-    .then((value) => {
-      return value.stdout
-    })
-    .catch(() => {
-      return ''
-    })
+  } catch (error) {
+    return ''
+  }
+  return result.stdout
 }
