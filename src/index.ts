@@ -40,7 +40,7 @@ async function run(): Promise<void> {
       }
     }
 
-    if (cacheHit === false) {
+    if (!cacheHit) {
       const installArgs = ['install', '-f', 'colima', 'docker']
       if (debug === true) {
         installArgs.splice(1, 0, '-v')
@@ -51,7 +51,7 @@ async function run(): Promise<void> {
         'Cannot install Colima and Docker client.',
       )
 
-      if (cacheDeps === true) {
+      if (cacheDeps) {
         const toCache = await brewCache.cacheFolder(binTools, colimaDeps)
         await cache.saveCache(toCache, cacheKey)
         core.info('Cache save results:')
