@@ -32,10 +32,11 @@ async function run(): Promise<void> {
         cacheKeyPromise,
       ])
       const restoredKey = await cache.restoreCache(folders, key)
-      if (typeof restoredKey == 'string') {
-        cacheHit = true
-        cacheKey = restoredKey
-      }
+      core.info(
+        `Trying to store with key: ${key}. Got back key: ${restoredKey}`,
+      )
+      cacheHit = Boolean(restoredKey)
+      cacheKey = key
       if (debug === true) {
         core.info('Cache restoration results:')
         core.info(`\tCache hit: ${cacheHit}`)
