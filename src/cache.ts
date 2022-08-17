@@ -30,7 +30,7 @@ export async function cacheKey(
   )
   const cacheHash = await glob.hashFiles(cacheKeyFiles.join('\n'))
   core.endGroup()
-  return `homebrew-formulae-cache-${cacheHash}`
+  return `docker-setup-homebrew-cache-${cacheHash}`
 }
 
 export async function cacheFolder(
@@ -39,12 +39,16 @@ export async function cacheFolder(
 ): Promise<string[]> {
   core.startGroup('Calculating folders to cache.')
   const toCache: string[] = []
-  const brewCellarResult = await exec.getExecOutput('brew', ['--cellar'])
-  if (brewCellarResult.exitCode === 1) {
+  const brewPrefixResult = await exec.getExecOutput('brew', ['--prefix'])
+  if (brewPrefixResult.exitCode === 1) {
     throw new Error("Cannot determine Homebrew's cellar path.")
   }
+  const brewPrefix = brewPrefixResult.stdout.trim()
 
-  const cellar = brewCellarResult.stdout.trim()
+  const brewOpt = core.toPlatformPath(`${brewPrefix}/opt`)
+  toCache.push(brewOpt)
+
+  const cellar = core.toPlatformPath(`${brewPrefix}/Cellar`)
   const binCacheFolders = binTools.map((value) => {
     return core.toPlatformPath(`${cellar}/${value}`)
   })
