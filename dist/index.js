@@ -148,8 +148,8 @@ async function run() {
             if (debug) {
                 core.info('Cache restoration results:');
                 core.info(`\tCache hit: ${cacheHit}`);
-                core.info(`\tCache key: ${cacheKey}`);
                 core.info(`\tCache folders: ${folders}`);
+                core.info(`\tCache key: ${cacheKey}`);
             }
             core.endGroup();
         }
