@@ -119,17 +119,11 @@ async function run() {
     try {
         const cacheDeps = core.getBooleanInput('cache-homebrew-deps');
         core.startGroup('Updating Homebrew');
-        const updateResults = await exec.getExecOutput('brew', [
-            'update',
-            '--preinstall',
-        ]);
+        const updateResults = await exec.getExecOutput('brew', ['update', '--preinstall'], { silent: !debug });
         checkCommandFailure(updateResults, 'Cannot update Homebrew.');
         core.endGroup();
         core.startGroup("Fetching list of Colima's dependencies");
-        const colimaDepsResult = await exec.getExecOutput('brew', [
-            'deps',
-            'colima',
-        ]);
+        const colimaDepsResult = await exec.getExecOutput('brew', ['deps', 'colima'], { silent: !debug });
         checkCommandFailure(colimaDepsResult, 'Cannot get Colima deps.');
         const colimaDeps = colimaDepsResult.stdout.trim().split('\n');
         core.endGroup();
@@ -161,11 +155,7 @@ async function run() {
         }
         if (!cacheHit) {
             core.startGroup('Installing Colima and Docker Client');
-            const installArgs = ['install', '-f', 'colima', 'docker'];
-            if (debug === true) {
-                installArgs.splice(1, 0, '-v');
-            }
-            const installResult = await exec.getExecOutput('brew', installArgs);
+            const installResult = await exec.getExecOutput('brew', ['install', '-f', 'colima', 'docker'], { silent: !debug, env: { HOMEBREW_NO_AUTO_UPDATE: '1' } });
             checkCommandFailure(installResult, 'Cannot install Colima and Docker client.');
             if (cacheDeps) {
                 core.startGroup('Preparing to save cache.');
@@ -181,12 +171,7 @@ async function run() {
         else {
             core.startGroup('Relinking formulae after cache restoration.');
             core.info('Homebrew formulae restored from cache. Relinking.');
-            const linkResult = await exec.getExecOutput('brew', [
-                'link',
-                '--overwrite',
-                ...binTools,
-                ...colimaDeps,
-            ]);
+            const linkResult = await exec.getExecOutput('brew', ['link', '--overwrite', ...binTools, ...colimaDeps], { silent: !debug });
             checkCommandFailure(linkResult, 'Cannot link Homebrew formulae.');
             core.endGroup();
         }
