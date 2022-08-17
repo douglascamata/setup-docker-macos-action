@@ -176,6 +176,13 @@ async function run() {
                 core.endGroup();
             }
         }
+        else {
+            core.startGroup('Relinking formulae after cache restoration.');
+            core.info('Homebrew formulae restored from cache. Relinking.');
+            const linkResult = await exec.getExecOutput('brew', ['link', '--overwrite', ...binTools], { silent: !debug });
+            checkCommandFailure(linkResult, 'Cannot relink Homebrew formulae.');
+            core.endGroup();
+        }
         core.startGroup('Starting Colima.');
         const startResult = await exec.getExecOutput('colima', ['start']);
         checkCommandFailure(startResult, 'Cannot started Colima.');
