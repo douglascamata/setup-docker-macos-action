@@ -181,6 +181,7 @@ async function run() {
             core.info('Homebrew formulae restored from cache. Relinking.');
             const linkResult = await exec.getExecOutput('brew', [
                 'link',
+                '--overwrite',
                 ...binTools,
                 ...colimaDeps,
             ]);
