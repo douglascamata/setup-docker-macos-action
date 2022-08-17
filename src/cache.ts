@@ -7,6 +7,7 @@ export async function cacheKey(
   binTools: string[],
   deps: string[],
 ): Promise<string> {
+  core.startGroup('Calculating cache key.')
   const brewRepositoryResult = await exec.getExecOutput('brew', [
     '--repository',
   ])
@@ -28,6 +29,7 @@ export async function cacheKey(
     }),
   )
   const cacheHash = await glob.hashFiles(cacheKeyFiles.join('\n'))
+  core.endGroup()
   return `brew-formulae-test-${cacheHash}`
 }
 
@@ -35,6 +37,7 @@ export async function cacheFolder(
   binTools: string[],
   deps: string[],
 ): Promise<string[]> {
+  core.startGroup('Calculating folders to cache.')
   const toCache: string[] = []
   const brewCellarResult = await exec.getExecOutput('brew', ['--cellar'])
   if (brewCellarResult.exitCode === 1) {
@@ -52,5 +55,6 @@ export async function cacheFolder(
   })
   toCache.push(...(await Promise.all(libFolders)))
 
+  core.endGroup()
   return toCache.filter((result) => result)
 }
