@@ -53,7 +53,7 @@ async function cacheKey(binTools, deps) {
     }));
     const cacheHash = await glob.hashFiles(cacheKeyFiles.join('\n'));
     core.endGroup();
-    return `brew-formulae-test-${cacheHash}`;
+    return `homebrew-formulae-cache-${cacheHash}`;
 }
 exports.cacheKey = cacheKey;
 async function cacheFolder(binTools, deps) {
@@ -157,7 +157,11 @@ async function run() {
             core.startGroup('Installing Colima and Docker Client');
             const installResult = await exec.getExecOutput('brew', ['install', '-f', 'colima', 'docker'], {
                 silent: !debug,
-                env: { HOMEBREW_NO_AUTO_UPDATE: '1', ...process.env },
+                env: {
+                    HOMEBREW_NO_AUTO_UPDATE: '1',
+                    HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: '1',
+                    ...process.env,
+                },
             });
             checkCommandFailure(installResult, 'Cannot install Colima and Docker client.');
             core.endGroup();
