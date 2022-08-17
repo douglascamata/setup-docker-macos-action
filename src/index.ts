@@ -66,7 +66,11 @@ async function run(): Promise<void> {
         ['install', '-f', 'colima', 'docker'],
         {
           silent: !debug,
-          env: { HOMEBREW_NO_AUTO_UPDATE: '1', ...process.env },
+          env: {
+            HOMEBREW_NO_AUTO_UPDATE: '1',
+            HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: '1',
+            ...process.env,
+          },
         },
       )
       checkCommandFailure(
