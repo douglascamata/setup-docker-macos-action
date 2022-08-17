@@ -97,7 +97,7 @@ async function run(): Promise<void> {
       checkCommandFailure(unlinkResult, 'Cannot unlink Homebrew formulae.')
       const linkResult = await exec.getExecOutput(
         'brew',
-        ['link', ...binTools, ...colimaDeps],
+        ['link', '--force', ...binTools, ...colimaDeps],
         { silent: !debug },
       )
       checkCommandFailure(linkResult, 'Cannot link Homebrew formulae.')
