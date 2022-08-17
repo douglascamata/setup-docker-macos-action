@@ -112,6 +112,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const cache = __importStar(__nccwpck_require__(7799));
 const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
+const io = __importStar(__nccwpck_require__(7436));
 const brewCache = __importStar(__nccwpck_require__(3782));
 async function run() {
     const debug = core.getBooleanInput('debug');
@@ -144,6 +145,7 @@ async function run() {
                 cacheKeyPromise,
             ]);
             core.startGroup('Attempt to restore cache.');
+            await Promise.all(folders.map(async (folder) => io.rmRF(folder)));
             const restoredKey = await cache.restoreCache(folders, key);
             core.info(`Trying to store with key: ${key}. Got back key: ${restoredKey}`);
             cacheHit = Boolean(restoredKey);

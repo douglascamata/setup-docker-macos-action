@@ -1,6 +1,7 @@
 import * as cache from '@actions/cache'
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
+import * as io from '@actions/io'
 
 import * as brewCache from './cache'
 
@@ -38,6 +39,7 @@ async function run(): Promise<void> {
         cacheKeyPromise,
       ])
       core.startGroup('Attempt to restore cache.')
+      await Promise.all(folders.map(async (folder) => io.rmRF(folder)))
       const restoredKey = await cache.restoreCache(folders, key)
       core.info(
         `Trying to store with key: ${key}. Got back key: ${restoredKey}`,
