@@ -63,7 +63,10 @@ async function run(): Promise<void> {
       const installResult = await exec.getExecOutput(
         'brew',
         ['install', '-f', 'colima', 'docker'],
-        { silent: !debug, env: { HOMEBREW_NO_AUTO_UPDATE: '1' } },
+        {
+          silent: !debug,
+          env: { HOMEBREW_NO_AUTO_UPDATE: '1', ...process.env },
+        },
       )
       checkCommandFailure(
         installResult,

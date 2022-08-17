@@ -155,7 +155,10 @@ async function run() {
         }
         if (!cacheHit) {
             core.startGroup('Installing Colima and Docker Client');
-            const installResult = await exec.getExecOutput('brew', ['install', '-f', 'colima', 'docker'], { silent: !debug, env: { HOMEBREW_NO_AUTO_UPDATE: '1' } });
+            const installResult = await exec.getExecOutput('brew', ['install', '-f', 'colima', 'docker'], {
+                silent: !debug,
+                env: { HOMEBREW_NO_AUTO_UPDATE: '1', ...process.env },
+            });
             checkCommandFailure(installResult, 'Cannot install Colima and Docker client.');
             if (cacheDeps) {
                 core.startGroup('Preparing to save cache.');
