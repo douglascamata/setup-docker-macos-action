@@ -30,7 +30,7 @@ export async function cacheKey(
   )
   const cacheHash = await glob.hashFiles(cacheKeyFiles.join('\n'))
   core.endGroup()
-  return `brew-formulae-test-${cacheHash}`
+  return `homebrew-formulae-cache-${cacheHash}`
 }
 
 export async function cacheFolder(
