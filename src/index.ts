@@ -24,7 +24,7 @@ async function run(): Promise<void> {
     let cacheHit = false
     let cacheKey = ''
     const binTools = ['colima', 'lima', 'qemu', 'docker']
-    if (cacheDeps === true) {
+    if (cacheDeps) {
       const cacheKeyPromise = brewCache.cacheKey(binTools, colimaDeps)
       const cacheFolderPromise = brewCache.cacheFolder(binTools, colimaDeps)
       const [folders, key] = await Promise.all([
@@ -37,7 +37,7 @@ async function run(): Promise<void> {
       )
       cacheHit = Boolean(restoredKey)
       cacheKey = key
-      if (debug === true) {
+      if (debug) {
         core.info('Cache restoration results:')
         core.info(`\tCache hit: ${cacheHit}`)
         core.info(`\tCache key: ${cacheKey}`)

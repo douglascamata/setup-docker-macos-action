@@ -48,27 +48,9 @@ export async function cacheFolder(
   toCache.push(...binCacheFolders)
 
   const libFolders = deps.map(async (dep) => {
-    return findLibFolder(core.toPlatformPath(`${cellar}/${dep}`))
+    return core.toPlatformPath(`${cellar}/${dep}`)
   })
   toCache.push(...(await Promise.all(libFolders)))
 
   return toCache.filter((result) => result)
-}
-
-async function findLibFolder(root: string): Promise<string> {
-  let result: exec.ExecOutput
-  try {
-    result = await exec.getExecOutput('find', [
-      root,
-      '-type',
-      'd',
-      '-maxdepth',
-      '2',
-      '-iname',
-      'lib',
-    ])
-  } catch (error) {
-    return ''
-  }
-  return result.stdout
 }

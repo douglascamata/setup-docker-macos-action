@@ -66,30 +66,12 @@ async function cacheFolder(binTools, deps) {
     });
     toCache.push(...binCacheFolders);
     const libFolders = deps.map(async (dep) => {
-        return findLibFolder(core.toPlatformPath(`${cellar}/${dep}`));
+        return core.toPlatformPath(`${cellar}/${dep}`);
     });
     toCache.push(...(await Promise.all(libFolders)));
     return toCache.filter((result) => result);
 }
 exports.cacheFolder = cacheFolder;
-async function findLibFolder(root) {
-    let result;
-    try {
-        result = await exec.getExecOutput('find', [
-            root,
-            '-type',
-            'd',
-            '-maxdepth',
-            '2',
-            '-iname',
-            'lib',
-        ]);
-    }
-    catch (error) {
-        return '';
-    }
-    return result.stdout;
-}
 
 
 /***/ }),
@@ -145,7 +127,7 @@ async function run() {
         let cacheHit = false;
         let cacheKey = '';
         const binTools = ['colima', 'lima', 'qemu', 'docker'];
-        if (cacheDeps === true) {
+        if (cacheDeps) {
             const cacheKeyPromise = brewCache.cacheKey(binTools, colimaDeps);
             const cacheFolderPromise = brewCache.cacheFolder(binTools, colimaDeps);
             const [folders, key] = await Promise.all([
@@ -156,7 +138,7 @@ async function run() {
             core.info(`Trying to store with key: ${key}. Got back key: ${restoredKey}`);
             cacheHit = Boolean(restoredKey);
             cacheKey = key;
-            if (debug === true) {
+            if (debug) {
                 core.info('Cache restoration results:');
                 core.info(`\tCache hit: ${cacheHit}`);
                 core.info(`\tCache key: ${cacheKey}`);
