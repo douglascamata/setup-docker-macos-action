@@ -71,10 +71,10 @@ async function cacheFolder(binTools, deps) {
         return core.toPlatformPath(`${cellar}/${value}`);
     });
     toCache.push(...binCacheFolders);
-    const libFolders = deps.map(async (dep) => {
+    const libFolders = deps.map((dep) => {
         return core.toPlatformPath(`${cellar}/${dep}`);
     });
-    toCache.push(...(await Promise.all(libFolders)));
+    toCache.push(...libFolders);
     core.endGroup();
     return toCache.filter((result) => result);
 }
@@ -179,10 +179,8 @@ async function run() {
         else {
             core.startGroup('Relinking formulae after cache restoration.');
             core.info('Homebrew formulae restored from cache. Relinking.');
-            const unlinkResult = await exec.getExecOutput('brew', ['unlink', ...binTools, ...colimaDeps], { silent: !debug });
-            checkCommandFailure(unlinkResult, 'Cannot unlink Homebrew formulae.');
-            const linkResult = await exec.getExecOutput('brew', ['link', '--force', ...binTools, ...colimaDeps], { silent: !debug });
-            checkCommandFailure(linkResult, 'Cannot link Homebrew formulae.');
+            const linkResult = await exec.getExecOutput('brew', ['link', '--force', '--overwrite', ...binTools, ...colimaDeps], { silent: !debug });
+            checkCommandFailure(linkResult, 'Cannot relink Homebrew formulae.');
             core.endGroup();
         }
         core.startGroup('Starting Colima.');

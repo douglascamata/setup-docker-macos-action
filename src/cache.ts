@@ -54,10 +54,10 @@ export async function cacheFolder(
   })
   toCache.push(...binCacheFolders)
 
-  const libFolders = deps.map(async (dep) => {
+  const libFolders = deps.map((dep) => {
     return core.toPlatformPath(`${cellar}/${dep}`)
   })
-  toCache.push(...(await Promise.all(libFolders)))
+  toCache.push(...libFolders)
 
   core.endGroup()
   return toCache.filter((result) => result)

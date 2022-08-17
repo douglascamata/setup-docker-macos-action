@@ -89,18 +89,12 @@ async function run(): Promise<void> {
     } else {
       core.startGroup('Relinking formulae after cache restoration.')
       core.info('Homebrew formulae restored from cache. Relinking.')
-      const unlinkResult = await exec.getExecOutput(
-        'brew',
-        ['unlink', ...binTools, ...colimaDeps],
-        { silent: !debug },
-      )
-      checkCommandFailure(unlinkResult, 'Cannot unlink Homebrew formulae.')
       const linkResult = await exec.getExecOutput(
         'brew',
-        ['link', '--force', ...binTools, ...colimaDeps],
+        ['link', '--force', '--overwrite', ...binTools, ...colimaDeps],
         { silent: !debug },
       )
-      checkCommandFailure(linkResult, 'Cannot link Homebrew formulae.')
+      checkCommandFailure(linkResult, 'Cannot relink Homebrew formulae.')
       core.endGroup()
     }
 
