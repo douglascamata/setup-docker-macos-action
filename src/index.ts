@@ -40,6 +40,8 @@ async function run(): Promise<void> {
         cacheFolderPromise,
         cacheKeyPromise,
       ])
+      core.endGroup()
+
       core.startGroup('Attempt to restore cache.')
       await Promise.all(folders.map(async (folder) => io.rmRF(folder)))
       const restoredKey = await cache.restoreCache(folders, key)
@@ -54,7 +56,6 @@ async function run(): Promise<void> {
         core.info(`\tCache key: ${cacheKey}`)
         core.info(`\tCache folders: ${folders}`)
       }
-      core.endGroup()
       core.endGroup()
     }
 
@@ -72,6 +73,7 @@ async function run(): Promise<void> {
         installResult,
         'Cannot install Colima and Docker client.',
       )
+      core.endGroup()
 
       if (cacheDeps) {
         core.startGroup('Preparing to save cache.')
@@ -82,7 +84,6 @@ async function run(): Promise<void> {
         core.info(`\tCache key: ${cacheKey}`)
         core.endGroup()
       }
-      core.endGroup()
     } else {
       core.startGroup('Relinking formulae after cache restoration.')
       core.info('Homebrew formulae restored from cache. Relinking.')

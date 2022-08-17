@@ -138,6 +138,7 @@ async function run() {
                 cacheFolderPromise,
                 cacheKeyPromise,
             ]);
+            core.endGroup();
             core.startGroup('Attempt to restore cache.');
             await Promise.all(folders.map(async (folder) => io.rmRF(folder)));
             const restoredKey = await cache.restoreCache(folders, key);
@@ -151,7 +152,6 @@ async function run() {
                 core.info(`\tCache folders: ${folders}`);
             }
             core.endGroup();
-            core.endGroup();
         }
         if (!cacheHit) {
             core.startGroup('Installing Colima and Docker Client');
@@ -160,6 +160,7 @@ async function run() {
                 env: { HOMEBREW_NO_AUTO_UPDATE: '1', ...process.env },
             });
             checkCommandFailure(installResult, 'Cannot install Colima and Docker client.');
+            core.endGroup();
             if (cacheDeps) {
                 core.startGroup('Preparing to save cache.');
                 const toCache = await brewCache.cacheFolder(binTools, colimaDeps);
@@ -169,7 +170,6 @@ async function run() {
                 core.info(`\tCache key: ${cacheKey}`);
                 core.endGroup();
             }
-            core.endGroup();
         }
         else {
             core.startGroup('Relinking formulae after cache restoration.');
