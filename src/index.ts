@@ -1,7 +1,6 @@
 import * as cache from '@actions/cache'
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
-import * as io from '@actions/io'
 
 import * as brewCache from './cache'
 
@@ -87,28 +86,6 @@ async function run(): Promise<void> {
         core.info(`\tCache key: ${cacheKey}`)
         core.endGroup()
       }
-    } else {
-      core.startGroup('Cleaning homebrew links before relinking')
-      const brewPrefixResult = await exec.getExecOutput('brew', [
-        '--repository',
-      ])
-      if (brewPrefixResult.exitCode === 1) {
-        throw new Error("Cannot determine Homebrew's repository path.")
-      }
-      await io.rmRF(
-        core.toPlatformPath(`${brewPrefixResult.stdout.trim()}/opt/*`),
-      )
-      core.endGroup()
-
-      core.startGroup('Relinking formulae after cache restoration.')
-      core.info('Homebrew formulae restored from cache. Relinking.')
-      const linkResult = await exec.getExecOutput(
-        'brew',
-        ['link', '--overwrite'],
-        { silent: !debug },
-      )
-      checkCommandFailure(linkResult, 'Cannot relink Homebrew formulae.')
-      core.endGroup()
     }
 
     core.startGroup('Starting Colima.')

@@ -115,7 +115,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const cache = __importStar(__nccwpck_require__(7799));
 const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
-const io = __importStar(__nccwpck_require__(7436));
 const brewCache = __importStar(__nccwpck_require__(3782));
 async function run() {
     const debug = core.getBooleanInput('debug');
@@ -176,22 +175,6 @@ async function run() {
                 core.info(`\tCache key: ${cacheKey}`);
                 core.endGroup();
             }
-        }
-        else {
-            core.startGroup('Cleaning homebrew links before relinking');
-            const brewPrefixResult = await exec.getExecOutput('brew', [
-                '--repository',
-            ]);
-            if (brewPrefixResult.exitCode === 1) {
-                throw new Error("Cannot determine Homebrew's repository path.");
-            }
-            await io.rmRF(core.toPlatformPath(`${brewPrefixResult.stdout.trim()}/opt/*`));
-            core.endGroup();
-            core.startGroup('Relinking formulae after cache restoration.');
-            core.info('Homebrew formulae restored from cache. Relinking.');
-            const linkResult = await exec.getExecOutput('brew', ['link', '--overwrite'], { silent: !debug });
-            checkCommandFailure(linkResult, 'Cannot relink Homebrew formulae.');
-            core.endGroup();
         }
         core.startGroup('Starting Colima.');
         const startResult = await exec.getExecOutput('colima', ['start']);
