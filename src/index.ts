@@ -6,25 +6,24 @@ import * as brewCache from './cache'
 
 async function run(): Promise<void> {
   const debug = core.getBooleanInput('debug')
+  const cacheDeps = core.getBooleanInput('cache-homebrew-deps')
   try {
-    const cacheDeps = core.getBooleanInput('cache-homebrew-deps')
     core.startGroup('Updating Homebrew')
     const updateResults = await exec.getExecOutput(
       'brew',
       ['update', '--preinstall'],
       { silent: !debug },
     )
-
-    checkCommandFailure(updateResults, 'Cannot update Homebrew.')
+    checkCommandFailure(updateResults, 'Error updating Homebrew.')
     core.endGroup()
 
-    core.startGroup("Fetching list of Colima's dependencies")
+    core.startGroup("Fetching list of Colima's brew deps.")
     const colimaDepsResult = await exec.getExecOutput(
       'brew',
       ['deps', 'colima'],
       { silent: !debug },
     )
-    checkCommandFailure(colimaDepsResult, 'Cannot get Colima deps.')
+    checkCommandFailure(colimaDepsResult, "Error getting Colima's brew deps.")
     const colimaDeps = colimaDepsResult.stdout.trim().split('\n')
     core.endGroup()
 
@@ -41,10 +40,10 @@ async function run(): Promise<void> {
       ])
       core.endGroup()
 
-      core.startGroup('Attempt to restore cache.')
+      core.startGroup('Attempting to restore cache.')
       const restoredKey = await cache.restoreCache(folders, key)
       core.info(
-        `Trying to store with key: ${key}. Got back key: ${restoredKey}`,
+        `Trying to restore with key: ${key}. Got back key: ${restoredKey}`,
       )
       cacheHit = Boolean(restoredKey)
       cacheKey = key
@@ -73,7 +72,7 @@ async function run(): Promise<void> {
       )
       checkCommandFailure(
         installResult,
-        'Cannot install Colima and Docker client.',
+        'Error installing Colima and Docker client.',
       )
       core.endGroup()
 
@@ -94,25 +93,25 @@ async function run(): Promise<void> {
         ['link', '--overwrite', ...binTools],
         { silent: !debug },
       )
-      checkCommandFailure(linkResult, 'Cannot relink Homebrew formulae.')
+      checkCommandFailure(linkResult, 'Error relinking Homebrew formulae.')
       core.endGroup()
     }
 
     core.startGroup('Starting Colima.')
     const startResult = await exec.getExecOutput('colima', ['start'])
-    checkCommandFailure(startResult, 'Cannot started Colima.')
+    checkCommandFailure(startResult, 'Error starting Colima.')
     core.endGroup()
 
     core.startGroup('Setting outputs')
     const dockerVersionResult = await exec.getExecOutput('docker', ['version'])
     checkCommandFailure(
       dockerVersionResult,
-      'Cannot get Docker client version.',
+      'Error getting Docker client version.',
     )
     core.setOutput('docker-client-version', dockerVersionResult.stdout.trim())
 
     const colimaVersionResult = await exec.getExecOutput('colima', ['version'])
-    checkCommandFailure(colimaVersionResult, 'Cannot get Colima version.')
+    checkCommandFailure(colimaVersionResult, 'Error getting Colima version.')
     core.setOutput('colima-version', colimaVersionResult.stdout.trim())
     core.endGroup()
   } catch (error: unknown) {
