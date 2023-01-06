@@ -46,6 +46,7 @@ runs:
       if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
+        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: brew install docker colima
       shell: bash
     - name: Start Colima
