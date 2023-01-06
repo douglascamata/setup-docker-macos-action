@@ -36,18 +36,17 @@ runs:
           ${{ env.BREW_CELLAR }}/qemu
         key: brew-${{ hashFiles('.github/brew-*') }}
         restore-keys: brew-${{ hashFiles('.github/brew-*') }}
-    - name: Relink and redownload deps for Docker client and Colima
+    - name: Relink Docker client, QEMU and Colima
       if: ${{ steps.homebrew-cache.outputs.cache-hit == 'true' }}
       run: |
         brew link --overwrite docker colima qemu
-        brew install --only-dependencies docker colima qemu
       shell: bash
     - name: Install Docker client and Colima
       if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
-      run: brew install docker colima
+      run: brew install -f docker colima
       shell: bash
     - name: Start Colima
       run: colima start
