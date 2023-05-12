@@ -20,6 +20,7 @@ runs:
       run: |
         brew update --preinstall
         brew_repository="$(brew --repository)"
+        mkdir -p .github
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
       shell: bash
