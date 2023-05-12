@@ -7,6 +7,9 @@ outputs:
   docker-client-version:
     value: ${{ steps.docker-client-version.outputs.version }}
     description: Version of the Docker client
+  docker-compose-version:
+    value: ${{ steps.docker-compose-version.outputs.version }}
+    description: Version of Docker Compose
 runs:
   using: "composite"
   steps:
@@ -23,6 +26,7 @@ runs:
         mkdir -p .github
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
+        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker-compose.rb" > .github/brew-docker-compose
       shell: bash
     - name: Pre-cache
       run: echo "BREW_CELLAR=$(brew --cellar)" >> $GITHUB_ENV
@@ -34,21 +38,22 @@ runs:
         path: |
           ${{ env.BREW_CELLAR }}/colima
           ${{ env.BREW_CELLAR }}/docker
+          ${{ env.BREW_CELLAR }}/docker-compose
           ${{ env.BREW_CELLAR }}/qemu
         key: brew-${{ hashFiles('.github/brew-*') }}
         restore-keys: brew-${{ hashFiles('.github/brew-*') }}
-    - name: Relink Docker client, QEMU and Colima
+    - name: Relink Docker client, Docker Compose, QEMU and Colima
       if: ${{ steps.homebrew-cache.outputs.cache-hit == 'true' }}
       run: |
-        brew unlink docker colima qemu
-        brew link docker colima qemu
+        brew unlink docker docker-compose colima qemu
+        brew link docker docker-compose colima qemu
       shell: bash
-    - name: Install Docker client and Colima
+    - name: Install Docker client, Docker Compose, and Colima
       if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
-      run: brew install -f docker colima
+      run: brew install -f docker docker-compose colima
       shell: bash
     - name: Start Colima
       run: colima start
@@ -56,6 +61,14 @@ runs:
     - id: docker-client-version
       run: |
         content="$(docker version)"
+        content="${content//'%'/'%25'}"
+        content="${content//$'\n'/'%0A'}"
+        content="${content//$'\r'/'%0D'}"
+        echo "::set-output name=version::$content"
+      shell: bash
+    - id: docker-compose-version
+      run: |
+        content="$(docker compose version)"
         content="${content//'%'/'%25'}"
         content="${content//$'\n'/'%0A'}"
         content="${content//$'\r'/'%0D'}"
