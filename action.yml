@@ -25,6 +25,7 @@ runs:
         brew_repository="$(brew --repository)"
         mkdir -p .github
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
+        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/lima.rb" > .github/brew-lima
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker-compose.rb" > .github/brew-docker-compose
       shell: bash
@@ -37,6 +38,7 @@ runs:
       with:
         path: |
           ${{ env.BREW_CELLAR }}/colima
+          ${{ env.BREW_CELLAR }}/lima
           ${{ env.BREW_CELLAR }}/docker
           ${{ env.BREW_CELLAR }}/docker-compose
           ${{ env.BREW_CELLAR }}/qemu
@@ -53,7 +55,7 @@ runs:
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
-      run: brew install -f docker docker-compose colima
+      run: brew install -f docker docker-compose colima lima qemu
       shell: bash
     - name: Configure Docker Compose plugin
       run: |
