@@ -26,6 +26,7 @@ runs:
         mkdir -p .github
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/lima.rb" > .github/brew-lima
+        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/qemu.rb" > .github/brew-qemu
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker-compose.rb" > .github/brew-docker-compose
       shell: bash
