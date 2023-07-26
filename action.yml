@@ -51,7 +51,7 @@ runs:
         brew unlink docker docker-compose colima lima qemu
         brew link docker docker-compose colima lima qemu
       shell: bash
-    - name: Install Docker client, Docker Compose, and Colima
+    - name: Install Docker client, Docker Compose, Colima, and QEMU.
       if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
