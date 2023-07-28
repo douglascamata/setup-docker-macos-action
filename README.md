@@ -25,3 +25,7 @@ The version of Colima that was installed.
 ## `docker-client-version`
 
 The version of the Docker client that was installed.
+
+## `docker-compose-version`
+
+The version of Docker Compose that was installed.
