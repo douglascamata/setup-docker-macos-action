@@ -48,7 +48,8 @@ runs:
     - name: Relink Docker client, Docker Compose, QEMU and Colima
       if: ${{ steps.homebrew-cache.outputs.cache-hit == 'true' }}
       run: |
-        brew link --overwrite -f docker docker-compose colima lima qemu
+        brew unlink docker docker-compose colima lima qemu
+        brew link docker docker-compose colima lima qemu
       shell: bash
     - name: Install Docker client, Docker Compose, Colima, and QEMU.
       if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
