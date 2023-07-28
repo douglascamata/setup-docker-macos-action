@@ -65,13 +65,22 @@ runs:
       shell: bash
     - id: docker-client-version
       run: |
-        echo "docker-version=$(docker version)" >> $GITHUB_OUTPUT
+        EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+        echo "docker-version<<$EOF" >> $GITHUB_OUTPUT
+        docker version >> $GITHUB_OUTPUT
+        echo "$EOF" >> $GITHUB_OUTPUT
       shell: bash
     - id: docker-compose-version
       run: |
-        echo "docker-compose-version=$(docker compose version)" >> $GITHUB_OUTPUT
+        EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+        echo "docker-compose-version<<$EOF" >> $GITHUB_OUTPUT
+        docker compose version >> $GITHUB_OUTPUT
+        echo "$EOF" >> $GITHUB_OUTPUT
       shell: bash
     - id: colima-version
       run: |
-        echo "colima-version=$(colima version)" >> $GITHUB_OUTPUT
+        EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+        echo "colima-version=$EOF" >> $GITHUB_OUTPUT
+        colima version >> $GITHUB_OUTPUT
+        echo "$EOF" >> $GITHUB_OUTPUT
       shell: bash
