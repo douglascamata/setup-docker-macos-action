@@ -80,7 +80,7 @@ runs:
     - id: colima-version
       run: |
         EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-        echo "colima-version=$EOF" >> $GITHUB_OUTPUT
+        echo "colima-version<<$EOF" >> $GITHUB_OUTPUT
         colima version >> $GITHUB_OUTPUT
         echo "$EOF" >> $GITHUB_OUTPUT
       shell: bash
