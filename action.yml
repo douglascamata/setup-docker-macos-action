@@ -65,25 +65,13 @@ runs:
       shell: bash
     - id: docker-client-version
       run: |
-        content="$(docker version)"
-        content="${content//'%'/'%25'}"
-        content="${content//$'\n'/'%0A'}"
-        content="${content//$'\r'/'%0D'}"
-        echo "::set-output name=version::$content"
+        echo "docker-version=$(docker version)" >> $GITHUB_OUTPUT
       shell: bash
     - id: docker-compose-version
       run: |
-        content="$(docker compose version)"
-        content="${content//'%'/'%25'}"
-        content="${content//$'\n'/'%0A'}"
-        content="${content//$'\r'/'%0D'}"
-        echo "::set-output name=version::$content"
+        echo "docker-compose-version=$(docker compose version)" >> $GITHUB_OUTPUT
       shell: bash
     - id: colima-version
       run: |
-        content="$(colima version)"
-        content="${content//'%'/'%25'}"
-        content="${content//$'\n'/'%0A'}"
-        content="${content//$'\r'/'%0D'}"
-        echo "::set-output name=version::$content"
+        echo "colima-version=$(colima version)" >> $GITHUB_OUTPUT
       shell: bash
