@@ -26,7 +26,6 @@ runs:
         mkdir -p .github
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/lima.rb" > .github/brew-lima
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/qemu.rb" > .github/brew-qemu
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker-compose.rb" > .github/brew-docker-compose
       shell: bash
@@ -42,20 +41,19 @@ runs:
           ${{ env.BREW_CELLAR }}/lima
           ${{ env.BREW_CELLAR }}/docker
           ${{ env.BREW_CELLAR }}/docker-compose
-          ${{ env.BREW_CELLAR }}/qemu
         key: brew-${{ hashFiles('.github/brew-*') }}
         restore-keys: brew-${{ hashFiles('.github/brew-*') }}
-    - name: Relink Docker client, Docker Compose, QEMU and Colima
+    - name: Relink Docker client, Docker Compose, and Colima
       if: ${{ steps.homebrew-cache.outputs.cache-hit == 'true' }}
       run: |
-        brew unlink docker docker-compose colima lima qemu
-        brew link docker docker-compose colima lima qemu
+        brew unlink docker docker-compose colima lima
+        brew link docker docker-compose colima lima
       shell: bash
-    - name: Install Docker client, Docker Compose, Colima, and QEMU.
+    - name: Install Docker client, Docker Compose, and Colima.
       if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
-      run: brew install -f docker docker-compose colima lima qemu
+      run: brew install -f docker docker-compose colima lima
       shell: bash
     - name: Configure Docker Compose plugin
       run: |
