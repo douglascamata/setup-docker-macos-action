@@ -67,7 +67,7 @@ runs:
       if: ${{ steps.homebrew-cache.outputs.cache-hit == 'true' }}
       run: |
         brew unlink docker docker-compose colima lima qemu xz vde snappy ncurses libssh libslirp gnutls openssl@3 capstone
-        brew link docker docker-compose colima lima qemu xz vde snappy ncurses libssh libslirp gnutls openssl@3 capstone
+        brew link --overwrite docker docker-compose colima lima qemu xz vde snappy ncurses libssh libslirp gnutls openssl@3 capstone
       shell: bash
     - name: Install Docker client, Docker Compose, and Colima.
       if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
