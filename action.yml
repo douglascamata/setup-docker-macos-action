@@ -43,6 +43,10 @@ runs:
           ${{ env.BREW_CELLAR }}/docker-compose
         key: brew-${{ hashFiles('.github/brew-*') }}
         restore-keys: brew-${{ hashFiles('.github/brew-*') }}
+    - name: Install packages that depends on Colima restored from cache
+      if: ${{ steps.homebrew-cache.outputs.cache-hit == 'true' }}
+      run: brew install --only-dependencies colima
+      shell: bash
     - name: Relink Docker client, Docker Compose, and Colima
       if: ${{ steps.homebrew-cache.outputs.cache-hit == 'true' }}
       run: |
