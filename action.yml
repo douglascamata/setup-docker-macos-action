@@ -24,16 +24,6 @@ runs:
         brew update --preinstall
         brew_repository="$(brew --repository)"
         mkdir -p .github
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/capstone.rb" > .github/brew-capstone
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/openssl@3.rb" > .github/brew-openssl@3
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/gnutls.rb" > .github/brew-gnutls
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/libslirp.rb" > .github/brew-libslirp
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/libssh.rb" > .github/brew-libssh
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/ncurses.rb" > .github/brew-ncurses
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/snappy.rb" > .github/brew-snappy
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/vde.rb" > .github/brew-vde
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/xz.rb" > .github/brew-xz
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/qemu.rb" > .github/brew-qemu
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/lima.rb" > .github/brew-lima
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
         cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
@@ -47,16 +37,6 @@ runs:
       uses: actions/cache@v3.3.1
       with:
         path: |
-          ${{ env.BREW_CELLAR }}/capstone
-          ${{ env.BREW_CELLAR }}/openssl@3
-          ${{ env.BREW_CELLAR }}/gnutls
-          ${{ env.BREW_CELLAR }}/libslirp
-          ${{ env.BREW_CELLAR }}/libssh
-          ${{ env.BREW_CELLAR }}/ncurses
-          ${{ env.BREW_CELLAR }}/snappy
-          ${{ env.BREW_CELLAR }}/vde
-          ${{ env.BREW_CELLAR }}/xz
-          ${{ env.BREW_CELLAR }}/qemu
           ${{ env.BREW_CELLAR }}/lima
           ${{ env.BREW_CELLAR }}/colima
           ${{ env.BREW_CELLAR }}/docker
@@ -66,8 +46,9 @@ runs:
     - name: Relink Docker client, Docker Compose, and Colima
       if: ${{ steps.homebrew-cache.outputs.cache-hit == 'true' }}
       run: |
-        brew unlink docker docker-compose colima lima qemu xz vde snappy ncurses libssh libslirp gnutls openssl@3 capstone
-        brew link --overwrite docker docker-compose colima lima qemu xz vde snappy ncurses libssh libslirp gnutls openssl@3 capstone
+        brew install qemu
+        brew unlink docker docker-compose colima lima
+        brew link docker docker-compose colima lima
       shell: bash
     - name: Install Docker client, Docker Compose, and Colima.
       if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
