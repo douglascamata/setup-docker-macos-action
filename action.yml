@@ -24,10 +24,11 @@ runs:
         brew update --preinstall
         brew_repository="$(brew --repository)"
         mkdir -p .github
-        cat "$(brew edit --print-path --formula colima)" > .github/brew-colima
-        cat "$(brew edit --print-path --formula lima)" > .github/brew-lima
-        cat "$(brew edit --print-path --formula docker )" > .github/brew-docker
-        cat "$(brew edit --print-path --formula docker-compose)" > .github/brew-docker-compose
+        cd .github
+        cat "$(brew edit --print-path --formula colima)" > brew-colima
+        cat "$(brew edit --print-path --formula lima)" > brew-lima
+        cat "$(brew edit --print-path --formula docker )" > brew-docker
+        cat "$(brew edit --print-path --formula docker-compose)" > brew-docker-compose
       shell: bash
     - name: Pre-cache
       run: echo "BREW_CELLAR=$(brew --cellar)" >> $GITHUB_ENV
