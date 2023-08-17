@@ -24,10 +24,10 @@ runs:
         brew update --preinstall
         brew_repository="$(brew --repository)"
         mkdir -p .github
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/colima.rb" > .github/brew-colima
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/lima.rb" > .github/brew-lima
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker.rb" > .github/brew-docker
-        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/docker-compose.rb" > .github/brew-docker-compose
+        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/c/colima.rb" > .github/brew-colima
+        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/l/lima.rb" > .github/brew-lima
+        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/d/docker.rb" > .github/brew-docker
+        cat "$brew_repository/Library/Taps/homebrew/homebrew-core/Formula/d/docker-compose.rb" > .github/brew-docker-compose
       shell: bash
     - name: Pre-cache
       run: echo "BREW_CELLAR=$(brew --cellar)" >> $GITHUB_ENV
