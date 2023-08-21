@@ -24,5 +24,5 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 [unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.9...HEAD
-[v1-alpha.9]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.9...v1-alpha.8
-[v1-alpha.8]: https://github.com/Author/Repository/releases/tag/v1-alpha.8
+[v1-alpha.9]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.8...v1-alpha.9
+[v1-alpha.8]: https://github.com/douglascamata/setup-docker-macos-action/releases/tag/v1-alpha.8
