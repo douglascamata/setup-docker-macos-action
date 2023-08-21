@@ -56,11 +56,13 @@ runs:
       shell: bash
     - name: Manually installing QEMU due to bug in GH actions (see https://github.com/actions/runner-images/issues/8104)
       if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
+      env:
+        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: |
         brew remove --ignore-dependencies qemu
         cd /tmp
         curl -o ./qemu.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/dc0669eca9479e9eeb495397ba3a7480aaa45c2e/Formula/qemu.rb
-        brew install ./qemu.rb
+        brew install --formula ./qemu.rb
       shell: bash
     - name: Install Docker client, Docker Compose, and Colima.
       if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
