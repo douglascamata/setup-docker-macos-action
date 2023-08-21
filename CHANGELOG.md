@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning].
 ### Fixed
 
 - Reinstall QEMU as a workaround for https://github.com/actions/runner-images/issues/8104
-  even when cache is restored (#14).
+  even when cache is restored ([#14](https://github.com/douglascamata/setup-docker-macos-action/pull/14))
 
 ### Security
 
