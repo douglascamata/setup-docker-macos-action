@@ -61,7 +61,6 @@ runs:
       run: brew install docker docker-compose colima lima
       shell: bash
     - name: Manually reinstall QEMU due to bug in GH actions (see https://github.com/actions/runner-images/issues/8104)
-      if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
       env:
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: |
