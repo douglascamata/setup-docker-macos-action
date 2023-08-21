@@ -66,6 +66,7 @@ runs:
       if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
+        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: brew install docker docker-compose colima lima
       shell: bash
     - name: Configure Docker Compose plugin
