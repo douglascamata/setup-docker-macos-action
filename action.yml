@@ -60,15 +60,6 @@ runs:
         HOMEBREW_NO_AUTO_UPDATE: "1"
       run: brew install docker docker-compose colima lima
       shell: bash
-    - name: Manually reinstall QEMU due to bug in GH actions (see https://github.com/actions/runner-images/issues/8104)
-      env:
-        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
-      run: |
-        brew remove --ignore-dependencies qemu
-        cd /tmp
-        curl -o ./qemu.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/dc0669eca9479e9eeb495397ba3a7480aaa45c2e/Formula/qemu.rb
-        brew install --formula ./qemu.rb
-      shell: bash
     - name: Configure Docker Compose plugin
       run: |
         mkdir -p ~/.docker/cli-plugins
