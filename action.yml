@@ -30,6 +30,11 @@ runs:
         cat "$(brew edit --print-path --formula docker )" > brew-docker
         cat "$(brew edit --print-path --formula docker-compose)" > brew-docker-compose
       shell: bash
+    - name: Prepare Homebrew env vars
+      run: |
+        echo "HOMEBREW_NO_AUTO_UPDATE=1" >> $GITHUB_ENV
+        echo "HOMEBREW_NO_INSTALL_UPGRADE=1" >> $GITHUB_ENV
+        echo "HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1" >> $GITHUB_ENV
     - name: Pre-cache
       run: echo "BREW_CELLAR=$(brew --cellar)" >> $GITHUB_ENV
       shell: bash
@@ -56,9 +61,7 @@ runs:
       shell: bash
     - name: Install Docker client, Docker Compose, and Colima.
       if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
-      env:
-        HOMEBREW_NO_AUTO_UPDATE: "1"
-      run: brew install docker docker-compose colima lima
+      run: brew install docker docker-compose colima
       shell: bash
     - name: Configure Docker Compose plugin
       run: |
