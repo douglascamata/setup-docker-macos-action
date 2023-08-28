@@ -35,10 +35,10 @@ runs:
         nix-store --import < /tmp/nixcache
       shell: bash
     - name: Install Colima with nix
-      run: nix-env -iA nixpkgs.colima
+      run: nix-env -i colima
       shell: bash
     - name: Install Docker with nix
-      run: nix-env -iA nixpkgs.colima
+      run: nix-env -i docker
       shell: bash
     - name: Start Colima
       run: colima start
