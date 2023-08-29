@@ -28,7 +28,7 @@ runs:
     - name: "Install Nix"
       uses: cachix/install-nix-action@v22
       with:
-        nix_path: nixpkgs=channel:nixos-23.05
+        nix_path: nixpkgs=channel:nixpkgs-23.05
     - name: "Import Nix store cache"
       if: steps.nix-cache.outputs.cache-hit == 'true'
       run: |
