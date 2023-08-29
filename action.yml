@@ -70,6 +70,6 @@ runs:
     - name: "Export Nix store cache"
       if: steps.nix-cache.outputs.cache-hit != 'true'
       run: |
-        [ -d /tmp/nixcache ] || mkdir -p /tmp/nixcache
+        mkdir -p /tmp/nixcache || true
         nix-store --export > /tmp/nixcache
       shell: bash
