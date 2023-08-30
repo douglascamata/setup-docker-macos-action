@@ -48,7 +48,7 @@ runs:
         ln -sfn "$(brew --prefix)/opt/docker-compose/bin/docker-compose" ~/.docker/cli-plugins/docker-compose
       shell: bash
     - name: Start Colima
-      run: colima start
+      run: colima start --vm-type=vz
       shell: bash
     - id: docker-client-version
       run: |
