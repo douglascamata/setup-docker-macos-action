@@ -22,6 +22,9 @@ runs:
     - name: Update Homebrew
       run: |
         brew update --preinstall
+        echo "HOMEBREW_NO_AUTO_UPDATE=1" >> $GITHUB_ENV
+        echo "HOMEBREW_NO_INSTALL_UPGRADE=1" >> $GITHUB_ENV
+        echo "HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1" >> $GITHUB_ENV
       shell: bash
     - name: Install Colima
       run: |
@@ -38,8 +41,6 @@ runs:
     - name: Install Docker client and Docker Compose
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
-        HOMEBREW_NO_INSTALL_UPGRADE: "1"
-        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: brew install docker docker-compose
       shell: bash
     - name: Configure Docker Compose plugin
