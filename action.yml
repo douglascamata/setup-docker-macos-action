@@ -38,10 +38,9 @@ runs:
         # install in $PATH
         install colima-$(uname)-$(uname -m) /usr/local/bin/colima
       shell: bash
-    - name: Install Docker client and Docker Compose
+    - name: Install QEMU, Docker client, and Docker Compose
       env:
-        HOMEBREW_NO_AUTO_UPDATE: "1"
-      run: brew install docker docker-compose
+      run: brew install docker docker-compose qemu
       shell: bash
     - name: Configure Docker Compose plugin
       run: |
@@ -49,7 +48,7 @@ runs:
         ln -sfn "$(brew --prefix)/opt/docker-compose/bin/docker-compose" ~/.docker/cli-plugins/docker-compose
       shell: bash
     - name: Start Colima
-      run: colima start --vm-type=vz
+      run: colima start
       shell: bash
     - id: docker-client-version
       run: |
