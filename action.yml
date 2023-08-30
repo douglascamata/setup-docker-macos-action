@@ -3,7 +3,7 @@ description: "Setup Docker on macOS using Colima, Lima-VM, and Homebrew."
 inputs:
   upgrade-qemu:
     description: "Upgrade QEMU to the latest version. Add a lot of time to the job."
-    required: true
+    required: false
     default: "false"
 outputs:
   colima-version:
@@ -54,7 +54,7 @@ runs:
         ln -sfn "$(brew --prefix)/opt/docker-compose/bin/docker-compose" ~/.docker/cli-plugins/docker-compose
       shell: bash
     - name: Upgrade QEMU
-      if: ${{ inputs.upgrade-qemu }} != "false"
+      if: inputs.upgrade-qemu == "true"
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
         HOMEBREW_NO_INSTALL_UPGRADE: "1"
