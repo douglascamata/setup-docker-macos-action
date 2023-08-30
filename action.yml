@@ -39,7 +39,6 @@ runs:
         install colima-$(uname)-$(uname -m) /usr/local/bin/colima
       shell: bash
     - name: Install QEMU, Docker client, and Docker Compose
-      env:
       run: brew install docker docker-compose qemu
       shell: bash
     - name: Configure Docker Compose plugin
