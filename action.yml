@@ -33,7 +33,7 @@ runs:
 
         # download binary
         COLIMA_VERSION=$(curl -fsSL https://api.github.com/repos/abiosoft/colima/releases/latest | jq -r .tag_name)
-        curl -LO https://github.com/abiosoft/colima/releases/download/${COLIMA}/colima-$(uname)-$(uname -m)
+        curl -LO https://github.com/abiosoft/colima/releases/download/${COLIMA_VERSION}/colima-$(uname)-$(uname -m)
 
         # install in $PATH
         install colima-$(uname)-$(uname -m) /usr/local/bin/colima
