@@ -30,7 +30,7 @@ runs:
       shell: bash
     - name: Install Colima
       env:
-        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TOKEN: ${{ github.token }}
       run: |
         LIMA_VERSION=$(curl -fsSL --header 'authorization: Bearer ${TOKEN}' https://api.github.com/repos/lima-vm/lima/releases/latest | jq -r .tag_name)
         curl -fsSL "https://github.com/lima-vm/lima/releases/download/${LIMA_VERSION}/lima-${LIMA_VERSION:1}-$(uname -s)-$(uname -m).tar.gz" | tar Cxzvm /usr/local
