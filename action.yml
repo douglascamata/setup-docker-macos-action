@@ -23,8 +23,6 @@ runs:
       run: |
         brew update --preinstall
       shell: bash
-    - name: Install QEMU
-      uses: docker/setup-qemu-action@v2
     - name: Install Colima
       run: |
         LIMA_VERSION=$(curl -fsSL https://api.github.com/repos/lima-vm/lima/releases/latest | jq -r .tag_name)
