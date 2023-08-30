@@ -54,7 +54,7 @@ runs:
         ln -sfn "$(brew --prefix)/opt/docker-compose/bin/docker-compose" ~/.docker/cli-plugins/docker-compose
       shell: bash
     - name: Upgrade QEMU
-      if: inputs.upgrade-qemu == "true"
+      if: ${{ inputs.upgrade-qemu == "true" }}
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
         HOMEBREW_NO_INSTALL_UPGRADE: "1"
