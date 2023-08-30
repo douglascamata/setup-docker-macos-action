@@ -3,7 +3,7 @@ description: "Setup Docker on macOS using Colima, Lima-VM, and Homebrew."
 inputs:
   upgrade-qemu:
     description: "Upgrade QEMU to the latest version. Add a lot of time to the job."
-    required: false
+    required: true
     default: "false"
 outputs:
   colima-version:
