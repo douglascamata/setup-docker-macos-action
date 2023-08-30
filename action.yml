@@ -29,12 +29,14 @@ runs:
         brew update --preinstall
       shell: bash
     - name: Install Colima
+      env:
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        LIMA_VERSION=$(curl -fsSL --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/lima-vm/lima/releases/latest | jq -r .tag_name)
+        LIMA_VERSION=$(curl -fsSL --header 'authorization: Bearer ${TOKEN}' https://api.github.com/repos/lima-vm/lima/releases/latest | jq -r .tag_name)
         curl -fsSL "https://github.com/lima-vm/lima/releases/download/${LIMA_VERSION}/lima-${LIMA_VERSION:1}-$(uname -s)-$(uname -m).tar.gz" | tar Cxzvm /usr/local
 
         # download binary
-        COLIMA_VERSION=$(curl -fsSL --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/abiosoft/colima/releases/latest | jq -r .tag_name)
+        COLIMA_VERSION=$(curl -fsSL --header 'authorization: Bearer ${TOKEN}' https://api.github.com/repos/abiosoft/colima/releases/latest | jq -r .tag_name)
         curl -LO https://github.com/abiosoft/colima/releases/download/${COLIMA_VERSION}/colima-$(uname)-$(uname -m)
 
         # install in $PATH
