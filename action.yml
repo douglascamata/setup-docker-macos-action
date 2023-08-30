@@ -1,5 +1,10 @@
 name: "Setup Docker on macOS"
 description: "Setup Docker on macOS using Colima, Lima-VM, and Homebrew."
+inputs:
+  upgrade-qemu:
+    description: "Upgrade QEMU to the latest version. Add a lot of time to the job."
+    required: false
+    default: "false"
 outputs:
   colima-version:
     value: ${{ steps.colima-version.outputs.version }}
@@ -22,9 +27,6 @@ runs:
     - name: Update Homebrew
       run: |
         brew update --preinstall
-        echo "HOMEBREW_NO_AUTO_UPDATE=1" >> $GITHUB_ENV
-        echo "HOMEBREW_NO_INSTALL_UPGRADE=1" >> $GITHUB_ENV
-        echo "HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1" >> $GITHUB_ENV
       shell: bash
     - name: Install Colima
       run: |
@@ -39,12 +41,23 @@ runs:
         install colima-$(uname)-$(uname -m) /usr/local/bin/colima
       shell: bash
     - name: Install QEMU, Docker client, and Docker Compose
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: "1"
+        HOMEBREW_NO_INSTALL_UPGRADE: "1"
+        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: brew install docker docker-compose qemu
       shell: bash
     - name: Configure Docker Compose plugin
       run: |
         mkdir -p ~/.docker/cli-plugins
         ln -sfn "$(brew --prefix)/opt/docker-compose/bin/docker-compose" ~/.docker/cli-plugins/docker-compose
+      shell: bash
+    - name: Upgrade QEMU
+      if: ${{ inputs.upgrade-qemu }} == "true"
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: "1"
+        HOMEBREW_NO_INSTALL_UPGRADE: "1"
+      run: brew upgrade qemu
       shell: bash
     - name: Start Colima
       run: colima start
