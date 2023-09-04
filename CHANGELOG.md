@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Changed
+
+- Improve reliability of action ([#19](https://github.com/douglascamata/setup-docker-macos-action/pull/19))
+  - Colima and Lima binaries are now downloaded straight from their Github Release pages
+  - By default, use `brew` only to install the Docker client and Docker Compose.
+  - QEMU is now installed (using `brew`) only if it's not already present.
+  - QEMU is upgraded (using `brew`) only if the input `upgrade-qemu` is set to `"true"`.
+
 ## [v1-alpha.9] - 2023-08-21
 
 ### Fixed
