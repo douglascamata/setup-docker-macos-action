@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [v1-alpha.10] - 2023-09-04
+
 ### Changed
 
 - Improve reliability of action ([#19](https://github.com/douglascamata/setup-docker-macos-action/pull/19))
@@ -32,5 +34,6 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 [unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.9...HEAD
+[v1-alpha.10]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.9...v1-alpha.10
 [v1-alpha.9]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.8...v1-alpha.9
 [v1-alpha.8]: https://github.com/douglascamata/setup-docker-macos-action/releases/tag/v1-alpha.8
