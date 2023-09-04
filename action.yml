@@ -1,5 +1,10 @@
 name: "Setup Docker on macOS"
 description: "Setup Docker on macOS using Colima, Lima-VM, and Homebrew."
+inputs:
+  upgrade-qemu:
+    description: "Upgrade QEMU to the latest version. Add a lot of time to the job."
+    required: false
+    default: "false"
 outputs:
   colima-version:
     value: ${{ steps.colima-version.outputs.version }}
@@ -22,57 +27,48 @@ runs:
     - name: Update Homebrew
       run: |
         brew update --preinstall
-        brew_repository="$(brew --repository)"
-        mkdir -p .github
-        cd .github
-        cat "$(brew edit --print-path --formula colima)" > brew-colima
-        cat "$(brew edit --print-path --formula lima)" > brew-lima
-        cat "$(brew edit --print-path --formula docker )" > brew-docker
-        cat "$(brew edit --print-path --formula docker-compose)" > brew-docker-compose
       shell: bash
-    - name: Pre-cache
-      run: echo "BREW_CELLAR=$(brew --cellar)" >> $GITHUB_ENV
-      shell: bash
-    - name: Configure Homebrew cache
-      id: homebrew-cache
-      uses: actions/cache@v3.3.1
-      with:
-        path: |
-          ${{ env.BREW_CELLAR }}/colima
-          ${{ env.BREW_CELLAR }}/lima
-          ${{ env.BREW_CELLAR }}/docker
-          ${{ env.BREW_CELLAR }}/docker-compose
-        key: brew-${{ hashFiles('.github/brew-*') }}
-        restore-keys: brew-${{ hashFiles('.github/brew-*') }}
-    - name: Install packages that depends on Colima restored from cache
-      if: ${{ steps.homebrew-cache.outputs.cache-hit == 'true' }}
-      run: brew install --only-dependencies colima
-      shell: bash
-    - name: Relink Docker client, Docker Compose, and Colima
-      if: ${{ steps.homebrew-cache.outputs.cache-hit == 'true' }}
+    - name: Install Colima
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
-        brew unlink docker docker-compose colima lima
-        brew link docker docker-compose colima lima
+        LIMA_VERSION=$(gh release -R lima-vm/lima view --json tagName -q ".tagName")
+        curl -fsSL "https://github.com/lima-vm/lima/releases/download/${LIMA_VERSION}/lima-${LIMA_VERSION:1}-$(uname -s)-$(uname -m).tar.gz" | tar Cxzvm /usr/local
+
+        COLIMA_VERSION=$(gh release -R abiosoft/colima view --json tagName -q ".tagName")
+        curl -LO https://github.com/abiosoft/colima/releases/download/${COLIMA_VERSION}/colima-$(uname)-$(uname -m)
+
+        # install in $PATH
+        install colima-$(uname)-$(uname -m) /usr/local/bin/colima
       shell: bash
-    - name: Install Docker client, Docker Compose, and Colima.
-      if: ${{ steps.homebrew-cache.outputs.cache-hit != 'true' }}
+    - name: Install QEMU, Docker client, and Docker Compose
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
-      run: brew install docker docker-compose colima lima
-      shell: bash
-    - name: Manually reinstall QEMU due to bug in GH actions (see https://github.com/actions/runner-images/issues/8104)
-      env:
+        HOMEBREW_NO_INSTALL_UPGRADE: "1"
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: |
-        brew remove --ignore-dependencies qemu
-        cd /tmp
-        curl -o ./qemu.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/dc0669eca9479e9eeb495397ba3a7480aaa45c2e/Formula/qemu.rb
-        brew install --formula ./qemu.rb
+        brew install docker docker-compose qemu 2>&1 | tee install.log
       shell: bash
     - name: Configure Docker Compose plugin
       run: |
         mkdir -p ~/.docker/cli-plugins
         ln -sfn "$(brew --prefix)/opt/docker-compose/bin/docker-compose" ~/.docker/cli-plugins/docker-compose
+      shell: bash
+    - name: Check QEMU version
+      if: inputs.upgrade-qemu != 'true'
+      run: |
+        if grep -q "qemu 8.1.0 is already installed" install.log
+        then
+            echo "Detected broken QEMU bottle installed by brew, removing and reinstalling."
+            brew reinstall qemu
+        fi
+      shell: bash
+    - name: Upgrade QEMU
+      if: inputs.upgrade-qemu == 'true'
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: "1"
+        HOMEBREW_NO_INSTALL_UPGRADE: "1"
+      run: brew upgrade qemu
       shell: bash
     - name: Start Colima
       run: colima start
