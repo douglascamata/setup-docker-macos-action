@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning].
   - By default, use `brew` only to install the Docker client and Docker Compose.
   - QEMU is now installed (using `brew`) only if it's not already present.
   - QEMU is upgraded (using `brew`) only if the input `upgrade-qemu` is set to `"true"`.
+  - Detects when QEMU's installed from `brew`'s bottle 8.1.0, which has an issue in the binary's signature, and reinstalls it.
 
 ## [v1-alpha.9] - 2023-08-21
 
