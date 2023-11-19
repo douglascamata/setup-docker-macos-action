@@ -5,6 +5,10 @@ inputs:
     description: "Upgrade QEMU to the latest version. Add a lot of time to the job."
     required: false
     default: "false"
+  network:
+    description: start collima with --network-address argument
+    required: false
+    default: "false"
 outputs:
   colima-version:
     value: ${{ steps.colima-version.outputs.version }}
@@ -71,7 +75,12 @@ runs:
       run: brew upgrade qemu
       shell: bash
     - name: Start Colima
+      if: inputs.network == 'false'
       run: colima start
+      shell: bash
+    - name: Start Colima with network
+      if: inputs.network == 'true'
+      run: colima start --network-address
       shell: bash
     - id: docker-client-version
       run: |
