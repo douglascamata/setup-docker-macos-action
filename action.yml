@@ -5,6 +5,14 @@ inputs:
     description: "Upgrade QEMU to the latest version. Add a lot of time to the job."
     required: false
     default: "false"
+  lima:
+    description: "Lima version. Defaults to the latest version."
+    required: false
+    default: "latest"
+  colima:
+    description: "Colima version. Defaults to the latest version."
+    required: false
+    default: "latest"
 outputs:
   colima-version:
     value: ${{ steps.colima-version.outputs.version }}
@@ -26,20 +34,44 @@ runs:
       shell: bash
     - name: Update Homebrew
       run: |
+        echo "::group::Updating Homebrew"
         brew update --preinstall
+        echo "::endgroup::"
+      shell: bash
+    - name: Install Lima
+      env:
+        GH_TOKEN: ${{ github.token }}
+        INPUT_LIMA: ${{ inputs.lima }}
+      run: |
+        if [ $INPUT_LIMA == "latest" ]
+        then
+            LIMA_VERSION=$(gh release -R lima-vm/lima view --json tagName -q ".tagName")
+        else
+            LIMA_VERSION=$INPUT_LIMA
+        fi
+
+        echo "::group::Installing Lima version $LIMA_VERSION"
+        curl -fsSL "https://github.com/lima-vm/lima/releases/download/${LIMA_VERSION}/lima-${LIMA_VERSION:1}-$(uname -s)-$(uname -m).tar.gz" | tar Cxzvm /usr/local
+        echo "::endgroup::"
       shell: bash
     - name: Install Colima
       env:
         GH_TOKEN: ${{ github.token }}
+        INPUT_COLIMA: ${{ inputs.colima }}
       run: |
-        LIMA_VERSION=$(gh release -R lima-vm/lima view --json tagName -q ".tagName")
-        curl -fsSL "https://github.com/lima-vm/lima/releases/download/${LIMA_VERSION}/lima-${LIMA_VERSION:1}-$(uname -s)-$(uname -m).tar.gz" | tar Cxzvm /usr/local
+        if [ $INPUT_COLIMA == "latest" ]
+        then
+            COLIMA_VERSION=$(gh release -R abiosoft/colima view --json tagName -q ".tagName")
+        else
+            COLIMA_VERSION=$INPUT_COLIMA
+        fi
 
-        COLIMA_VERSION=$(gh release -R abiosoft/colima view --json tagName -q ".tagName")
+        echo "::group::Installing Colima version $COLIMA_VERSION"
         curl -LO https://github.com/abiosoft/colima/releases/download/${COLIMA_VERSION}/colima-$(uname)-$(uname -m)
 
         # install in $PATH
         install colima-$(uname)-$(uname -m) /usr/local/bin/colima
+        echo "::endgroup::"
       shell: bash
     - name: Install QEMU, Docker client, and Docker Compose
       env:
@@ -47,7 +79,9 @@ runs:
         HOMEBREW_NO_INSTALL_UPGRADE: "1"
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: |
+        echo "::group::Installing QEMU, Docker client, and Docker Compose"
         brew install docker docker-compose qemu 2>&1 | tee install.log
+        echo "::endgroup::"
       shell: bash
     - name: Configure Docker Compose plugin
       run: |
@@ -71,7 +105,10 @@ runs:
       run: brew upgrade qemu
       shell: bash
     - name: Start Colima
-      run: colima start
+      run: |
+        echo "::group::Starting Colima"
+        colima start
+        echo "::endgroup::"
       shell: bash
     - id: docker-client-version
       run: |
