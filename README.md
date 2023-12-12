@@ -26,6 +26,14 @@ The reason is that installing QEMU takes a considerable amount of time.
 If this is set to `"true"`, the action will attempt an upgrade of QEMU to the
 latest version available in Homebrew.
 
+## `inputs.lima` (defaults to `"latest"`)
+
+The version of Lima to install. This can be any valid version from [Lima releases page](https://github.com/lima-vm/lima/releases)
+
+## `inputs.colima` (defaults to `"latest"`)
+
+The version of Colima to install. This can be any valid version from [Colima releases page](https://github.com/abiosoft/colima/releases)
+
 ## Outputs
 
 ## `colima-version`
