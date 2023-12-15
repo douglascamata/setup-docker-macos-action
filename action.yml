@@ -114,7 +114,7 @@ runs:
       run: |
         echo "::group::Starting Colima"
         ARCH="$(uname -m)"
-        if [$ARCH == "arm64"]
+        if [ $ARCH == "arm64" ]
         then
           ARCH="aarch64"
         fi
