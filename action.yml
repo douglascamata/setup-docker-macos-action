@@ -14,7 +14,7 @@ inputs:
     required: false
     default: "latest"
   colima-network-address:
-    description: "Start Colima with a reachable network address (--network-address)."
+    description: "Starts Colima with a reachable network address (`--network-address`). Makes Colima startup slower."
     required: false
     default: "false"
 outputs:
