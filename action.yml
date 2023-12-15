@@ -112,7 +112,9 @@ runs:
       env:
         COLIMA_NETWORK_ADDRESS: ${{ inputs.colima-network-address }}
       run: |
-        COLIMA_ARGS=""
+        CPU_COUNT=$(sysctl -n hw.ncpu)
+        MEMORY=$(sysctl hw.memsize | awk '{print $2/1024/1024/1024}')
+        COLIMA_ARGS="--cpu $CPU_COUNT --memory $MEMORY"
         if [ $COLIMA_NETWORK_ADDRESS == "true" ]
         then
           COLIMA_ARGS="$COLIMA_ARGS --network-address"
