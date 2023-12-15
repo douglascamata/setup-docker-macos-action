@@ -34,6 +34,11 @@ The version of Lima to install. This can be any valid version from [Lima release
 
 The version of Colima to install. This can be any valid version from [Colima releases page](https://github.com/abiosoft/colima/releases)
 
+## `inputs.colima-network-address` (defaults to `"false"`)
+
+Starts Colima with a reachable network address through passing `--network-address`
+to the `colima start` command. Startup will be slower.
+
 ## Outputs
 
 ## `colima-version`

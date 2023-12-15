@@ -13,6 +13,10 @@ inputs:
     description: "Colima version. Defaults to the latest version."
     required: false
     default: "latest"
+  colima-network-address:
+    description: "Starts Colima with a reachable network address (`--network-address`). Makes Colima startup slower."
+    required: false
+    default: "false"
 outputs:
   colima-version:
     value: ${{ steps.colima-version.outputs.version }}
@@ -105,9 +109,16 @@ runs:
       run: brew upgrade qemu
       shell: bash
     - name: Start Colima
+      env:
+        COLIMA_NETWORK_ADDRESS: ${{ inputs.colima-network-address }}
       run: |
-        echo "::group::Starting Colima"
-        colima start
+        COLIMA_ARGS=""
+        if [ $COLIMA_NETWORK_ADDRESS == "true" ]
+        then
+          COLIMA_ARGS="$COLIMA_ARGS --network-address"
+        fi
+        echo "::group::Starting Colima with args: $COLIMA_ARGS"
+        colima start $COLIMA_ARGS
         echo "::endgroup::"
       shell: bash
     - id: docker-client-version
