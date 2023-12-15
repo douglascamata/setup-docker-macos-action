@@ -13,8 +13,8 @@ inputs:
     description: "Colima version. Defaults to the latest version."
     required: false
     default: "latest"
-  network:
-    description: start collima with --network-address argument
+  colima-network-address:
+    description: "Start Colima with a reachable network address."
     required: false
     default: "false"
 outputs:
@@ -110,11 +110,11 @@ runs:
       shell: bash
     - name: Start Colima
       env:
-        HOST_NETWORK: ${{ inputs.network }}
+        COLIMA_NETWORK_ADDRESS: ${{ inputs.colima-network-address }}
       run: |
         echo "::group::Starting Colima"
         COLIMA_ARGS=""
-        if [ $HOST_NETWORK == "true" ]
+        if [ $COLIMA_NETWORK_ADDRESS == "true" ]
         then
         COLIMA_ARGS="$COLIMA_ARGS --network-address"
         fi
