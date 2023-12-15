@@ -112,7 +112,6 @@ runs:
       env:
         COLIMA_NETWORK_ADDRESS: ${{ inputs.colima-network-address }}
       run: |
-        echo "::group::Starting Colima"
         ARCH="$(uname -m)"
         if [ $ARCH == "arm64" ]
         then
@@ -123,6 +122,7 @@ runs:
         then
           COLIMA_ARGS="$COLIMA_ARGS --network-address"
         fi
+        echo "::group::Starting Colima with args: $COLIMA_ARGS"
         colima start $COLIMA_ARGS
         echo "::endgroup::"
       shell: bash
