@@ -116,7 +116,7 @@ runs:
         COLIMA_ARGS=""
         if [ $COLIMA_NETWORK_ADDRESS == "true" ]
         then
-        COLIMA_ARGS="$COLIMA_ARGS --network-address"
+          COLIMA_ARGS="$COLIMA_ARGS --network-address"
         fi
         colima start $COLIMA_ARGS
         echo "::endgroup::"
