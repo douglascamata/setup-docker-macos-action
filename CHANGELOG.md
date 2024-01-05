@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [v1-alpha.11] - 2024-01-05
+
 ### Added
 
 - Allow Colima to be started with `--network-address` ([#22](https://github.com/douglascamata/setup-docker-macos-action/pull/22)).
@@ -44,6 +46,7 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 [unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.9...HEAD
+[v1-alpha.11]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.10...v1-alpha.11
 [v1-alpha.10]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.9...v1-alpha.10
 [v1-alpha.9]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.8...v1-alpha.9
 [v1-alpha.8]: https://github.com/douglascamata/setup-docker-macos-action/releases/tag/v1-alpha.8
