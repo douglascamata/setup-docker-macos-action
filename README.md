@@ -21,9 +21,14 @@ I intend this action to be kept as simple as possible:
 Yes, exactly what you just read. These processors do not support nested
 virtualization. This means Colima can't start the VM to run Docker.
 
-I'm sorry, but there's nothing I can do about it. All we can do is wait until
-an M-series processor supports it and Github adopts such processors for action
-runners.
+For the M1 processor there is no hope. It lacks the hardware support for this.
+
+The M2 and M3 processors have such hardware support, but no software support
+from Apple's Hypervisor framework (so no hopes for QEMU) or Virtualization
+framework (alternative to QEMU).
+
+I'm sorry, but there's nothing I can do about it. All we can do is wait. If I
+miss the announcement of nested virtualization support, please open an issue.
 
 ## Features
 
