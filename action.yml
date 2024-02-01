@@ -47,6 +47,13 @@ runs:
         GH_TOKEN: ${{ github.token }}
         INPUT_LIMA: ${{ inputs.lima }}
       run: |
+        os="${{ matrix.os }}"
+        if [ "os" == "macos-14" ]
+        then
+            brew install lima
+            exit 0
+        fi
+
         if [ $INPUT_LIMA == "latest" ]
         then
             LIMA_VERSION=$(gh release -R lima-vm/lima view --json tagName -q ".tagName")
@@ -55,7 +62,7 @@ runs:
         fi
 
         echo "::group::Installing Lima version $LIMA_VERSION"
-        curl -fsSL "https://github.com/lima-vm/lima/releases/download/${LIMA_VERSION}/lima-${LIMA_VERSION:1}-$(uname -s)-$(uname -m).tar.gz" | tar -xzvf - -C /usr/local/bin bin/
+        curl -fsSL "https://github.com/lima-vm/lima/releases/download/${LIMA_VERSION}/lima-${LIMA_VERSION:1}-$(uname -s)-$(uname -m).tar.gz" | tar Cxzvm /usr/local
         echo "::endgroup::"
       shell: bash
     - name: Install Colima
@@ -63,6 +70,13 @@ runs:
         GH_TOKEN: ${{ github.token }}
         INPUT_COLIMA: ${{ inputs.colima }}
       run: |
+        os="${{ matrix.os }}"
+        if [ "os" == "macos-14" ]
+        then
+            brew install colima
+            exit 0
+        fi
+
         if [ $INPUT_COLIMA == "latest" ]
         then
             COLIMA_VERSION=$(gh release -R abiosoft/colima view --json tagName -q ".tagName")
