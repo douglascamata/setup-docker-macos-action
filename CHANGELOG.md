@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- Fail fast when running on arm64 macOS runners (`macos-14` public runners) ([#28](https://github.com/douglascamata/setup-docker-macos-action/pull/28)).
+  - None of the arm64 processors on Apple computers support nested virtualization as of today (Feb 1st 2024).
+
 ## [v1-alpha.11] - 2024-01-05
 
 ### Added
