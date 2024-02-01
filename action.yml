@@ -47,8 +47,8 @@ runs:
         GH_TOKEN: ${{ github.token }}
         INPUT_LIMA: ${{ inputs.lima }}
       run: |
-        os="${{ matrix.os }}"
-        if [ "os" == "macos-14" ]
+        OS="${{ matrix.os }}"
+        if [ "$OS" == "macos-14" ]
         then
             brew install lima
             exit 0
@@ -70,8 +70,8 @@ runs:
         GH_TOKEN: ${{ github.token }}
         INPUT_COLIMA: ${{ inputs.colima }}
       run: |
-        os="${{ matrix.os }}"
-        if [ "os" == "macos-14" ]
+        OS="${{ matrix.os }}"
+        if [ "$OS" == "macos-14" ]
         then
             brew install colima
             exit 0
