@@ -23,6 +23,8 @@ jobs:
       - name: Setup tmate session
         if: ${{ failure() }}
         uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
       - name: Get the Docker client version
         run: |
           echo "Docker client version: ${{ steps.docker.outputs.docker-client-version }}"
