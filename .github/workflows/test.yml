@@ -8,6 +8,7 @@ jobs:
   setup-docker:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [macos-12, macos-13, macos-14]
     name: A job to perform a self-test on this Github Action
