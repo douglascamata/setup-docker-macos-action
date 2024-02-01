@@ -53,7 +53,7 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 [Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.12...HEAD
-[v1-alpha.11]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.11...v1-alpha.12
+[v1-alpha.12]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.11...v1-alpha.12
 [v1-alpha.11]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.10...v1-alpha.11
 [v1-alpha.10]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.9...v1-alpha.10
 [v1-alpha.9]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.8...v1-alpha.9
