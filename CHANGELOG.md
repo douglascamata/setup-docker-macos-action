@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
-## [Unreleased]
+## [unreleased]
+
+## [v1-alpha.12] - 2024-02-01
 
 ### Added
 
@@ -50,7 +52,8 @@ and this project adheres to [Semantic Versioning].
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-[unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.9...HEAD
+[Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.12...HEAD
+[v1-alpha.11]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.11...v1-alpha.12
 [v1-alpha.11]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.10...v1-alpha.11
 [v1-alpha.10]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.9...v1-alpha.10
 [v1-alpha.9]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.8...v1-alpha.9
