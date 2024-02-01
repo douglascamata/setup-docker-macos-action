@@ -30,11 +30,22 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Safety check
+    - name: OS safety check
       if: runner.os != 'macOS'
       run: |
         echo "Not a macOS runner, exiting."
         exit 1
+      shell: bash
+    - name: ARM64 safety check
+      run: |
+        arch_name=$(uname -m)
+        if [ "$arch_name" = "arm64" ]
+        then
+            echo "Detected M-series processor runner without nested virtualization support, exiting."
+            exit 1
+        else
+            echo "Running on supported architecture: ${arch_name}"
+        fi
       shell: bash
     - name: Update Homebrew
       run: |

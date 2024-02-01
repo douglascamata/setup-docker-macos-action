@@ -11,6 +11,25 @@ I intend this action to be kept as simple as possible:
 - No other OS will be supported.
 - Binaries will be downloaded directly from the source when possible.
 
+# Currently supported public runner images
+
+- `macos-12`
+- `macos-13`
+
+# ARM64 processors (M1, M2, M3 series) used on `macos-14` images are unsupported!
+
+Yes, exactly what you just read. These processors do not support nested
+virtualization. This means Colima can't start the VM to run Docker.
+
+For the M1 processor there is no hope. It lacks the hardware support for this.
+
+The M2 and M3 processors have such hardware support, but no software support
+from Apple's Hypervisor framework (so no hopes for QEMU) or Virtualization
+framework (alternative to QEMU).
+
+I'm sorry, but there's nothing I can do about it. All we can do is wait. If I
+miss the announcement of nested virtualization support, please open an issue.
+
 ## Features
 
 - Safety check to ensure the action is running in macOS.
