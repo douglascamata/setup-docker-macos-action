@@ -55,7 +55,7 @@ runs:
         fi
 
         echo "::group::Installing Lima version $LIMA_VERSION"
-        curl -fsSL "https://github.com/lima-vm/lima/releases/download/${LIMA_VERSION}/lima-${LIMA_VERSION:1}-$(uname -s)-$(uname -m).tar.gz" | tar -xzvf --strip-components=1 -C /usr/local/bin bin/ -
+        curl -fsSL "https://github.com/lima-vm/lima/releases/download/${LIMA_VERSION}/lima-${LIMA_VERSION:1}-$(uname -s)-$(uname -m).tar.gz" | tar -xzvf - --strip-components=1 -C /usr/local/bin bin/
         echo "::endgroup::"
       shell: bash
     - name: Install Colima
