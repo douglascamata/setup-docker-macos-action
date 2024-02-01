@@ -20,6 +20,9 @@ jobs:
       - name: Setup Docker on macOS using Colima, Lima-VM, and Homebrew.
         uses: ./ # Uses an action in the root directory
         id: docker
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
       - name: Get the Docker client version
         run: |
           echo "Docker client version: ${{ steps.docker.outputs.docker-client-version }}"
