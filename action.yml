@@ -30,10 +30,16 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Safety check
+    - name: OS safety check
       if: runner.os != 'macOS'
       run: |
         echo "Not a macOS runner, exiting."
+        exit 1
+      shell: bash
+    - name: M-series safety check
+      if: matrix.os == 'macos-14'
+      run: |
+        echo "Detected M-series processor runner without nested virtualization support, exiting."
         exit 1
       shell: bash
     - name: Update Homebrew

@@ -11,6 +11,15 @@ I intend this action to be kept as simple as possible:
 - No other OS will be supported.
 - Binaries will be downloaded directly from the source when possible.
 
+# M1, M2, M3 series are unsupported!
+
+Yes, exactly what you just read. These processors do not support nested
+virtualization. This means Colima can't start the VM to run Docker.
+
+I'm sorry, but there's nothing I can do about it. All we can do is wait until
+an M-series processor supports it and Github adopts such processors for action
+runners.
+
 ## Features
 
 - Safety check to ensure the action is running in macOS.
