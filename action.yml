@@ -40,6 +40,7 @@ runs:
       run: |
         arch_name=$(uname -m)
         if [ "$arch_name" = "arm64" ]
+        then
             echo "Detected M-series processor runner without nested virtualization support, exiting."
             exit 1
         else
