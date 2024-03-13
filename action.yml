@@ -95,7 +95,7 @@ runs:
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: |
         echo "::group::Installing QEMU, Docker client, and Docker Compose"
-        brew install docker docker-compose qemu --force 2>&1 | tee install.log
+        brew install docker docker-compose qemu --overwrite 2>&1 | tee install.log
         echo "::endgroup::"
       shell: bash
     - name: Configure Docker Compose plugin
