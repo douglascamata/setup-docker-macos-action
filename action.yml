@@ -51,6 +51,8 @@ runs:
       run: |
         echo "::group::Updating Homebrew"
         brew update --preinstall
+        brew doctor
+        brew unlink python
         echo "::endgroup::"
       shell: bash
     - name: Install Lima
