@@ -50,6 +50,10 @@ runs:
     - uses: cachix/install-nix-action@v26
       with:
         nix_path: nixpkgs=channel:nixpkgs-23.11-darwin
+    - name: Check nix channel
+      run: |
+        nix-channel --update
+      shell: bash
     - name: Install Colima
       run: |
         echo "::group::Installing Colima"
