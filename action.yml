@@ -53,7 +53,7 @@ runs:
     - name: Install Colima
       run: |
         echo "::group::Installing Colima"
-        nix-env -i colima -f 'nixpkgs'
+        nix-env -i colima
         echo "::endgroup::"
       shell: bash
     - name: Configure Docker Compose plugin
