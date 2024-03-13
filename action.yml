@@ -95,7 +95,7 @@ runs:
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: |
         brew unlink python@3 || true
-        brew uninstall python@3 || true
+        brew uninstall --ignore-dependencies python@3 || true
         brew install python@3 || true
         brew link --overwrite --force python@3
       shell: bash
