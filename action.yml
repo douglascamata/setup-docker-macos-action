@@ -47,7 +47,9 @@ runs:
             echo "Running on supported architecture: ${arch_name}"
         fi
       shell: bash
-    - uses: nixbuild/nix-quick-install-action@v26
+    - uses: cachix/install-nix-action@v26
+      with:
+        nix_path: nixpkgs=channel:nixos-stable
     - name: Install Colima
       run: |
         echo "::group::Installing Colima"
