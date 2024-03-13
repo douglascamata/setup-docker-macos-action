@@ -95,7 +95,7 @@ runs:
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: |
         brew install python@3 || true
-        brew link --overwrite python@3
+        brew link --overwrite --force python@3
       shell: bash
     - name: Install QEMU, Docker client, and Docker Compose
       env:
