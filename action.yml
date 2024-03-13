@@ -47,9 +47,7 @@ runs:
             echo "Running on supported architecture: ${arch_name}"
         fi
       shell: bash
-    - uses: cachix/install-nix-action@v26
-      with:
-        nix_path: nixpkgs=channel:nixos-23.11
+    - uses: DeterminateSystems/nix-installer-action@main
     - name: Check nix channel
       run: |
         nix-channel --list
@@ -58,7 +56,7 @@ runs:
     - name: Install Colima
       run: |
         echo "::group::Installing Colima"
-        nix-env -iA nixos.colima
+        nix-env -iA nixpkgs.colima
         echo "::endgroup::"
       shell: bash
     - name: Configure Docker Compose plugin
