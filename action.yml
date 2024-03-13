@@ -96,8 +96,7 @@ runs:
       run: |
         brew unlink python@3 || true
         brew uninstall --ignore-dependencies python@3 || true
-        brew install --overwrite --force python@3 || true
-        brew link --overwrite --force python@3
+        brew install --overwrite --force python@3
       shell: bash
     - name: Install QEMU, Docker client, and Docker Compose
       env:
