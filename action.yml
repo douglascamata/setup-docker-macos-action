@@ -51,9 +51,10 @@ runs:
       run: |
         echo "::group::Updating Homebrew"
         brew update --preinstall
-        brew doctor
-        brew unlink python
         echo "::endgroup::"
+        echo "unlink python"
+        brew unlink python
+
       shell: bash
     - name: Install Lima
       env:
@@ -96,8 +97,11 @@ runs:
         HOMEBREW_NO_INSTALL_UPGRADE: "1"
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: |
+        echo "install QEMU"
+        brew install qemu
+        
         echo "::group::Installing QEMU, Docker client, and Docker Compose"
-        brew install docker docker-compose qemu --overwrite 2>&1 | tee install.log
+        brew install docker docker-compose --overwrite 2>&1 | tee install.log
         echo "::endgroup::"
       shell: bash
     - name: Configure Docker Compose plugin
