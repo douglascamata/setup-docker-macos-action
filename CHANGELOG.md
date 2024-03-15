@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning].
 
 ### Fixed
 
-- Added workaround for Python conflict in Github Action runner images ([34](https://github.com/douglascamata/setup-docker-macos-action/pull/34))
+- Added workaround for Python conflict in Github Action runner images ([#34](https://github.com/douglascamata/setup-docker-macos-action/pull/34))
 
 ## [v1-alpha.12] - 2024-02-01
 
