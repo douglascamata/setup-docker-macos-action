@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [unreleased]
 
+## [v1-alpha.13] - 2024-03-18
+
 ### Fixed
 
 - Added workaround for Python conflict in Github Action runner images ([#34](https://github.com/douglascamata/setup-docker-macos-action/pull/34))
@@ -56,7 +58,8 @@ and this project adheres to [Semantic Versioning].
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-[Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.12...HEAD
+[Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.13...HEAD
+[v1-alpha.13]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.12...v1-alpha.13
 [v1-alpha.12]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.11...v1-alpha.12
 [v1-alpha.11]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.10...v1-alpha.11
 [v1-alpha.10]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.9...v1-alpha.10
