@@ -18,6 +18,14 @@ I intend this action to be kept as simple as possible:
 
 # ARM64 processors (M1, M2, M3 series) used on `macos-14` images are unsupported!
 
+> [!WARNING]
+> Apple is adding support for nested virtualization on M3 processors and beyond
+> on macOS 15 (see [Apple Developer docs][apple-developer-docs-nested-virtualization]).
+> This action will be updated to support it as soon as Github starts to update
+> the runners accordingly.
+
+[apple-developer-docs-nested-virtualization]: https://developer.apple.com/documentation/virtualization/vzgenericplatformconfiguration/4360553-isnestedvirtualizationsupported
+
 Yes, exactly what you just read. These processors do not support nested
 virtualization. This means Colima can't start the VM to run Docker.
 
