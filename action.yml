@@ -73,7 +73,13 @@ runs:
       env:
         GH_TOKEN: ${{ github.token }}
         INPUT_COLIMA: ${{ inputs.colima }}
-      run: |
+      run: |        if [ $INPUT_COLIMA == "latest" ]
+        then
+            COLIMA_VERSION=$(gh release -R abiosoft/colima view --json tagName -q ".tagName")
+        else
+            COLIMA_VERSION=$INPUT_COLIMA
+        fi
+
         echo "::group::Installing Colima version $COLIMA_VERSION"
         curl -LO https://github.com/abiosoft/colima/releases/download/${COLIMA_VERSION}/colima-$(uname)-$(uname -m)
 
