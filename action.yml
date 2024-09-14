@@ -130,9 +130,9 @@ runs:
       run: brew upgrade qemu
       shell: bash
     - name: Start SSH debug session
-      uses: lhotari/action-upterm@v1
+      uses: mxschmitt/action-tmate@v3
       with:
-        limit-access-to-users: douglascamata
+        limit-access-to-actor: true
     - name: Start Colima
       env:
         COLIMA_NETWORK_ADDRESS: ${{ inputs.colima-network-address }}
