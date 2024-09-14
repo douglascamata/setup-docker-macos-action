@@ -142,7 +142,7 @@ runs:
         fi
         echo "::group::Starting Colima with args: $COLIMA_ARGS"
         colima start $COLIMA_ARGS &
-        tail -f /Users/runner/.colima/_lima/colima/serial*.log
+        while ! tail -f /Users/runner/.colima/_lima/colima/serial*.log ; do sleep 1 ; done
         echo "::endgroup::"
       shell: bash
     - name: Start SSH debug session
