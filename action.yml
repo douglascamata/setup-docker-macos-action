@@ -129,6 +129,10 @@ runs:
         HOMEBREW_NO_INSTALL_UPGRADE: "1"
       run: brew upgrade qemu
       shell: bash
+    - name: Start SSH debug session
+      uses: lhotari/action-upterm@v1
+      with:
+        limit-access-to-users: douglascamata
     - name: Start Colima
       env:
         COLIMA_NETWORK_ADDRESS: ${{ inputs.colima-network-address }}
