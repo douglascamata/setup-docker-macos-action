@@ -25,7 +25,7 @@ jobs:
           upgrade-qemu: false
           lima: v0.22.0
           colima: v0.7.3
-          colima-network-address: true
+          colima-network-address: false
       - name: Get the Docker client version
         run: |
           echo "Docker client version: ${{ steps.docker.outputs.docker-client-version }}"
