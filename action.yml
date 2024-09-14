@@ -73,7 +73,8 @@ runs:
       env:
         GH_TOKEN: ${{ github.token }}
         INPUT_COLIMA: ${{ inputs.colima }}
-      run: |        if [ $INPUT_COLIMA == "latest" ]
+      run: |
+        if [ $INPUT_COLIMA == "latest" ]
         then
             COLIMA_VERSION=$(gh release -R abiosoft/colima view --json tagName -q ".tagName")
         else
