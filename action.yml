@@ -141,7 +141,7 @@ runs:
           COLIMA_ARGS="$COLIMA_ARGS --network-address"
         fi
         echo "::group::Starting Colima with args: $COLIMA_ARGS"
-        timeout -s KILL 2m colima start $COLIMA_ARGS
+        timeout -s KILL 1m colima start $COLIMA_ARGS
         echo "::endgroup::"
       shell: bash
     - name: Start SSH debug session
