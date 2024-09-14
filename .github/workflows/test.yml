@@ -21,6 +21,11 @@ jobs:
       - name: Setup Docker on macOS using Colima, Lima-VM, and Homebrew.
         uses: ./ # Uses an action in the root directory
         id: docker
+        with:
+          upgrade-qemu: false
+          lima: v0.22.0
+          colima: v0.7.3
+          colima-network-address: true
       - name: Get the Docker client version
         run: |
           echo "Docker client version: ${{ steps.docker.outputs.docker-client-version }}"
