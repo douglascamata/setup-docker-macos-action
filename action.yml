@@ -105,7 +105,7 @@ runs:
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: |
         echo "::group::Installing QEMU, Docker client, and Docker Compose"
-        brew install docker docker-compose qemu coreutils 2>&1 | tee install.log
+        brew install docker docker-compose qemu 2>&1 | tee install.log
         echo "::endgroup::"
       shell: bash
     - name: Configure Docker Compose plugin
@@ -141,7 +141,8 @@ runs:
           COLIMA_ARGS="$COLIMA_ARGS --network-address"
         fi
         echo "::group::Starting Colima with args: $COLIMA_ARGS"
-        timeout -s KILL 1m colima start $COLIMA_ARGS
+        colima start $COLIMA_ARGS &
+        tail -f /Users/runner/.colima/_lima/colima/serial*.log
         echo "::endgroup::"
       shell: bash
     - name: Start SSH debug session
