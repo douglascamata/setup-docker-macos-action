@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-13]
+        os: [macos-12, macos-13]
     name: A job to perform a self-test on this Github Action
     steps:
       # To use this repository's private action,
@@ -21,11 +21,6 @@ jobs:
       - name: Setup Docker on macOS using Colima, Lima-VM, and Homebrew.
         uses: ./ # Uses an action in the root directory
         id: docker
-        with:
-          upgrade-qemu: false
-          lima: v0.23.2
-          colima: v0.7.5
-          colima-network-address: false
       - name: Get the Docker client version
         run: |
           echo "Docker client version: ${{ steps.docker.outputs.docker-client-version }}"
