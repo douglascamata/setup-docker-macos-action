@@ -116,15 +116,6 @@ runs:
         mkdir -p ~/.docker/cli-plugins
         ln -sfn "$(brew --prefix)/opt/docker-compose/bin/docker-compose" ~/.docker/cli-plugins/docker-compose
       shell: bash
-    - name: Check QEMU version
-      if: inputs.upgrade-qemu != 'true'
-      run: |
-        if grep -q "qemu 8.1.0 is already installed" install.log
-        then
-            echo "Detected broken QEMU bottle installed by brew, removing and reinstalling."
-            brew reinstall qemu
-        fi
-      shell: bash
     - name: Upgrade QEMU
       if: inputs.upgrade-qemu == 'true'
       env:
