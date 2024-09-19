@@ -9,13 +9,18 @@ and this project adheres to [Semantic Versioning].
 
 ### Fixed
 
-- Pin the version of QEMU to 9.0.2 to avoid an issue with version 9.1.0 that prevents the Colima VM from starting ([#40](https://github.com/douglascamata/setup-docker-macos-action/pull/40))
+- Pin the version of QEMU to 9.0.2 to avoid an issue with version 9.1.0 that prevents the Colima VM from starting ([#40](https://github.com/douglascamata/setup-docker-macos-action/pull/40)).
+
+
+### Removed
+
+- Support for `macos-13` action runners has been removed as even with QEMU 9.0.2 the Colima VM fails to start. This might be readded in the future if the issue is fixed ([#40](https://github.com/douglascamata/setup-docker-macos-action/pull/40)).
 
 ## [v1-alpha.13] - 2024-03-18
 
 ### Fixed
 
-- Added workaround for Python conflict in Github Action runner images ([#34](https://github.com/douglascamata/setup-docker-macos-action/pull/34))
+- Added workaround for Python conflict in Github Action runner images ([#34](https://github.com/douglascamata/setup-docker-macos-action/pull/34)).
 
 ## [v1-alpha.12] - 2024-02-01
 
