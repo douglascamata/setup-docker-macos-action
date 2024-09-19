@@ -23,8 +23,8 @@ jobs:
         id: docker
         with:
           upgrade-qemu: false
-          lima: v0.22.0
-          colima: v0.7.3
+          lima: v0.23.2
+          colima: v0.7.5
           colima-network-address: false
       - name: Get the Docker client version
         run: |
