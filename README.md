@@ -13,7 +13,6 @@ I intend this action to be kept as simple as possible:
 
 # Currently supported public runner images
 
-- `macos-12`
 - `macos-13`
 
 # ARM64 processors (M1, M2, M3 series) used on `macos-14` images are unsupported!
