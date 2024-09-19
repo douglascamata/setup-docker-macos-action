@@ -135,7 +135,7 @@ runs:
           COLIMA_ARGS="$COLIMA_ARGS --network-address"
         fi
         echo "::group::Starting Colima with args: $COLIMA_ARGS"
-        colima start $COLIMA_ARGS &
+        colima start $COLIMA_ARGS
         echo "::endgroup::"
       shell: bash
     - id: docker-client-version
