@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [unreleased]
 
+### Fixed
+
+- Pin the version of QEMU to 9.0.2 to avoid an issue with version 9.1.0 that prevents the Colima VM from starting ([#40](https://github.com/douglascamata/setup-docker-macos-action/pull/40))
+
 ## [v1-alpha.13] - 2024-03-18
 
 ### Fixed
