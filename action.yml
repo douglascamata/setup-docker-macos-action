@@ -106,6 +106,7 @@ runs:
       run: |
         echo "::group::Installing QEMU, Docker client, and Docker Compose"
         brew install docker docker-compose
+        # Installing QEMU 9.0.2 as a temporary workaround. Version 9.1.0 seems to be broken with Lima/Colima at the moment.
         wget  https://raw.githubusercontent.com/Homebrew/homebrew-core/f1a9cf104a9a51779c7a532b658c490f69974839/Formula/q/qemu.rb
         brew install qemu.rb 2>&1 | tee install.log
         echo "::endgroup::"
@@ -144,14 +145,8 @@ runs:
         fi
         echo "::group::Starting Colima with args: $COLIMA_ARGS"
         colima start $COLIMA_ARGS &
-        while ! tail -f /Users/runner/.colima/_lima/colima/serial*.log ; do sleep 1 ; done
         echo "::endgroup::"
       shell: bash
-    - name: Start SSH debug session
-      uses: mxschmitt/action-tmate@v3
-      with:
-        limit-access-to-actor: true
-        detached: true
     - id: docker-client-version
       run: |
         EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
