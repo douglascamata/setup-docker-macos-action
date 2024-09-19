@@ -7,10 +7,11 @@ and this project adheres to [Semantic Versioning].
 
 ## [unreleased]
 
+## [v1-alpha.14] - 2024-09-19
+
 ### Fixed
 
 - Pin the version of QEMU to 9.0.2 to avoid an issue with version 9.1.0 that prevents the Colima VM from starting ([#40](https://github.com/douglascamata/setup-docker-macos-action/pull/40)).
-
 
 ### Removed
 
@@ -67,7 +68,8 @@ and this project adheres to [Semantic Versioning].
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-[Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.13...HEAD
+[Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.14...HEAD
+[v1-alpha.14]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.13...v1-alpha.14
 [v1-alpha.13]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.12...v1-alpha.13
 [v1-alpha.12]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.11...v1-alpha.12
 [v1-alpha.11]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.10...v1-alpha.11
