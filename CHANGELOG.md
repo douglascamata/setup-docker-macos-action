@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning].
 
 ## [unreleased]
 
+### Added
+
+- Support for native virtualization provided by macOS Virtualization framework. In detail, now Lima VMs are configured to use `vz` as the VM type and `virtiofs` for mounts. This change leads to significant stability and performance improvements ([#42](https://github.com/douglascamata/setup-docker-macos-action/pull/42)).
+
+### Removed
+
+- Support for QEMU virtualization, which has historically been fragile and hard to maintain. The related `upgrade-qemu` config flag has also been removed ([#42](https://github.com/douglascamata/setup-docker-macos-action/pull/42)).
+
 ## [v1-alpha.14] - 2024-09-19
 
 ### Fixed
