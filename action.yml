@@ -1,10 +1,6 @@
 name: "Setup Docker on macOS"
 description: "Setup Docker on macOS using Colima, Lima-VM, and Homebrew."
 inputs:
-  upgrade-qemu:
-    description: "Upgrade QEMU to the latest version. Add a lot of time to the job."
-    required: false
-    default: "false"
   lima:
     description: "Lima version. Defaults to the latest version."
     required: false
@@ -98,17 +94,14 @@ runs:
         brew uninstall --ignore-dependencies python@3 || true
         brew install --overwrite --force python@3
       shell: bash
-    - name: Install QEMU, Docker client, and Docker Compose
+    - name: Install Docker client, and Docker Compose
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
         HOMEBREW_NO_INSTALL_UPGRADE: "1"
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: |
-        echo "::group::Installing QEMU, Docker client, and Docker Compose"
+        echo "::group::Installing Docker client and Docker Compose"
         brew install docker docker-compose
-        # Installing QEMU 9.0.2 as a temporary workaround. Version 9.1.0 seems to be broken with Lima/Colima at the moment.
-        wget  https://raw.githubusercontent.com/Homebrew/homebrew-core/f1a9cf104a9a51779c7a532b658c490f69974839/Formula/q/qemu.rb
-        brew install qemu.rb 2>&1 | tee install.log
         echo "::endgroup::"
       shell: bash
     - name: Configure Docker Compose plugin
@@ -116,20 +109,13 @@ runs:
         mkdir -p ~/.docker/cli-plugins
         ln -sfn "$(brew --prefix)/opt/docker-compose/bin/docker-compose" ~/.docker/cli-plugins/docker-compose
       shell: bash
-    - name: Upgrade QEMU
-      if: inputs.upgrade-qemu == 'true'
-      env:
-        HOMEBREW_NO_AUTO_UPDATE: "1"
-        HOMEBREW_NO_INSTALL_UPGRADE: "1"
-      run: brew upgrade qemu
-      shell: bash
     - name: Start Colima
       env:
         COLIMA_NETWORK_ADDRESS: ${{ inputs.colima-network-address }}
       run: |
         CPU_COUNT=$(sysctl -n hw.ncpu)
         MEMORY=$(sysctl hw.memsize | awk '{print $2/1024/1024/1024}')
-        COLIMA_ARGS="--cpu $CPU_COUNT --memory $MEMORY --arch x86_64"
+        COLIMA_ARGS="--cpu $CPU_COUNT --memory $MEMORY --arch x86_64 --vm-type=vz --mount-type=virtiofs"
         if [ $COLIMA_NETWORK_ADDRESS == "true" ]
         then
           COLIMA_ARGS="$COLIMA_ARGS --network-address"
