@@ -44,14 +44,6 @@ miss the announcement of nested virtualization support, please open an issue.
 
 ## Inputs
 
-## `inputs.upgrade-qemu` (defaults to `"false"`)
-
-The action, by default, will not try to upgrade QEMU if it's already installed.
-The reason is that installing QEMU takes a considerable amount of time.
-
-If this is set to `"true"`, the action will attempt an upgrade of QEMU to the
-latest version available in Homebrew.
-
 ## `inputs.lima` (defaults to `"latest"`)
 
 The version of Lima to install. This can be any valid version from [Lima releases page](https://github.com/lima-vm/lima/releases)
