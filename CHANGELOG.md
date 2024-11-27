@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning].
 
 - Support for native virtualization provided by macOS Virtualization framework. In detail, now Lima VMs are configured to use `vz` as the VM type and `virtiofs` for mounts. This change leads to significant stability and performance improvements ([#42](https://github.com/douglascamata/setup-docker-macos-action/pull/42)).
 
+- Support for passing custom parameters to the `colima start` command through the `colima-additional-options` input field. Please use this field carefully, as a wrong, obsolete, or unsupported set of options may break Colima startup ([#43](https://github.com/douglascamata/setup-docker-macos-action/pull/43)).
+
 ### Removed
 
 - Support for QEMU virtualization, which has historically been fragile and hard to maintain. The related `upgrade-qemu` config flag has also been removed ([#42](https://github.com/douglascamata/setup-docker-macos-action/pull/42)).

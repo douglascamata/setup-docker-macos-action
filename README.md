@@ -57,6 +57,11 @@ The version of Colima to install. This can be any valid version from [Colima rel
 Starts Colima with a reachable network address through passing `--network-address`
 to the `colima start` command. Startup will be slower.
 
+## `inputs.colima-additional-options`
+
+Adds custom parameters to the `colima start` command. Please use this field carefully,
+as a wrong, obsolete, or unsupported set of parameters may break Colima startup.
+
 ## Outputs
 
 ## `colima-version`

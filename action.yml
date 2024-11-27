@@ -13,6 +13,9 @@ inputs:
     description: "Starts Colima with a reachable network address (`--network-address`). Makes Colima startup slower."
     required: false
     default: "false"
+  colima-additional-options:
+    description: "Starts Colima with additional options. May break Colima startup."
+    required: false
 outputs:
   colima-version:
     value: ${{ steps.colima-version.outputs.version }}
@@ -111,6 +114,7 @@ runs:
       shell: bash
     - name: Start Colima
       env:
+        COLIMA_ADDITIONAL_OPTIONS: ${{ inputs.colima-additional-options }}
         COLIMA_NETWORK_ADDRESS: ${{ inputs.colima-network-address }}
       run: |
         CPU_COUNT=$(sysctl -n hw.ncpu)
@@ -119,6 +123,10 @@ runs:
         if [ $COLIMA_NETWORK_ADDRESS == "true" ]
         then
           COLIMA_ARGS="$COLIMA_ARGS --network-address"
+        fi
+        if [ -n "$COLIMA_ADDITIONAL_OPTIONS" ]
+        then
+          COLIMA_ARGS="$COLIMA_ARGS $COLIMA_ADDITIONAL_OPTIONS"
         fi
         echo "::group::Starting Colima with args: $COLIMA_ARGS"
         colima start $COLIMA_ARGS
