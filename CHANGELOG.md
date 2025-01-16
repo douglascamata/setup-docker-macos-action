@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- Run `brew update` without `--preinstall`, as it was removed from Homebrew since a while and 4.4.16 started rejecting it. ([#45](https://github.com/douglascamata/setup-docker-macos-action/pull/45))
+
 ## [v1-alpha.15] - 2024-11-27
 
 ### Added
