@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [v1-alpha.16] - 2025-01-16
+
 ### Fixed
 
 - Run `brew update` without `--preinstall`, as it was removed from Homebrew since a while and 4.4.16 started rejecting it. ([#45](https://github.com/douglascamata/setup-docker-macos-action/pull/45))
@@ -84,7 +86,8 @@ and this project adheres to [Semantic Versioning].
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-[Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.15...HEAD
+[Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.16...HEAD
+[v1-alpha.16]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.15...v1-alpha.16
 [v1-alpha.15]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.14...v1-alpha.15
 [v1-alpha.14]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.13...v1-alpha.14
 [v1-alpha.13]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.12...v1-alpha.13
