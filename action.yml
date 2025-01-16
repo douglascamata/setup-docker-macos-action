@@ -49,7 +49,7 @@ runs:
     - name: Update Homebrew
       run: |
         echo "::group::Updating Homebrew"
-        brew update --preinstall
+        brew update
         echo "::endgroup::"
       shell: bash
     - name: Install Lima
