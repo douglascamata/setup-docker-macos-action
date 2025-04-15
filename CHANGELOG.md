@@ -91,7 +91,7 @@ This release is just a retag of `v1-alpha.16` as `v1.0.0`.
 
 <!-- Versions -->
 [Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1.0.0...HEAD
-[v1.0.0]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.16...v1.0.
+[v1.0.0]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.16...v1.0.0
 [v1-alpha.16]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.15...v1-alpha.16
 [v1-alpha.15]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.14...v1-alpha.15
 [v1-alpha.14]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.13...v1-alpha.14
