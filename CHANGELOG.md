@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [v1.0.0] - 2025-04-16
+
+This release is just a retag of `v1-alpha.16` as `v1.0.0`.
+
 ## [v1-alpha.16] - 2025-01-16
 
 ### Fixed
@@ -86,7 +90,8 @@ and this project adheres to [Semantic Versioning].
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-[Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.16...HEAD
+[Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1.0.0...HEAD
+[v1.0.0]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.16...v1.0.
 [v1-alpha.16]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.15...v1-alpha.16
 [v1-alpha.15]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.14...v1-alpha.15
 [v1-alpha.14]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.13...v1-alpha.14
