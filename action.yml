@@ -87,16 +87,6 @@ runs:
         install colima-$(uname)-$(uname -m) /usr/local/bin/colima
         echo "::endgroup::"
       shell: bash
-    - name: Workaround for Python conflicts in GHA Runners
-      env:
-        HOMEBREW_NO_AUTO_UPDATE: "1"
-        HOMEBREW_NO_INSTALL_UPGRADE: "1"
-        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
-      run: |
-        brew unlink python@3 || true
-        brew uninstall --ignore-dependencies python@3 || true
-        brew install --overwrite --force python@3
-      shell: bash
     - name: Install Docker client, and Docker Compose
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
