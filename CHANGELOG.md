@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [v1.0.1] - 2025-10-07
+
 ### Added
 
 - Support for macOS 15 on Intel CPUs ([#49](https://github.com/douglascamata/setup-docker-macos-action/pull/49)).
@@ -98,7 +100,8 @@ This release is just a retag of `v1-alpha.16` as `v1.0.0`.
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-[Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1.0.1...HEAD
+[v1.0.1]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1.0.0...v1.0.1
 [v1.0.0]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.16...v1.0.0
 [v1-alpha.16]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.15...v1-alpha.16
 [v1-alpha.15]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.14...v1-alpha.15
