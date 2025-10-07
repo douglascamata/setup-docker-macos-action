@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- Support for macOS 15 on Intel CPUs ([#49](https://github.com/douglascamata/setup-docker-macos-action/pull/49)).
+
+### Removed
+
+- Python conflicts workaround that was previously required for QEMU dependency. Since this action no longer installs QEMU as a dependency, the workaround is no longer needed ([#48](https://github.com/douglascamata/setup-docker-macos-action/pull/48)).
+
 ## [v1.0.0] - 2025-04-16
 
 This release is just a retag of `v1-alpha.16` as `v1.0.0`.
