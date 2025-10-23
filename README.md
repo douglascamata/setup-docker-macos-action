@@ -14,6 +14,9 @@ I intend this action to be kept as simple as possible:
 ## Currently supported public runner images
 
 - `macos-13`
+- `macos-15`
+- `macos-15-large`
+- `macos-15-intel`
 
 ## `arm64` processors (M-series) used on `macos-14` images and beyond are unsupported
 
