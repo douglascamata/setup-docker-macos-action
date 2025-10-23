@@ -49,16 +49,28 @@ miss the announcement of nested virtualization support, please open an issue.
 
 ### `inputs.lima` (defaults to `"latest"`)
 
-The version of Lima to install. This can be any valid version from [Lima releases page](https://github.com/lima-vm/lima/releases)
+The version of Lima to install. This can be any valid tag from [Lima releases page](https://github.com/lima-vm/lima/tags)
 
 ### `inputs.colima` (defaults to `"latest"`)
 
-The version of Colima to install. This can be any valid version from [Colima releases page](https://github.com/abiosoft/colima/releases)
+The version of Colima to install. This can be any valid tag from [Colima releases page](https://github.com/abiosoft/colima/tags)
 
 ### `inputs.colima-network-address` (defaults to `"false"`)
 
 Starts Colima with a reachable network address through passing `--network-address`
 to the `colima start` command. Startup will be slower.
+
+### Example
+
+```yml
+- name: Setup Docker on macOS
+  id: setup-docker
+  uses: douglascamata/setup-docker-macos-action@v1.0.1
+  with:
+    lima: v1.2.1
+    colima: v0.9.1
+    colima-network-address: false
+```
 
 ### `inputs.colima-additional-options`
 
@@ -78,3 +90,13 @@ The version of the Docker client that was installed.
 ### `docker-compose-version`
 
 The version of Docker Compose that was installed.
+
+### Example
+
+```yml
+- name: Log versions
+  run: |
+    echo "Colima version: ${{ steps.setup-docker.outputs.colima-version }}"
+    echo "Docker client version: ${{ steps.setup-docker.outputs.docker-client-version }}"
+    echo "Docker compose version: ${{ steps.setup-docker.outputs.docker-compose-version }}"
+```
