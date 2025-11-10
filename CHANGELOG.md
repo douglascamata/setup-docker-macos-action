@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [v1.0.2] - 2025-11-10
+
 ### Fixed
 
 - Installation of Lima v2.0.x cannot create `/usr/local/libexec` directory due to permission issues ([#53](https://github.com/douglascamata/setup-docker-macos-action/pull/53)).
@@ -104,7 +106,8 @@ This release is just a retag of `v1-alpha.16` as `v1.0.0`.
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-[Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1.0.2...HEAD
+[v1.0.2]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1.0.1...v1.0.2
 [v1.0.1]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1.0.0...v1.0.1
 [v1.0.0]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.16...v1.0.0
 [v1-alpha.16]: https://github.com/douglascamata/setup-docker-macos-action/compare/v1-alpha.15...v1-alpha.16
