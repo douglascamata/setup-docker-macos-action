@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- Installation of Lima v2.0.x cannot create `/usr/local/libexec` directory due to permission issues ([#53](https://github.com/douglascamata/setup-docker-macos-action/pull/53)).
+
 ## [v1.0.1] - 2025-10-07
 
 ### Added
