@@ -66,7 +66,7 @@ runs:
 
         echo "::group::Installing Lima version $LIMA_VERSION"
 
-        if [ $LIMA_VERSION == v2.* ]
+        if [[ $LIMA_VERSION == v2.* ]]
         then
             sudo mkdir /usr/local/libexec
             sudo chown $UID:$GID /usr/local/libexec
