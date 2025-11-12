@@ -38,7 +38,7 @@ jobs:
       - name: Remove default route via Colima IP
         if: ${{ matrix['network-address'] == true }}
         run: |
-          colima ssh -- sudo ip route del default via ${COLIMA_IP}
+          colima ssh -- sudo ip route del default via $COLIMA_IP
       - name: Run nginx container to verify Docker is working
         if: ${{ matrix['network-address'] == true }}
         id: nginx-test
