@@ -28,6 +28,7 @@ jobs:
         if: ${{ matrix['network-address'] == true }}
         run: |
           COLIMA_IP=$(colima list | grep -E "^\s*default\s+" | awk '{print $NF}')
+          echo "Colima IP address: $COLIMA_IP"
           echo "COLIMA_IP=$COLIMA_IP" >> $GITHUB_ENV
       - name: Run nginx container to verify Docker is working
         if: ${{ matrix['network-address'] == true }}
