@@ -34,8 +34,30 @@ jobs:
         if: ${{ matrix['network-address'] == true }}
         id: nginx-test
         run: |
-          docker run --rm -d -p 8080:80 --name test-nginx nginx:latest
-          sleep 5
+          docker run --rm -d -p 8080:80 --name test-nginx \
+            --health-cmd "curl --fail http://localhost || exit 1" \
+            --health-interval 2s --health-retries 15 --health-start-period 5s --health-timeout 2s \
+            nginx:latest
+
+          for attempt in {1..10}; do
+            STATUS=$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}starting{{end}}' test-nginx)
+            if [ "$STATUS" = "healthy" ]; then
+              break
+            fi
+            if [ "$STATUS" = "unhealthy" ]; then
+              echo "nginx container reported unhealthy" >&2
+              docker logs test-nginx
+              exit 1
+            fi
+            sleep 1
+          done
+
+          if [ "$STATUS" != "healthy" ]; then
+            echo "nginx container never became healthy" >&2
+            docker logs test-nginx
+            exit 1
+          fi
+
           curl -I http://$COLIMA_IP:8080
           docker stop test-nginx
       - name: Get the Docker client version
