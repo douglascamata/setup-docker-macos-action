@@ -12,6 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-13, macos-15-intel]
+        network-address: [true, false]
     name: A job to perform a self-test on this Github Action
     steps:
       # To use this repository's private action,
@@ -19,8 +20,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
       - name: Setup Docker on macOS using Colima, Lima-VM, and Homebrew.
-        uses: ./ # Uses an action in the root directory
         id: docker
+        uses: ./ # Uses an action in the root directory
+        with:
+          colima-network-address: ${{ matrix['network-address'] }}
+      - name: Get Colima IP address
+        if: ${{ matrix['network-address'] == 'true' }}
+        run: |
+          COLIMA_IP=$(colima list | grep -E "^\s*default\s+" | awk '{print $NF}')
+          echo "COLIMA_IP=$COLIMA_IP" >> $GITHUB_ENV
+      - name: Run nginx container to verify Docker is working
+        if: ${{ matrix['network-address'] == 'true' }}
+        id: nginx-test
+        run: |
+          docker run --rm -d -p 8080:80 --name test-nginx nginx:latest
+          sleep 5
+          curl -I http://$COLIMA_IP:8080
+          docker stop test-nginx
       - name: Get the Docker client version
         run: |
           echo "Docker client version: ${{ steps.docker.outputs.docker-client-version }}"
