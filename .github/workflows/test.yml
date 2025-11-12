@@ -30,6 +30,12 @@ jobs:
           COLIMA_IP=$(colima list | grep -E "^\s*default\s+" | awk '{print $NF}')
           echo "Colima IP address: $COLIMA_IP"
           echo "COLIMA_IP=$COLIMA_IP" >> $GITHUB_ENV
+      - name: Log some Colima info
+        run: |
+          colima status
+          colima list
+          colima ssh -- ip route
+          colima ssh -- sudo ip route del default via ${COLIMA_IP}
       - name: Run nginx container to verify Docker is working
         if: ${{ matrix['network-address'] == true }}
         id: nginx-test
