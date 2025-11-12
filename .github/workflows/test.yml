@@ -13,7 +13,7 @@ jobs:
       matrix:
         os: [macos-13, macos-15-intel]
         network-address: [true, false]
-    name: A job to perform a self-test on this Github Action
+    name: "Self-test (${{ matrix.os }} - Network Address: ${{ matrix['network-address'] }})"
     steps:
       # To use this repository's private action,
       # you must check out the repository
