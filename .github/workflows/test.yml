@@ -25,12 +25,12 @@ jobs:
         with:
           colima-network-address: ${{ matrix['network-address'] }}
       - name: Get Colima IP address
-        if: ${{ matrix['network-address'] == 'true' }}
+        if: ${{ matrix['network-address'] == true }}
         run: |
           COLIMA_IP=$(colima list | grep -E "^\s*default\s+" | awk '{print $NF}')
           echo "COLIMA_IP=$COLIMA_IP" >> $GITHUB_ENV
       - name: Run nginx container to verify Docker is working
-        if: ${{ matrix['network-address'] == 'true' }}
+        if: ${{ matrix['network-address'] == true }}
         id: nginx-test
         run: |
           docker run --rm -d -p 8080:80 --name test-nginx nginx:latest
