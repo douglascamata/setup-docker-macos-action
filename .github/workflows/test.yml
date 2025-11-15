@@ -40,11 +40,6 @@ jobs:
         run: |
           ping -c 3 192.168.65.1
           ping -c 3 192.168.65.2
-      - name: Remove default route via Colima IP
-        if: ${{ matrix['network-address'] == true }}
-        run: |
-          ROUTE_TO_DELETE=$(colima ssh -- ip route | grep "src $COLIMA_IP" | head -n1 | awk '{print $1, $2, $3}')
-          colima ssh -- sudo ip route del $ROUTE_TO_DELETE
       - name: Run nginx container to verify Docker is working
         if: ${{ matrix['network-address'] == true }}
         id: nginx-test
