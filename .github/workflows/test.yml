@@ -35,6 +35,14 @@ jobs:
           colima status
           colima list
           colima ssh -- ip route
+          colima ssh -- ping -c 3 192.168.65.1
+          colima ssh -- sudo iptables -L -n -v | grep -E "(INPUT|FORWARD)"
+          colima ssh -- sudo firewall-cmd --list-all
+      - name: Run some tests against Docker
+        run: |
+          ping -c 3 192.168.65.1
+          ip route | grep 192.168.65
+          ping -c 3 192.168.65.2
       - name: Remove default route via Colima IP
         if: ${{ matrix['network-address'] == true }}
         run: |
