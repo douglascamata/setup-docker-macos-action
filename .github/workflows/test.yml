@@ -68,9 +68,10 @@ jobs:
             exit 1
           fi
 
+          colima ssh -- ip route
           colima ssh -- sudo ss -tlnp
 
-          curl -I $COLIMA_IP:8080
+          curl $COLIMA_IP:8080
           docker stop test-nginx
       - name: Get the Docker client version
         run: |
