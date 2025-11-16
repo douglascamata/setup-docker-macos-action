@@ -92,6 +92,7 @@ runs:
 
         # install in $PATH
         install colima-$(uname)-$(uname -m) /usr/local/bin/colima
+        xattr -d com.apple.quarantine /usr/local/bin/colima
         echo "::endgroup::"
       shell: bash
     - name: Install Docker client, and Docker Compose
