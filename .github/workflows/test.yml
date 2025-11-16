@@ -12,15 +12,67 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-13, macos-15-intel]
-    name: A job to perform a self-test on this Github Action
+        network-address: [true, false]
+    name: "Self-test (${{ matrix.os }} - Network Address: ${{ matrix['network-address'] }})"
     steps:
       # To use this repository's private action,
       # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v5
       - name: Setup Docker on macOS using Colima, Lima-VM, and Homebrew.
-        uses: ./ # Uses an action in the root directory
         id: docker
+        uses: ./ # Uses an action in the root directory
+        with:
+          colima-network-address: ${{ matrix['network-address'] }}
+      - name: Get Colima IP address
+        if: ${{ matrix['network-address'] == true }}
+        run: |
+          COLIMA_IP=$(colima list | grep -E "^\s*default\s+" | awk '{print $NF}')
+          echo "Colima IP address: $COLIMA_IP"
+          echo "COLIMA_IP=$COLIMA_IP" >> $GITHUB_ENV
+      - name: Log some Colima info
+        run: |
+          colima status
+          colima list
+          colima ssh -- ip route
+          colima ssh -- sudo iptables -L -n -v | grep -E "(INPUT|FORWARD)"
+      - name: Run some tests against Docker
+        run: |
+          ping -c 3 192.168.65.1
+          ping -c 3 192.168.65.2
+      - name: Run nginx container to verify Docker is working
+        if: ${{ matrix['network-address'] == true }}
+        id: nginx-test
+        run: |
+          docker run --rm -d -p 8080:80 --name test-nginx \
+            --health-cmd "curl --fail http://localhost || exit 1" \
+            --health-interval 2s --health-retries 15 --health-start-period 5s --health-timeout 2s \
+            nginx:latest
+
+          for attempt in {1..10}; do
+            STATUS=$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}starting{{end}}' test-nginx)
+            if [ "$STATUS" = "healthy" ]; then
+              break
+            fi
+            if [ "$STATUS" = "unhealthy" ]; then
+              echo "nginx container reported unhealthy" >&2
+              docker logs test-nginx
+              exit 1
+            fi
+            sleep 1
+          done
+
+          if [ "$STATUS" != "healthy" ]; then
+            echo "nginx container never became healthy" >&2
+            docker logs test-nginx
+            exit 1
+          fi
+
+          colima ssh -- ip route
+          colima ssh -- sudo ss -tlnp
+
+          curl $COLIMA_IP:8080
+          docker stop test-nginx
       - name: Get the Docker client version
         run: |
           echo "Docker client version: ${{ steps.docker.outputs.docker-client-version }}"
