@@ -35,11 +35,6 @@ jobs:
           colima status
           colima list
           colima ssh -- ip route
-          colima ssh -- sudo iptables -L -n -v | grep -E "(INPUT|FORWARD)"
-      - name: Run some tests against Docker
-        run: |
-          ping -c 3 192.168.65.1
-          ping -c 3 192.168.65.2
       - name: Run nginx container to verify Docker is working
         if: ${{ matrix['network-address'] == true }}
         id: nginx-test
@@ -69,7 +64,6 @@ jobs:
           fi
 
           colima ssh -- ip route
-          colima ssh -- sudo ss -tlnp
 
           curl $COLIMA_IP:8080
           docker stop test-nginx
