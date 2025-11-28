@@ -71,7 +71,7 @@ jobs:
           FAILED=0
           echo "Testing curl with Colima IP: $COLIMA_IP"
           if ! curl -s -o /dev/null -w "%{http_code}" $COLIMA_IP:8080 | grep -q "200"; then
-            echo "Failed to curl using Colima IP: $COLIMA_IP" >&2
+            echo "Failed to curl using Colima IP: $COLIMA_IP"
             FAILED=1
           else
             echo "Successfully connected to Colima IP: $COLIMA_IP"
@@ -79,7 +79,7 @@ jobs:
 
           echo "Testing curl with Colima Gateway IP: $COLIMA_GATEWAY_IP"
           if ! curl -s -o /dev/null -w "%{http_code}" $COLIMA_GATEWAY_IP:8080 | grep -q "200"; then
-            echo "Failed to curl using Colima Gateway IP: $COLIMA_GATEWAY_IP" >&2
+            echo "Failed to curl using Colima Gateway IP: $COLIMA_GATEWAY_IP"
             FAILED=1
           else
             echo "Successfully connected to Colima Gateway IP: $COLIMA_GATEWAY_IP"
