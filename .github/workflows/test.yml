@@ -24,12 +24,15 @@ jobs:
         uses: ./ # Uses an action in the root directory
         with:
           colima-network-address: ${{ matrix['network-address'] }}
-      - name: Get Colima IP address
+      - name: Get Colima IP addresses
         if: ${{ matrix['network-address'] == true }}
         run: |
           COLIMA_IP=$(colima list | grep -E "^\s*default\s+" | awk '{print $NF}')
+          COLIMA_GATEWAY_IP=$(colima ssh -- ip route | grep 'default via' | grep 'dev col0' | awk '{print $3}')
           echo "Colima IP address: $COLIMA_IP"
+          echo "Colima Gateway IP address: $COLIMA_GATEWAY_IP"
           echo "COLIMA_IP=$COLIMA_IP" >> $GITHUB_ENV
+          echo "COLIMA_GATEWAY_IP=$COLIMA_GATEWAY_IP" >> $GITHUB_ENV
       - name: Log some Colima info
         run: |
           colima status
@@ -65,8 +68,25 @@ jobs:
 
           colima ssh -- ip route
 
-          curl $COLIMA_IP:8080
+          FAILED=0
+          echo "Testing curl with Colima IP: $COLIMA_IP"
+          if ! curl --fail $COLIMA_IP:8080; then
+            echo "Failed to curl using Colima IP: $COLIMA_IP" >&2
+            FAILED=1
+          fi
+
+          echo "Testing curl with Colima Gateway IP: $COLIMA_GATEWAY_IP"
+          if ! curl --fail $COLIMA_GATEWAY_IP:8080; then
+            echo "Failed to curl using Colima Gateway IP: $COLIMA_GATEWAY_IP" >&2
+            FAILED=1
+          fi
+
           docker stop test-nginx
+
+          if [ $FAILED -ne 0 ]; then
+            echo "One or more curl tests failed" >&2
+            exit 1
+          fi
       - name: Get the Docker client version
         run: |
           echo "Docker client version: ${{ steps.docker.outputs.docker-client-version }}"
