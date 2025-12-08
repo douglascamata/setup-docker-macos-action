@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-13, macos-15-intel]
+        os: [macos-15-intel]
     name: A job to perform a self-test on this Github Action
     steps:
       # To use this repository's private action,
