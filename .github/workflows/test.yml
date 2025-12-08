@@ -17,7 +17,7 @@ jobs:
       # To use this repository's private action,
       # you must check out the repository
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Docker on macOS using Colima, Lima-VM, and Homebrew.
         uses: ./ # Uses an action in the root directory
         id: docker
