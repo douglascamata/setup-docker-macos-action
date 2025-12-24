@@ -8,7 +8,7 @@ on:
 jobs:
   # Test without network-address (uses localhost port forwarding)
   test-localhost:
-    runs-on: macos-15
+    runs-on: macos-15-intel
     name: "Test localhost access (macos-15)"
     steps:
       - name: Checkout
@@ -65,7 +65,7 @@ jobs:
 
   # Test with network-address and run-as-root (bypasses macOS 15 LNP restrictions)
   test-network-address-root:
-    runs-on: macos-15
+    runs-on: macos-15-intel
     name: "Test VM network address with root (macos-15)"
     steps:
       - name: Checkout
