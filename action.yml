@@ -16,6 +16,10 @@ inputs:
   colima-additional-options:
     description: "Starts Colima with additional options. May break Colima startup."
     required: false
+  run-as-root:
+    description: "Runs Colima as root (with sudo). Required for network-address access on macOS 15+ due to Apple's Local Network Privacy restrictions."
+    required: false
+    default: "false"
 outputs:
   colima-version:
     value: ${{ steps.colima-version.outputs.version }}
@@ -113,6 +117,7 @@ runs:
       env:
         COLIMA_ADDITIONAL_OPTIONS: ${{ inputs.colima-additional-options }}
         COLIMA_NETWORK_ADDRESS: ${{ inputs.colima-network-address }}
+        RUN_AS_ROOT: ${{ inputs.run-as-root }}
       run: |
         CPU_COUNT=$(sysctl -n hw.ncpu)
         MEMORY=$(sysctl hw.memsize | awk '{print $2/1024/1024/1024}')
@@ -127,7 +132,13 @@ runs:
           COLIMA_ARGS="$COLIMA_ARGS $COLIMA_ADDITIONAL_OPTIONS"
         fi
         echo "::group::Starting Colima with args: $COLIMA_ARGS"
-        colima start $COLIMA_ARGS
+        if [ "$RUN_AS_ROOT" == "true" ]
+        then
+          echo "Running Colima as root (sudo) to bypass macOS 15 Local Network Privacy restrictions"
+          sudo colima start $COLIMA_ARGS
+        else
+          colima start $COLIMA_ARGS
+        fi
         echo "::endgroup::"
       shell: bash
     - id: docker-client-version
@@ -145,9 +156,16 @@ runs:
         echo "$EOF" >> "$GITHUB_OUTPUT"
       shell: bash
     - id: colima-version
+      env:
+        RUN_AS_ROOT: ${{ inputs.run-as-root }}
       run: |
         EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
         echo "version<<$EOF" >> "$GITHUB_OUTPUT"
-        colima version >> "$GITHUB_OUTPUT"
+        if [ "$RUN_AS_ROOT" == "true" ]
+        then
+          sudo colima version >> "$GITHUB_OUTPUT"
+        else
+          colima version >> "$GITHUB_OUTPUT"
+        fi
         echo "$EOF" >> "$GITHUB_OUTPUT"
       shell: bash
