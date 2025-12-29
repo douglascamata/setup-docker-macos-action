@@ -90,6 +90,10 @@ The version of the Docker client that was installed.
 
 The version of Docker Compose that was installed.
 
+### `docker-buildx-version`
+
+The version of Docker Buildx that was installed.
+
 ### Example
 
 ```yml
@@ -98,6 +102,7 @@ The version of Docker Compose that was installed.
     echo "Colima version: ${{ steps.setup-docker.outputs.colima-version }}"
     echo "Docker client version: ${{ steps.setup-docker.outputs.docker-client-version }}"
     echo "Docker compose version: ${{ steps.setup-docker.outputs.docker-compose-version }}"
+    echo "Docker buildx version: ${{ steps.setup-docker.outputs.docker-buildx-version }}"
 ```
 
 ## Known Issues

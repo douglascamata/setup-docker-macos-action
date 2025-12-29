@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- Install Docker Buildx and configure it as a Docker CLI plugin ([#29](https://github.com/douglascamata/setup-docker-macos-action/issues/29)).
+- New `docker-buildx-version` output to expose the installed Docker Buildx version.
+
+### Changed
+
+- Use `brew --prefix <formula>` instead of `$(brew --prefix)/opt/<formula>` for more robust Homebrew path resolution across different macOS architectures and Homebrew layouts.
+
 ## [v1.0.2] - 2025-11-10
 
 ### Fixed
