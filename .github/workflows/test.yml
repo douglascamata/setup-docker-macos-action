@@ -60,6 +60,8 @@ jobs:
       - name: Log versions
         run: |
           echo "Docker client version: ${{ steps.docker.outputs.docker-client-version }}"
+          echo "Docker compose version: ${{ steps.docker.outputs.docker-compose-version }}"
+          echo "Docker buildx version: ${{ steps.docker.outputs.docker-buildx-version }}"
           echo "Colima version: ${{ steps.docker.outputs.colima-version }}"
 
   test-network-address:
@@ -139,4 +141,6 @@ jobs:
       - name: Log versions
         run: |
           echo "Docker client version: ${{ steps.docker.outputs.docker-client-version }}"
+          echo "Docker compose version: ${{ steps.docker.outputs.docker-compose-version }}"
+          echo "Docker buildx version: ${{ steps.docker.outputs.docker-buildx-version }}"
           echo "Colima version: ${{ steps.docker.outputs.colima-version }}"

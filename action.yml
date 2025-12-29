@@ -26,6 +26,9 @@ outputs:
   docker-compose-version:
     value: ${{ steps.docker-compose-version.outputs.version }}
     description: Version of Docker Compose
+  docker-buildx-version:
+    value: ${{ steps.docker-buildx-version.outputs.version }}
+    description: Version of Docker Buildx
 runs:
   using: "composite"
   steps:
@@ -94,20 +97,21 @@ runs:
         install colima-$(uname)-$(uname -m) /usr/local/bin/colima
         echo "::endgroup::"
       shell: bash
-    - name: Install Docker client, and Docker Compose
+    - name: Install Docker client, Docker Compose, and Docker Buildx
       env:
         HOMEBREW_NO_AUTO_UPDATE: "1"
         HOMEBREW_NO_INSTALL_UPGRADE: "1"
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1"
       run: |
-        echo "::group::Installing Docker client and Docker Compose"
-        brew install docker docker-compose
+        echo "::group::Installing Docker client, Docker Compose, and Docker Buildx"
+        brew install docker docker-compose docker-buildx
         echo "::endgroup::"
       shell: bash
-    - name: Configure Docker Compose plugin
+    - name: Configure Docker CLI plugins
       run: |
         mkdir -p ~/.docker/cli-plugins
-        ln -sfn "$(brew --prefix)/opt/docker-compose/bin/docker-compose" ~/.docker/cli-plugins/docker-compose
+        ln -sfn "$(brew --prefix docker-compose)/bin/docker-compose" ~/.docker/cli-plugins/docker-compose
+        ln -sfn "$(brew --prefix docker-buildx)/bin/docker-buildx" ~/.docker/cli-plugins/docker-buildx
       shell: bash
     - name: Start Colima
       env:
@@ -141,6 +145,13 @@ runs:
         EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
         echo "version<<$EOF" >> "$GITHUB_OUTPUT"
         docker compose version >> "$GITHUB_OUTPUT"
+        echo "$EOF" >> "$GITHUB_OUTPUT"
+      shell: bash
+    - id: docker-buildx-version
+      run: |
+        EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+        echo "version<<$EOF" >> "$GITHUB_OUTPUT"
+        docker buildx version >> "$GITHUB_OUTPUT"
         echo "$EOF" >> "$GITHUB_OUTPUT"
       shell: bash
     - id: colima-version
