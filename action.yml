@@ -119,7 +119,7 @@ runs:
         COLIMA_ARGS="--cpu $CPU_COUNT --memory $MEMORY --arch x86_64 --vm-type=vz --mount-type=virtiofs"
         if [ $COLIMA_NETWORK_ADDRESS == "true" ]
         then
-          COLIMA_ARGS="$COLIMA_ARGS --network-address --network-preferred-route"
+          COLIMA_ARGS="$COLIMA_ARGS --network-address"
         fi
         if [ -n "$COLIMA_ADDITIONAL_OPTIONS" ]
         then
